@@ -1,3 +1,5 @@
+Reiki Lab is the final Web Application Development project for Camila Mattos and Carla Gibin.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
