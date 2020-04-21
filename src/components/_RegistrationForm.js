@@ -23,7 +23,7 @@ function RegistrationForm() {
 					<input type="password" name="rfPassword" id="rfPassword" placeholder="Password" />
 					<label htmlFor="rfPasswordConfirmation">Password Confirmation</label>
 					<input type="password" name="rfPasswordConfirmation" id="rfPasswordConfirmation" placeholder="Password Confirmation" />
-					<label className="inline-label"><input type="checkbox" id="rfTerms" name="rfTerms" /> I Agree with the Terms & Conditions</label>
+					<input type="checkbox" id="rfTerms" name="rfTerms" /><label className="inline-label" htmlFor="rfTerms">I agree with the Terms & Conditions</label>
 					<button className="btn btn--secondary">Create account</button>
 				</form>
 			</div>
