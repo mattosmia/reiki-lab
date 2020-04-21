@@ -1,0 +1,200 @@
+@import '_variables.scss';
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
+
+*,
+*::before,
+*::after {
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-family: 'Roboto Condensed', sans-serif;
+	font-size: 10px;
+	color: $black;
+	background: $white;
+	scroll-behavior: smooth;
+}
+
+#root {
+	width: 100%;
+}
+
+/* visually hidden */
+.vh {
+	position: absolute !important;
+	clip: rect(1px, 1px, 1px, 1px);
+	padding: 0 !important;
+	border: 0 !important;
+	height: 1px !important;
+	width: 1px !important;
+	overflow: hidden;
+}
+
+:focus {
+	outline: none;
+	&:not([tabindex='-1']) {
+		outline-offset: 2px;
+		outline: 2px dashed $blue;
+	}
+}
+
+.unstyled-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+	font-weight: 400;
+}
+
+a {
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+p {
+	font-size: 3.2rem;
+	margin: 0 auto 5rem;
+	text-align: center;
+}
+
+.btn {
+	display: inline-block;
+	text-align: center;
+	font-size: 3.4rem;
+	border: 2px solid $white;
+	text-transform: uppercase;
+	padding: 0.7rem 1.6rem;
+	color: $white;
+	&--blue {
+		background: transparent; 
+	}
+	&--secondary {
+		background: $pink;
+		border-color: $pink;
+	}
+	&:disabled {
+		background: $grey;
+		border-color: $grey;
+	}
+}
+
+.module-heading {
+	text-align: center;
+	font-size: 4.4rem;
+	color: $white;
+	text-transform: uppercase;
+	text-align: center;
+	margin-bottom: 5rem;
+	&:after {
+		content: '';
+		display: block;
+		width: 8.7rem;
+		height: 1rem;
+		margin: 2.2rem auto 0;
+		background: $white;
+	}
+
+	&--pink {
+		color: $pink;
+		&:after {
+			background: $blue;
+		}
+	}
+}
+
+.icon {
+    background-repeat: no-repeat;
+    background-size: contain;
+    &--sm {
+        &-facebook {
+            background-image: url('../images/fb-icon.svg');
+        }
+        &-instagram {
+            background-image: url('../images/instagram-icon.svg');
+        }
+    }
+}
+
+/* helper classes */
+.wrapper {
+	margin: 0 auto;
+	width: 100%;
+	max-width: 120rem;
+	padding: 8rem 1.5rem;
+	&--no-padding {
+		padding: 0;
+	}
+	&--padded-small {
+		padding: 1rem;
+	}
+	&--narrow {
+		max-width: 78rem;
+	}
+}
+
+.form {
+	margin: 0 auto;
+	padding: 5rem 1.5rem 7.2rem;
+	width: 100%;
+	border: 5px solid $blue;
+	max-width: 560px;
+	background-color: $white;
+	label {
+		&.inline-label {
+			font-size: 2.2rem;
+			margin-bottom: 2.6rem;
+		}
+		&:not(.inline-label) {
+			@extend .vh;
+		}
+	}
+	input,
+	textarea,
+	button,
+	.inline-label {
+		display: block;
+		width: 100%;
+		margin: 0 auto;
+		max-width: 392px;
+	}
+	input,
+	textarea {
+		font-size: 2.4rem;
+		border: 1px solid transparent;
+		border-bottom-color: $purple;
+		padding: .8rem 0;
+		margin-bottom: 2.6rem;
+		resize: vertical;
+	}
+	input[type='checkbox'] {
+		display: inline-block;
+		width: auto;
+		margin: 0 1rem 0 0;
+		width: 3.2rem;
+		height: 3.2rem;
+	}
+}
+
+// components
+@import '_header.scss';
+@import '_footer.scss';
+@import '_hero.scss';
+@import '_textwithbutton.scss';
+@import '_threecolumns.scss';
+@import '_contactform.scss';
+@import '_registrationform.scss';

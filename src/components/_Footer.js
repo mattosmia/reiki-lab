@@ -10,28 +10,30 @@ function Footer() {
 			<nav className="footer__nav-top">
 				<img src={logo} alt="Reiki Lab" />
 				<div className="footer__nav--social-media">
-					<p>Follow us</p>
+					<div>Follow us</div>
 					<ul className="unstyled-list">
 						<li><a href="https://www.facebook.com/reikilabdub/" className="icon icon--sm-facebook" target="_blank" rel="noopener noreferrer"><span className="vh">Facebook</span></a></li>
 						<li><a href="https://www.instagram.com/reikilab/" className="icon icon--sm-instagram" target="_blank" rel="noopener noreferrer"><span className="vh">Instagram</span></a></li>
 					</ul>
 				</div>
-				<ul className="footer__main-nav unstyled-list">
+				<ul className="footer__nav-main unstyled-list">
 					<li><Link to="/">Home</Link></li>
 					<li><Link to="/about">About Us</Link></li>
 					<li><Link to="/distance-healing">Distance Healing</Link></li>
+				</ul>
+				<ul className="footer__nav-main unstyled-list">
 					<li><Link to="/events">Events</Link></li>
 					<li><Link to="/volunteers">Volunteers</Link></li>
 					<li><Link to="/contact">Contact Us</Link></li>
 				</ul>
 			</nav>
 			<nav className="footer__nav-bottom">
-				<p>
+				<div>
 					&copy; 2020&nbsp;|&nbsp;
 					<Link to="/terms-conditions">Terms &amp; Conditions</Link>&nbsp;|&nbsp;
 					<Link to="/privacy-policy">Privacy Policy</Link>&nbsp;|&nbsp;
 					<Link to="/cookie-policy">Cookie Policy</Link>
-				</p>
+				</div>
 				<a href="#top"><img src={arrow} alt="Go back to the top" /></a>
 			</nav>
 		</footer>

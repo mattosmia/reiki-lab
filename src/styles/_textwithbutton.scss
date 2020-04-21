@@ -1,0 +1,10 @@
+.text-with-button {
+	text-align: center;
+	background-color: $green;
+	color: $white;
+	.btn {
+		display: inline-block;
+		width: 100%;
+		max-width: 320px;
+	}
+}

@@ -1,0 +1,21 @@
+.hero {
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+	padding: 15rem 0;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	h1 {
+		font-size: 12rem;
+		margin-bottom: 1.5rem;
+		text-transform: uppercase;
+		color: $white;
+	}
+	.btn {
+		font-size: 3rem;
+		width: 100%;
+		max-width: 26.5rem;
+	}
+}

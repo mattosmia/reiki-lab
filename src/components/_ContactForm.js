@@ -7,7 +7,7 @@ function ContactForm() {
 	<section className="contact-form">
 		<div className="wrapper">
 			<h1 className="module-heading">Get in touch</h1>
-			<form method="POST">
+			<form className="form" method="POST">
 				<img className="contact-form__icon" src={envelope} alt="Contact form" />
 				<label htmlFor="cfName">Full name</label>
 				<input type="text" name="cfName" id="cfName" placeholder="Full name" />
