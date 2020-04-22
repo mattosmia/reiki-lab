@@ -239,7 +239,8 @@ p {
 	display: inline-block;
 	background-color: $grey;
 	transition: 200ms background-color ease-in;
-	&:hover {
+	&:hover,
+	&.active {
 		background-color: $pink;
 		text-decoration: none;
 	}

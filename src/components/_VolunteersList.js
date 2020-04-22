@@ -6,7 +6,7 @@ class VolunteersList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-			volunteerPage: 1,
+			currentVolunteerPage: 1,
 			volunteersPerPage: 6,
 			volunteerList: []
 		}
@@ -23,20 +23,20 @@ class VolunteersList extends Component {
 				{firstName: 'Renato', lastName: 'Figueiredo', therapies: 'Reiki Practioner, Access Bars', startDate: '', email: 'renato@gmail.com', facebook: '', instagram: '', image: ''},
 				{firstName: 'Another', lastName: 'Person', therapies: 'Reiki Practioner, Access Bars', startDate: '', email: '', facebook: 'https://facebook.com/sdffsdf', instagram: 'https://instagram.com/djasd', image: ''},
 				{firstName: 'Yet', lastName: 'Another', therapies: 'Reiki Practioner, Theta Healer', startDate: '', email: 'dsfdsf@gmail.com', facebook: 'https://facebook.com/45fsdf', instagram: 'https://instagram.com/djasd', image: ''},
-				{firstName: 'Last', lastName: 'One', therapies: 'Access Bars, Theta Healer', startDate: '', email: 'sdnajd@gmail.com', facebook: 'https://facebook.com/erfsgr', instagram: 'https://instagram.com/djasd', image: ''},
+				{firstName: 'Last', lastName: 'One', therapies: 'Access Bars, Theta Healer', startDate: '', email: 'sdnajd@gmail.com', facebook: 'https://facebook.com/erfsgr', instagram: 'https://instagram.com/djasd', image: ''}
 			]
 		})
 	}
 
 	loadVolunteerPage = () => {
-		const initialIdx = (this.state.volunteerPage - 1) * this.state.volunteersPerPage;
+		const initialIdx = (this.state.currentVolunteerPage - 1) * this.state.volunteersPerPage;
 		return this.state.volunteerList.slice(initialIdx, initialIdx + this.state.volunteersPerPage).map((data, idx) => <VolunteersListItem key={idx} data={data} />)
 	}
 
 	volunteerPagination = () => {
 		let pagination = [];
 		for (let i = 0; i < (this.state.volunteerList.length / this.state.volunteersPerPage); i++) {
-			pagination.push(<div onClick={() => this.setState({volunteerPage: i+1})} key={i}>{i+1}</div>);
+			pagination.push(<div onClick={() => this.setState({currentVolunteerPage: i+1})} key={i} className={(i+1) === this.state.currentVolunteerPage? 'active' : ''}>{i+1}</div>);
 		}
 		return pagination;
 	}
@@ -47,10 +47,10 @@ class VolunteersList extends Component {
 			<h1 className="module-heading module-heading--pink">Volunteers</h1>
 			<p>Check out the amazing people we have on our team</p>
 			<div className="volunteers-list__columns">
-				{this.state.volunteerPage && this.state.volunteerList.length && this.loadVolunteerPage()}
+				{this.state.currentVolunteerPage && this.state.volunteerList.length && this.loadVolunteerPage()}
 			</div>
 			<div className="volunteers-list__pagination">
-				{this.state.volunteerPage && this.state.volunteerList.length && this.volunteerPagination()}
+				{this.state.currentVolunteerPage && this.state.volunteerList.length && this.volunteerPagination()}
 			</div>
 		</section>
 		)
