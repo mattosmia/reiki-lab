@@ -1,0 +1,60 @@
+.volunteers-list {
+	color: $grey;
+	text-align: center;
+	&__columns {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+	}
+	&__column {
+		width: 100%;
+		max-width: 22rem;
+		text-align: center;
+		margin-bottom: 4.4rem;
+	}
+	&__name {
+		font-size: 2.4rem;
+		margin-bottom: 1.5rem;
+		text-transform: uppercase;
+		color: $blue--light;
+	}
+	&__therapies {
+		font-size: 2.2rem;
+		color: $pink;
+	}
+	&__contact {
+		height: 3.8rem;
+		margin-bottom: 2.5rem;
+		a {
+			@extend .box;
+			background-size: auto 2rem;
+			width: 3.8rem;
+			height: 3.8rem;
+			span {
+				@extend .vh;
+			}
+		}
+	}
+	&__picture {
+		width: 100%;
+		margin-bottom: 2.5rem;
+		img {
+			width: 100%;
+		}
+	}
+	&__pagination {
+		display: flex;
+		justify-content: center;
+		div {
+			@extend .box;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 3.6rem;
+			color: $white;
+			width: 5rem;
+			height: 5rem;
+			cursor: pointer;
+		}
+	}
+}

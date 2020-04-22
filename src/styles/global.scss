@@ -120,12 +120,24 @@ p {
 .icon {
     background-repeat: no-repeat;
     background-size: contain;
-    &--sm {
-        &-facebook {
+	background-position: center;
+    &__sm {
+        &--facebook {
             background-image: url('../images/fb-icon.svg');
         }
-        &-instagram {
+        &--instagram {
             background-image: url('../images/instagram-icon.svg');
+        }
+    }
+    &__contact {
+        &--email {
+            background-image: url('../images/icon-email.svg');
+        }
+        &--facebook {
+            background-image: url('../images/icon-facebook.svg');
+        }
+        &--instagram {
+            background-image: url('../images/icon-instagram.svg');
         }
     }
 }
@@ -198,7 +210,7 @@ p {
 				background: $white;
 				position: absolute;
 				left: 0;
-				transition: 0.2s background ease-in;
+				transition: 200ms background ease-in;
 			}
 			&:after {
 				content: '';
@@ -223,6 +235,19 @@ p {
 	}
 }
 
+.box {
+	display: inline-block;
+	background-color: $grey;
+	transition: 200ms background-color ease-in;
+	&:hover {
+		background-color: $pink;
+		text-decoration: none;
+	}
+	&:not(:last-of-type) {
+		margin-right: 2rem;
+	}
+}
+
 // components
 @import '_header.scss';
 @import '_footer.scss';
@@ -231,3 +256,4 @@ p {
 @import '_threecolumns.scss';
 @import '_contactform.scss';
 @import '_registrationform.scss';
+@import '_volunteerslist.scss';

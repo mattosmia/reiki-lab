@@ -12,8 +12,8 @@ function Footer() {
 				<div className="footer__nav--social-media">
 					<div>Follow us</div>
 					<ul className="unstyled-list">
-						<li><a href="https://www.facebook.com/reikilabdub/" className="icon icon--sm-facebook" target="_blank" rel="noopener noreferrer"><span className="vh">Facebook</span></a></li>
-						<li><a href="https://www.instagram.com/reikilab/" className="icon icon--sm-instagram" target="_blank" rel="noopener noreferrer"><span className="vh">Instagram</span></a></li>
+						<li><a href="https://www.facebook.com/reikilabdub/" className="icon icon__sm--facebook" target="_blank" rel="noopener noreferrer"><span className="vh">Facebook</span></a></li>
+						<li><a href="https://www.instagram.com/reikilab/" className="icon icon__sm--instagram" target="_blank" rel="noopener noreferrer"><span className="vh">Instagram</span></a></li>
 					</ul>
 				</div>
 				<ul className="footer__nav-main unstyled-list">

@@ -1,9 +1,14 @@
 import React from 'react';
+import VolunteersList from './_VolunteersList';
+import ContactForm from './_ContactForm';
+import TextWithButton from './_TextWithButton';
 
 function Volunteers() {
 	return (
 		<>
-			Volunteers!
+			<VolunteersList />
+			<TextWithButton />
+			<ContactForm />
 		</>
 	);
 }
