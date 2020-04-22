@@ -8,7 +8,7 @@ function Hero() {
 	<section className="hero" style={{backgroundImage: `url(${background})`}}>
 		<div className="wrapper">
 			<h1>What is Reiki?</h1>
-			<Link to="/about" className="btn">Find out more</Link>
+			<Link to="/what-is-reiki" className="btn">Find out more</Link>
 		</div>
 	</section>
   );

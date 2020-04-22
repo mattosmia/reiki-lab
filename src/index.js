@@ -9,6 +9,7 @@ import Header from './components/_Header';
 import Footer from './components/_Footer';
 import Home from './components/Home';
 import About from './components/About';
+import AboutReiki from './components/AboutReiki';
 import DistanceHealing from './components/DistanceHealing';
 import Events from './components/Events';
 import Volunteers from './components/Volunteers';
@@ -30,6 +31,7 @@ ReactDOM.render(
 					<Route exact path="/distance-healing" component={DistanceHealing} />
 					<Route exact path="/events" component={Events} />
 					<Route exact path="/volunteers" component={Volunteers} />
+					<Route exact path="/what-is-reiki" component={AboutReiki} />
 					<Route exact path="/contact" component={Contact} />
 					<Route exact path="/login" component={Login} />
 					<Route exact path="/register" component={Register} />

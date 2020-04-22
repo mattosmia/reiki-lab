@@ -1,0 +1,30 @@
+.content-page {
+	&__heading {
+		padding-bottom: 1rem;
+	}
+	&__copy {
+		text-align: left;
+		p {
+			font-size: 2.4rem;
+			line-height: 3.6rem;
+			margin-bottom: 2.8rem;
+			color: $grey;
+			text-align: left;
+		}
+		a {
+			color: $pink;
+			text-decoration: underline;
+			&:hover {
+				text-decoration: none;
+			}
+		}
+		.link-list {
+			font-size: 2.8rem;
+		}
+	}
+	&__image {
+		img {
+			width: 100%;
+		}
+	}
+}

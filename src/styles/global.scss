@@ -126,8 +126,12 @@ p {
 		color: $pink;
 		&:after {
 			background: $blue;
+		}		
+		& + p {
+			color: $grey;
 		}
 	}
+	
 }
 
 .icon {
@@ -272,3 +276,4 @@ p {
 @import '_registrationform.scss';
 @import '_loginform.scss';
 @import '_volunteerslist.scss';
+@import '_contentpage.scss';
