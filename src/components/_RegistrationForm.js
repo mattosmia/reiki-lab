@@ -1,11 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function RegistrationForm() {
 	return (
 		<section className="registration-form">
 			<div className="wrapper">
 				<h1 className="module-heading module-heading--pink">Sign up</h1>
-				<p>Create your account</p>
+				<p>Create your account or <Link to="/login">Log in</Link></p>
 				<form className="form" method="POST">
 					<label htmlFor="rfName">Full name</label>
 					<input type="text" name="rfName" id="rfName" placeholder="Full name" />
