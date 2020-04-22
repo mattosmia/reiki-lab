@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+
 import VolunteersListItem from './_VolunteersListItem';
 
-
 class VolunteersList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+	constructor(props) {
+		super(props);
+		this.state = {
 			currentVolunteerPage: 1,
 			volunteersPerPage: 6,
 			volunteerList: []
