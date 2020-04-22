@@ -40,7 +40,7 @@ html {
 	outline: none;
 	&:not([tabindex='-1']) {
 		outline-offset: 2px;
-		outline: 2px dashed $blue;
+		outline: 2px dashed $pink;
 	}
 }
 
@@ -266,6 +266,21 @@ p {
 	}
 }
 
+.cover-link {
+	position: relative;
+	a {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		
+		span {
+			@extend .vh;
+		}
+	}
+}
 // components
 @import '_header.scss';
 @import '_footer.scss';

@@ -15,7 +15,8 @@ function Header() {
 				</nav>
 			</div>
 		</div>
-		<div className="header__logo">
+		<div className="header__logo cover-link">
+			<Link to="/"><span>Go Home</span></Link>
 		</div>
 		<div className="header__main-nav">
 			<nav className="wrapper wrapper--padded-small">
