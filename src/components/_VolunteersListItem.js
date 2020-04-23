@@ -1,6 +1,6 @@
 import React from 'react';
 
-import placeholderPicture from '../images/profile1.png';
+import placeholderPicture from '../images/profile_default.png';
 
 function VolunteersListItem(props) {
   return (
