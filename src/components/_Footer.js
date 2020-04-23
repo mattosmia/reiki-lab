@@ -6,7 +6,7 @@ import arrow from '../images/06-arrow-up.svg';
 
 function Footer() {
 	return (
-		<footer className="wrapper">
+		<footer className="wrapper wrapper--narrow">
 			<nav className="footer__nav-top">
 				<img src={logo} alt="Reiki Lab" />
 				<div className="footer__nav--social-media">

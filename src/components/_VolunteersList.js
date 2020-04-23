@@ -43,7 +43,7 @@ class VolunteersList extends Component {
 
 	render () {
 		return (
-		<section className="volunteers-list wrapper wrapper--narrow">
+		<section className="volunteers-list wrapper wrapper--narrower">
 			<h1 className="module-heading module-heading--pink">Volunteers</h1>
 			<p>Check out the amazing people we have on our team</p>
 			<div className="volunteers-list__columns">

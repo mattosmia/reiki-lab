@@ -19,6 +19,7 @@ import Register from './components/Register';
 import TermsConditions from './components/TermsConditions';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import CookiePolicy from './components/CookiePolicy';
+import CookieNotice from './components/_CookieNotice';
 
 ReactDOM.render(
 	<React.StrictMode>
@@ -41,6 +42,7 @@ ReactDOM.render(
 				</Switch>
 			</main>
 			<Footer />
+			<CookieNotice />
 		</BrowserRouter>
 	</React.StrictMode>,
 	document.getElementById('root')

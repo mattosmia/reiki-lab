@@ -1,4 +1,5 @@
-@import '_variables.scss';
+@import '__variables.scss';
+@import '__icons.scss';
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
 
@@ -93,9 +94,7 @@ p {
 	text-transform: uppercase;
 	padding: 0.7rem 1.6rem;
 	color: $white;
-	&--blue {
-		background: transparent; 
-	}
+	background: transparent; 
 	&--secondary {
 		background: $pink;
 		border-color: $pink;
@@ -140,21 +139,21 @@ p {
 	background-position: center;
     &__sm {
         &--facebook {
-            background-image: url('../images/fb-icon.svg');
+			@extend .icon-facebook-footer;
         }
         &--instagram {
-            background-image: url('../images/instagram-icon.svg');
+			@extend .icon-instagram-footer;
         }
     }
     &__contact {
         &--email {
-            background-image: url('../images/icon-email.svg');
+			@extend .icon-email;
         }
         &--facebook {
-            background-image: url('../images/icon-facebook.svg');
+			@extend .icon-facebook;
         }
         &--instagram {
-            background-image: url('../images/icon-instagram.svg');
+			@extend .icon-instagram;
         }
     }
 }
@@ -165,18 +164,19 @@ p {
 	width: 100%;
 	max-width: 120rem;
 	padding: 8rem 1.5rem;
-	&--no-padding {
-		padding: 0;
-	}
 	&--padded-small {
 		padding: 1rem;
 	}
-	&--narrow {
+	&--narrower {
 		max-width: 78rem;
+	}
+	&--narrow {
+		max-width: 90rem;
 	}
 }
 
 .form {
+	color: $grey;
 	margin: 0 auto;
 	padding: 5rem 1.5rem 7.2rem;
 	width: 100%;
@@ -226,6 +226,7 @@ p {
 				border: 0.4rem solid $blue;
 				background: $white;
 				position: absolute;
+				top: 0;
 				left: 0;
 				transition: 200ms background ease-in;
 			}
@@ -237,7 +238,9 @@ p {
 				background-image: none;
 				background-repeat: no-repeat;
 				background-position: center;
+				background-size: 2rem;
 				position: absolute;
+				top: 0;
 				left: 0;
 			}
 		}
@@ -246,7 +249,7 @@ p {
 				background-color: $blue;
 			}
 			&:after {
-				background-image: url('../images/06-x.svg');
+				@extend .icon-tick;
 			}
 		}
 	}
@@ -284,6 +287,7 @@ p {
 // components
 @import '_header.scss';
 @import '_footer.scss';
+@import '_cookienotice.scss';
 @import '_hero.scss';
 @import '_textwithbutton.scss';
 @import '_threecolumns.scss';

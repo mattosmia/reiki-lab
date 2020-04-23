@@ -7,7 +7,7 @@ import columnImg3 from '../images/03d-volunteers.jpg';
 
 function ThreeColumns() {
   return (
-	<section className="three-columns wrapper wrapper--narrow">
+	<section className="three-columns wrapper wrapper--narrower">
 		<div className="three-columns__columns">
 			<div className="three-columns__column">
 				<Link to="/about">

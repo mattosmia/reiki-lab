@@ -10,7 +10,7 @@ function Header() {
 			<div className="wrapper">
 				<Link to="/"><img src={logo} alt="Reiki Lab" /></Link>
 				<nav className="header__account-buttons">
-					<Link to="/login" className="btn btn--primary">Login</Link>
+					<Link to="/login" className="btn">Login</Link>
 					<Link to="/register" className="btn btn--secondary">Sign Up</Link>
 				</nav>
 			</div>
