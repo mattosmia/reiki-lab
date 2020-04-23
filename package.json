@@ -10,8 +10,13 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.2",
     "express": "^4.17.1",
     "express-favicon": "^2.0.1",
+    "express-fileupload": "^1.1.7-alpha.3",
+    "mysql": "^2.18.1",
     "node-sass": "^4.13.1",
     "path": "^0.12.7",
     "react": "^16.13.1",
@@ -21,7 +26,8 @@
     "react-transition-group": "^4.3.0"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node server.js env=local",
+    "start:local": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

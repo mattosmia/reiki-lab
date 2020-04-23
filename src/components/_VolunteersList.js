@@ -36,7 +36,7 @@ class VolunteersList extends Component {
 	volunteerPagination = () => {
 		let pagination = [];
 		for (let i = 0; i < (this.state.volunteerList.length / this.state.volunteersPerPage); i++) {
-			pagination.push(<div onClick={() => this.setState({currentVolunteerPage: i+1})} key={i} className={(i+1) === this.state.currentVolunteerPage? 'active' : ''}>{i+1}</div>);
+			pagination.push(<div key={i} onClick={() => this.setState({currentVolunteerPage: i+1})} className={(i+1) === this.state.currentVolunteerPage? 'active' : ''}>{i+1}</div>);
 		}
 		return pagination;
 	}
