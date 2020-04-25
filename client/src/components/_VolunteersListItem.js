@@ -11,7 +11,7 @@ function VolunteersListItem(props) {
 				alt={`Profile of ${props.data.first_name} ${props.data.last_name}`} />
 		</div>
 		<div className="volunteers-list__contact">
-			{props.data.email && <a href={props.data.email} className="icon icon__contact--email"><span>Email</span></a>}
+			{props.data.email && <a href={`mailto:${props.data.email}`} className="icon icon__contact--email"><span>Email</span></a>}
 			{props.data.facebook_url && <a href={props.data.facebook_url} className="icon icon__contact--facebook"><span>Facebook</span></a>}
 			{props.data.instagram_url && <a href={props.data.instagram_url} className="icon icon__contact--instagram"><span>Instagram</span></a>}
 		</div>
