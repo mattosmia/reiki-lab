@@ -9,15 +9,15 @@ class VolunteersList extends Component {
 		this.state = {
 			currentVolunteerPage: 1,
 			volunteersPerPage: 6,
-			volunteerList: []
+			volunteerList: {}
 		}
 	}
 
     componentDidMount() {
 		fetchVolunteersList().then(response => {
 			this.setState({
-				volunteersList: response.data,
-			});
+				volunteerList: Object.values(response.data)
+			}, () => console.log(this.state.volunteerList));
 		});
 	}
 
@@ -47,7 +47,7 @@ class VolunteersList extends Component {
 				{this.state.currentVolunteerPage && this.volunteerPagination()}
 			</div>
 			</>}
-			{ this.state.volunteerList.length === 0 && <p>There are no volunteers available at the moment.<br/>Please check back later.</p>}
+			{ ! this.state.volunteerList.length && <p>There are no volunteers available at the moment.<br/>Please check back later.</p>}
 		</section>
 		)
 	};
