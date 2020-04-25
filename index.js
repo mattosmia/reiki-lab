@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require("cors");
 const { check, validationResult } = require('express-validator');
 const mysql = require('mysql');
+const path = require("path");
 const router = express.Router();
 
 if (process.env.NODE_ENV !== 'production') {
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 const bcrypt_salt = 12;
 
 app.use(cors());
+app.use(express.static(path.join('client', 'build')));
 
 // DB connection
 const dbConnection = mysql.createConnection(process.env.JAWSDB_URL);
@@ -27,12 +29,7 @@ dbConnection.connect((error) => {
 	if (error) {
 		return console.error('Error connection to database [' + process.env.DB_NAME + ']: ' + error.message);
 	}
-
 	console.log('Database connection started');
-});
-
-app.get("/", (req, res) => {
-	res.send({ message: "We did it!" });
 });
 
 app.get('/therapies', (request, response) => {
@@ -45,6 +42,11 @@ app.get('/therapies', (request, response) => {
 		return response.status(200).json(therapiesList);
 	});
 })
+
+app.get('/*', (req, res) => {
+	res.sendFile('index.html', { root: './client/build' });
+});
+
 
 // app.post('/register', [
 // 	check('rfFirstName').trim().escape(),
