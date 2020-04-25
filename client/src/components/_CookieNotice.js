@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import cookie from 'react-cookies';
+
+const cookieName = 'rlCookieConsent';
 
 class CookieNotice extends Component {
 	constructor(props) {
@@ -9,16 +12,18 @@ class CookieNotice extends Component {
 		}
 	}
 
+	componentDidMount() {
+		this.checkAcceptedCookies();
+	}
+
 	checkAcceptedCookies = () => {
-		this.setState({ acceptedCookies: false });
+		this.setState({ acceptedCookies: cookie.load(cookieName) });
 	}
 
 	setAcceptedCookies = () => {
-		this.setState({ acceptedCookies: true });
-	}
-
-	componentDidMount() {
-		this.checkAcceptedCookies();
+		this.setState({ acceptedCookies: true },
+			cookie.save(cookieName, true, { path: '/' })
+		);
 	}
 
 	render() {

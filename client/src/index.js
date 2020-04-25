@@ -20,10 +20,12 @@ import TermsConditions from './components/TermsConditions';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import CookiePolicy from './components/CookiePolicy';
 import CookieNotice from './components/_CookieNotice';
+import ScrollToTop from './components/__ScrollToTop';
 
 ReactDOM.render(
 	<React.StrictMode>
 		<BrowserRouter>
+			<ScrollToTop />
 			<Header />
 			<main>
 				<Switch>

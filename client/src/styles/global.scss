@@ -87,6 +87,7 @@ p {
 }
 
 .btn {
+	cursor: pointer;
 	display: inline-block;
 	text-align: center;
 	font-size: 3.4rem;
@@ -98,6 +99,9 @@ p {
 	&--secondary {
 		background: $pink;
 		border-color: $pink;
+	}
+	&--waiting {
+		cursor: wait;
 	}
 	&:disabled {
 		background: $grey;
@@ -158,6 +162,11 @@ p {
     }
 }
 
+.error-message {
+	color: $pink;
+	font-size: 2rem;
+}
+
 /* helper classes */
 .wrapper {
 	margin: 0 auto;
@@ -193,16 +202,20 @@ p {
 			@extend .vh;
 		}
 	}
-	input,
-	textarea,
+
 	button,
+	input,
+	select,
+	textarea,
 	.inline-label {
 		display: block;
 		width: 100%;
 		margin: 0 auto;
 		max-width: 392px;
 	}
+
 	input,
+	select,
 	textarea {
 		font-size: 2.4rem;
 		border: 1px solid transparent;
@@ -210,6 +223,13 @@ p {
 		padding: .8rem 0;
 		margin-bottom: 2.6rem;
 		resize: vertical;
+	}
+
+	select[multiple] {
+		option:first-of-type {
+			border-bottom: 1px solid $purple;
+			margin-bottom: 1rem;
+		}
 	}
 
 	input[type='checkbox'] {

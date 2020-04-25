@@ -13,7 +13,7 @@ class DistanceHealingForm extends Component {
 		return (
 			<section className="distance-healing-form">
 				<div className="wrapper">
-					<form className="form" method="POST" noValidate>
+					<form noValidate className="form" method="POST">
 						<label htmlFor="dhfFullName">Full name</label>
 						<input type="text" name="dhfFullName" id="dhfFullName" placeholder="Full name" className={this.state.formErrors.dhfFullName? 'error' : ''} />
 						<label htmlFor="dhfDOB">Date of Birth</label>

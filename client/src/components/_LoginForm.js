@@ -6,8 +6,8 @@ function LoginForm() {
 		<section className="login-form">
 			<div className="wrapper">
 				<h1 className="module-heading module-heading--pink">Log in</h1>
-				<p>Please, enter your details below or <Link to="/register">Sign up</Link></p>
-				<form className="form" method="POST">
+				<p>Please, enter your details below or <Link to="/register">sign up</Link></p>
+				<form noValidate className="form" method="POST">
 					<label htmlFor="lfEmail">Email</label>
 					<input type="email" name="lfEmail" id="lfEmail" placeholder="Email" />
 					<label htmlFor="lfPassword">Password</label>
