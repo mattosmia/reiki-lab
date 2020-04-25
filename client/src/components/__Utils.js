@@ -18,3 +18,12 @@ export const fetchTherapiesList = () => {
 		.catch(error => { console.error('Error fetching therapies', error); reject(error)});
 	});
 }
+
+export const fetchVolunteersList = () => {
+	return new Promise((resolve, reject) => {
+		axios.get('/volunteers')
+		.then(response => resolve(response))
+		.catch(error => { console.error('Error fetching volunteers', error); reject(error)});
+	});
+}
+

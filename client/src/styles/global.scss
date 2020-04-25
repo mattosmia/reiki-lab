@@ -104,6 +104,7 @@ p {
 		cursor: wait;
 	}
 	&:disabled {
+		cursor: default;
 		background: $grey;
 		border-color: $grey;
 	}

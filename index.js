@@ -27,7 +27,7 @@ const dbConnection = mysql.createConnection(process.env.JAWSDB_URL);
 
 dbConnection.connect((error) => {
 	if (error) {
-		return console.error('Error connection to database [' + process.env.DB_NAME + ']: ' + error.message);
+		return console.error('Error connection to database: ' + error.message);
 	}
 	console.log('Database connection started');
 });
@@ -41,7 +41,31 @@ app.get('/therapies', (request, response) => {
 		rows.forEach(row => therapiesList.push({ value: row.therapy_id, name: row.therapy_name }));
 		return response.status(200).json(therapiesList);
 	});
-})
+});
+
+app.get('/volunteers', (request, response) => {
+	dbConnection.query(`SELECT u.user_id, u.email, u.first_name, u.last_name, u.image, u.facebook_url, u.instagram_url, t.therapy_name FROM Users u, Vol_therapies vt, Therapies t WHERE u.volunteer = 1 AND vt.vol_id = u.user_id AND vt.therapy_id = t.therapy_id;`, function(error, rows) {
+		if (error) {
+			return response.status(500).send(error);
+		}
+		let volunteersList = {};
+		rows.forEach(row => {
+			if (! volunteersList[row.user_id]) {
+				volunteersList[row.user_id] = {
+					email: row.email,
+					first_name: row.first_name,
+					last_name: row.last_name,
+					image: row.image,
+					facebook_url: row.facebook_url,
+					instagram_url: row.instagram_url,
+					therapies: []
+				}
+			}
+			volunteersList[row.user_id][therapies].push(row.therapy_name);
+		});	
+		return response.status(200).json(volunteersList);
+	});
+});
 
 app.get('/*', (req, res) => {
 	res.sendFile('index.html', { root: './client/build' });
