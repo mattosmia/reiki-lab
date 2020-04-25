@@ -33,7 +33,7 @@ dbConnection.connect((error) => {
 });
 
 app.get('/therapies', (request, response) => {
-	dbConnection.query(`SELECT therapy_id, therapy_name FROM Therapies`, function(error, rows) {
+	dbConnection.query(`SELECT therapy_id, therapy_name FROM Therapies ORDER BY therapy_name ASC`, function(error, rows) {
 		if (error) {
 			return response.status(500).send(error);
 		}
@@ -61,7 +61,7 @@ app.get('/volunteers', (request, response) => {
 					therapies: []
 				}
 			}
-			volunteersList[row.user_id][therapies].push(row.therapy_name);
+			volunteersList[row.user_id]['therapies'].push(row.therapy_name);
 		});	
 		return response.status(200).json(volunteersList);
 	});
