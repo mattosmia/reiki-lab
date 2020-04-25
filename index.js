@@ -8,8 +8,7 @@ const { check, validationResult } = require('express-validator');
 const mysql = require('mysql');
 const router = express.Router();
 
-const dotenv = require('dotenv');
-dotenv.config();
+const dotenv = require('dotenv').config({ silent: process.env.NODE_ENV === 'production' });
 
 const port = process.env.PORT || 5000;
 
