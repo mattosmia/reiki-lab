@@ -8,8 +8,9 @@ const { check, validationResult } = require('express-validator');
 const mysql = require('mysql');
 const router = express.Router();
 
-const dotenv = require('dotenv').config({ silent: process.env.NODE_ENV === 'production' });
-
+if (process.env.NODE_ENV !== 'production') {
+	const dotenv = require('dotenv').config();
+}
 const port = process.env.PORT || 5000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
