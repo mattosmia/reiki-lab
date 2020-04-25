@@ -11,13 +11,16 @@ function FormValidation(fieldName,fieldValues) {
 		// REGISTRATION FORM - start
 		case 'rfFirstName':
 		case 'rfLastName':
+		case 'dhfFullName':
 			// required field, must follow name pattern
 			return { [fieldName]: (fieldValue !== '' && nameRegex.test(fieldValue) === true)}
 		case 'rfNationality':
 		case 'rfCountryRes':
+		case 'dhfCountryRes':
 			// required field, must follow alpha 3 pattern (country)
 			return { [fieldName]: (fieldValue !== '' && alpha3Regex.test(fieldValue) === true)}
 		case 'rfDOB':
+		case 'dhfDOB':
 			// required field, must follow date pattern
 			return { [fieldName]: (fieldValue !== '' && dateRegex.test(fieldValue) === true)}
 		case 'rfEmail':
@@ -42,15 +45,10 @@ function FormValidation(fieldName,fieldValues) {
 			// volunteer is never required
 			return { rfVolunteer: true, rfTherapies: ((fieldValues['rfVolunteer'] === true && fieldValues['rfTherapies'] !== '') || fieldValues['rfVolunteer'] !== true) }
 		case 'rfTerms':
+		case 'dhfConfirmList':
+		case 'dhfTerms':
 			// user must tick terms
 			return { [fieldName]: (fieldValue === true) }
-		// REGISTRATION FORM - end
-		// LOGIN FORM - start
-		// LOGIN FORM - end
-		// DISTANCE HEALING FORM - start
-		// DISTANCE HEALING FORM - end
-		// CONTACT FORM - start
-		// CONTACT FORM - end
 		default:
 			// any other field does not require validation
 			return { [fieldName]: true }
