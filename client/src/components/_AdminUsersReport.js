@@ -13,7 +13,7 @@ class AdminUsersReport extends Component {
 		}
 	}
 
-    componentDidMount() {
+	componentDidMount() {
 		fetchList('/users-report').then(response => {
 			this.setState({
 				reportList: Object.values(response.data)
@@ -22,7 +22,7 @@ class AdminUsersReport extends Component {
 	}
 
 	loadPage = () => {
-        const initialIdx = (this.state.currentReportPage - 1) * this.state.entriesPerPage;
+		const initialIdx = (this.state.currentReportPage - 1) * this.state.entriesPerPage;
 		return this.state.reportList.slice(initialIdx, initialIdx + this.state.entriesPerPage).map((data, idx) => <AdminUsersReportRow key={idx} data={data} />)
 	}
 
@@ -36,38 +36,38 @@ class AdminUsersReport extends Component {
 
 	render () {
 		return (
-		<section className="admin-dashboard wrapper">
-			<h1 className="module-heading module-heading--pink">Admin: Users Report</h1>
+		<section className="admin-dashboard__report wrapper wrapper--padded-small">
+			<h1 className="module-heading module-heading--pink">Users Report</h1>
 			{ this.state.reportList.length > 0 && <>
 			<table className="admin-dashboard__table">
-                <thead>
-                <tr>
-                    <th>
-                        Full name
-                    </th>
-                    <th>
-                        Email
-                    </th>
-                    <th>
-                        Date of birth
-                    </th>
-                    <th>
-                        Country of residence
-                    </th>
-                    <th>
-                        Nationality
-                    </th>
-                    <th>
-                        Registered
-                    </th>
-                    <th>
-                        Volunteer
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-				    {this.state.currentReportPage && this.loadPage()}
-                </tbody>
+				<thead>
+					<tr>
+						<th>
+							Full name
+						</th>
+						<th>
+							Email
+						</th>
+						<th>
+							Date of birth
+						</th>
+						<th>
+							Country of residence
+						</th>
+						<th>
+							Nationality
+						</th>
+						<th>
+							Registered
+						</th>
+						<th>
+							Volunteer
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{this.state.currentReportPage && this.loadPage()}
+				</tbody>
 			</table>
 			<div className="pagination">
 				{this.state.currentReportPage && this.createPagination()}

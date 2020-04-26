@@ -36,25 +36,25 @@ class AdminDistanceHealingReport extends Component {
 
 	render () {
 		return (
-		<section className="admin-dashboard wrapper">
-			<h1 className="module-heading module-heading--pink">Admin: Distance Healing Report</h1>
+		<section className="admin-dashboard__report wrapper wrapper--padded-small">
+			<h1 className="module-heading module-heading--pink">Distance Healing Report</h1>
 			{ this.state.reportList.length > 0 && <>
 			<table className="admin-dashboard__table">
                 <thead>
-                <tr>
-                    <th>
-                        Full name
-                    </th>
-                    <th>
-                        Date of birth
-                    </th>
-                    <th>
-                        Country of residence
-                    </th>
-                    <th>
-                        Added to list
-                    </th>
-                </tr>
+					<tr>
+						<th>
+							Full name
+						</th>
+						<th>
+							Date of birth
+						</th>
+						<th>
+							Country of residence
+						</th>
+						<th>
+							Added to list
+						</th>
+					</tr>
                 </thead>
                 <tbody>
 				    {this.state.currentReportPage && this.loadPage()}

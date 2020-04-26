@@ -4,7 +4,7 @@ import { countryAlpha3ToName } from './__Utils';
 
 function AdminDistanceHealingReportRow(props) {
 	return (
-		<tr>
+		<tr className={props.data.volunteer === 'Y' && ! props.data.approval_date ? 'need-approval' : ''}>
 			<td>
 				{props.data.first_name} {props.data.last_name}
 			</td>
@@ -24,7 +24,7 @@ function AdminDistanceHealingReportRow(props) {
 				{props.data.registration_date}
 			</td>
 			<td>
-				<span>{props.data.volunteer}</span>
+				{props.data.volunteer === 'Y'? (props.data.approval_date? 'Yes' : 'Approve?') : 'No'}
 			</td>
 		</tr>
 	);
