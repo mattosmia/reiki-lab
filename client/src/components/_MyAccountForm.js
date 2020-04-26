@@ -4,6 +4,7 @@ import axios from "axios";
 
 import FormValidation from './__FormValidation';
 import { returnCountriesObject, createDropdownOptions, fetchList } from './__Utils';
+import Loading from './__Loading';
 
 class MyAccountForm extends Component {
 	constructor(props) {
@@ -16,6 +17,7 @@ class MyAccountForm extends Component {
 			formSubmitSuccess: false,
 			formValid: false,
 			showDeleteAccount: false,
+			retrievedDetails: false,
 			formFieldValid: {
 				'mafFirstName': false,
 				'mafLastName': false,
@@ -47,7 +49,7 @@ class MyAccountForm extends Component {
 	}
 
 	componentDidMount() {
-		const jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoyLCJlbWFpbCI6Im1hdHRvc21pYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTU4NzkyNjg4OSwiZXhwIjoxNTg3OTI4MDg5fQ.eL24mpgpHHe76fw9L17rGB1YNoy38SX_lEn49vvh0y4";
+		const jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoyLCJlbWFpbCI6Im1hdHRvc21pYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTU4NzkyODI4NSwiZXhwIjoxNTg3OTI5NDg1fQ.Y3-3F-fRyoBTseMLV2rjBpawijs4badacERFHpxY4RY";
 		let obj = {};
 		for (let fieldName of Object.keys(this.state.formFieldValid)) {
 			obj = {...obj, ...FormValidation(fieldName, this.state.formFieldValues) }
@@ -63,8 +65,9 @@ class MyAccountForm extends Component {
 				}, () => {
 					fetchList('/account-details',{ headers: { 'Authorization': 'Bearer ' + jwtToken }}).then(response => {
 							this.setState({
-								formFieldValues: response.data
-							}, () => console.log(this.state));
+								formFieldValues: response.data,
+								retrievedDetails: true
+							});
 						}
 					)
 				});
@@ -119,7 +122,7 @@ class MyAccountForm extends Component {
 			formSubmitted: true,
 			formSubmitError: false
 		}, () => {
-			axios.post('/register', this.state.formFieldValues)
+			axios.post('/update-account', this.state.formFieldValues)
 			.then(res => {
 				this.setState({
 					formSubmitSuccess: true
@@ -138,7 +141,8 @@ class MyAccountForm extends Component {
 			<section className="my-account-form">
 				<div className="wrapper">
 					<h1 className="module-heading module-heading--pink">My account</h1>
-					{ !this.state.formSubmitSuccess &&
+					{ ! this.state.retrievedDetails && <Loading />}
+					{ this.state.retrievedDetails && ! this.state.formSubmitSuccess &&
 					<>
 					<p>Update your account details or <Link to="/logout">log out</Link></p>
 					<form noValidate className="form">
@@ -153,12 +157,12 @@ class MyAccountForm extends Component {
 						<label htmlFor="mafNationality">Nationality</label>
 						<select	name="mafNationality" id="mafNationality" onChange={this.handleChange}>
 							<option>Nationality</option>
-							{ this.state.countriesList.length > 0 && this.state.formFieldValues.mafNationality && createDropdownOptions(this.state.countriesList, this.state.formFieldValues.mafNationality) }
+							{ createDropdownOptions(this.state.countriesList, this.state.formFieldValues.mafNationality) }
 						</select>
 						<label htmlFor="mafCountryRes">Country of Residence</label>
 						<select	name="mafCountryRes" id="mafCountryRes" onChange={this.handleChange}>
 							<option>Country of Residence</option>
-							{ this.state.countriesList.length > 0 && this.state.formFieldValues.mafCountryRes && createDropdownOptions(this.state.countriesList, this.state.formFieldValues.mafCountryRes) }
+							{ createDropdownOptions(this.state.countriesList, this.state.formFieldValues.mafCountryRes) }
 						</select>
 						<label htmlFor="mafEmail">Email</label>
 						<input type="email" name="mafEmail" id="mafEmail" placeholder="Email" defaultValue={this.state.formFieldValues.mafEmail} />
@@ -172,7 +176,7 @@ class MyAccountForm extends Component {
 							<label htmlFor="mafTherapies">Therapies</label>
 							<select	name="mafTherapies" id="mafTherapies" onChange={this.handleChange} multiple>
 								<option disabled>Therapies</option>
-								{ this.state.therapiesList.length > 0 && createDropdownOptions(this.state.therapiesList, this.state.formFieldValues.mafTherapies) }
+								{ createDropdownOptions(this.state.therapiesList, this.state.formFieldValues.mafTherapies) }
 							</select>
 						</>}
 						<label htmlFor="mafPassword">Password</label>
@@ -191,7 +195,7 @@ class MyAccountForm extends Component {
 						</div>}
 					</form>
 					</>}
-				</div>
+				</div>}
 			</section>
 		);
 	}
