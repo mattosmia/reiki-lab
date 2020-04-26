@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from "axios";
 
 import FormValidation from './__FormValidation';
-import { returnCountriesObject, createDropdownOptions, fetchList } from './__Utils';
+import { returnCountriesObject, createDropdownOptions, fetchList, authHeaders } from './__Utils';
 import Loading from './__Loading';
 
 class MyAccountForm extends Component {
@@ -48,9 +48,6 @@ class MyAccountForm extends Component {
 			}
 		}
 	}
-
-	jwtHeaders = { headers: { 'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoyLCJlbWFpbCI6Im1hdHRvc21pYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTU4NzkzMDA5MywiZXhwIjoxNTg3OTMxMjkzfQ.Gr9pDs-q50jcGQNF472ifpv3MIgi9fEV8W2y7W1mplI"}};
-
 	componentDidMount() {
 		let obj = {};
 		for (let fieldName of Object.keys(this.state.formFieldValid)) {
@@ -65,7 +62,7 @@ class MyAccountForm extends Component {
 				this.setState({
 					therapiesList: response.data,
 				}, () => {
-					fetchList('/account-details', this.jwtHeaders).then(response => {
+					fetchList('/account-details', authHeaders()).then(response => {
 							this.setState({
 								formFieldValues: response.data,
 								loading: false
@@ -124,10 +121,11 @@ class MyAccountForm extends Component {
 			formSubmitted: true,
 			formSubmitError: false
 		}, () => {
-			axios.post('/update-account', this.state.formFieldValues)
+			axios.post('/update-account', this.state.formFieldValues, authHeaders())
 			.then(res => {
 				this.setState({
-					formSubmitSuccess: true
+					formSubmitSuccess: true,
+					formSubmitted: false
 				})
 			}).catch(error => 
 				this.setState({
@@ -143,11 +141,12 @@ class MyAccountForm extends Component {
 			formSubmitted: true,
 			formSubmitError: false
 		}, () => {
-			axios.post('/delete-account', this.jwtHeaders)
+			axios.post('/delete-account', {}, authHeaders())
 			.then(res => {
 				this.setState({
 					formSubmitSuccess: true,
-					accountDeleted: true
+					accountDeleted: true,
+					formSubmitted: false
 				})
 			}).catch(error => 
 				this.setState({
@@ -168,7 +167,7 @@ class MyAccountForm extends Component {
 					<>
 					<p>Update your account details or <Link to="/logout">log out</Link></p>
 					<form noValidate className="form">
-						{ this.state.formSubmitSuccess && <p>Your account has been updated.</p> }
+						{ this.state.formSubmitSuccess && <p className="success-message">Your account has been updated.</p> }
 						{ this.state.formSubmitError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
 						<label htmlFor="mafFirstName">First name</label>
 						<input type="text" name="mafFirstName" id="mafFirstName" placeholder="First name" onChange={this.handleChange} defaultValue={this.state.formFieldValues.mafFirstName} />
