@@ -62,8 +62,7 @@ class LoginForm extends Component {
 			formSubmitted: true,
 			formSubmitError: false
 		}, () => {
-			const formData = this.state.formFieldValues;
-			axios.post('/login', { formData })
+			axios.post('/login', this.state.formFieldValues)
 			.then(res => {
 				this.setState({
 					formSubmitSuccess: true

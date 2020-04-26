@@ -74,8 +74,7 @@ class DistanceHealingForm extends Component {
 			formSubmitted: true,
 			formSubmitError: false
 		}, () => {
-			const formData = this.state.formFieldValues;
-			axios.post('/distance-healing', { formData })
+			axios.post('/distance-healing', this.state.formFieldValues)
 			.then(res => {
 				this.setState({
 					formSubmitSuccess: true

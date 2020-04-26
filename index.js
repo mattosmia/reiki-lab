@@ -109,18 +109,18 @@ app.post('/register', [
 	check('rfFacebook').trim().escape(),
 	check('rfInstagram').trim().escape()
 ], (request, response) => {
-	const rfFirstName = request.body.formData.rfFirstName;
-	const rfLastName = request.body.formData.rfLastName;
-	const rfNationality = request.body.formData.rfNationality;
-	const rfCountryRes = request.body.formData.rfCountryRes;
-	const rfEmail = request.body.formData.rfEmail;
-	const rfFacebook = request.body.formData.rfFacebook || null;
-	const rfInstagram = request.body.formData.rfInstagram || null;
-	const rfPassword = request.body.formData.rfPassword;
-	const rfDOB = request.body.formData.rfDOB;
-	const rfTherapies = request.body.formData.rfTherapies;
+	const rfFirstName = request.body.rfFirstName;
+	const rfLastName = request.body.rfLastName;
+	const rfNationality = request.body.rfNationality;
+	const rfCountryRes = request.body.rfCountryRes;
+	const rfEmail = request.body.rfEmail;
+	const rfFacebook = request.body.rfFacebook || null;
+	const rfInstagram = request.body.rfInstagram || null;
+	const rfPassword = request.body.rfPassword;
+	const rfDOB = request.body.rfDOB;
+	const rfTherapies = request.body.rfTherapies;
 
-	const isVolunteer = request.body.formData.rfVolunteer === true? 'Y' : 'N';
+	const isVolunteer = request.body.rfVolunteer === true? 'Y' : 'N';
 	const formattedDOB = rfDOB.replace(/(\d{2})\/(\d{2})\/(\d{4})/,'$3-$2-$1');
 
 	const errors = validationResult(request);
@@ -160,7 +160,7 @@ app.post('/register', [
 app.post('/login', [
 	check('lfEmail').trim().normalizeEmail()
 ], (request, response) => {
-	const { lfEmail, lfPassword } = request.body.formData;
+	const { lfEmail, lfPassword } = request.body;
 
 	dbConnection.query(`SELECT user_id, email, admin, pword FROM Users WHERE email = ?`,
 		[lfEmail],
@@ -190,10 +190,10 @@ app.post('/distance-healing', [
 	check('dhfDOB').trim().toDate(),
 	check('dhfCountryRes').escape()
 ], (request, response) => {
-	const dhfFirstName = request.body.formData.dhfFirstName;
-	const dhfLastName = request.body.formData.dhfLastName;
-	const dhfDOB = request.body.formData.dhfDOB;
-	const dhfCountryRes = request.body.formData.dhfCountryRes;
+	const dhfFirstName = request.body.dhfFirstName;
+	const dhfLastName = request.body.dhfLastName;
+	const dhfDOB = request.body.dhfDOB;
+	const dhfCountryRes = request.body.dhfCountryRes;
 
 	const formattedDOB = dhfDOB.replace(/(\d{2})\/(\d{2})\/(\d{4})/,'$3-$2-$1');
 	
