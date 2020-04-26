@@ -23,7 +23,7 @@ function Header() {
 				<ul className="unstyled-list">
 					<li><Link to="/about">About Us</Link></li>
 					<li><Link to="/distance-healing">Distance Healing</Link></li>
-					<li><Link to="/events">Events</Link></li>
+					<li><a href="https://www.eventbrite.com/o/reiki-lab-29215302519" target="_blank" rel="noopener noreferrer">Events</a></li>
 					<li><Link to="/volunteers">Volunteers</Link></li>
 					<li><Link to="/contact">Contact Us</Link></li>
 				</ul>
