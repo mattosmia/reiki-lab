@@ -3,8 +3,9 @@ const express = require("express");
 const app = express();
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
-const cors = require("cors");
 const { check, validationResult } = require('express-validator');
+const cors = require("cors");
+const jwt = require('jsonwebtoken');
 const mysql = require('mysql');
 const path = require("path");
 const router = express.Router();
@@ -13,6 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
 	const dotenv = require('dotenv').config();
 }
 const port = process.env.PORT || 5000;
+const accessTokenSecret = process.env.JWT_SECRET;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -158,19 +160,28 @@ app.post('/register', [
 app.post('/login', [
 	check('lfEmail').trim().normalizeEmail()
 ], (request, response) => {
-	const lfEmail = request.body.formData.lfEmail;
-	const lfPassword = request.body.formData.lfPassword;
-	bcrypt.hash(lfPassword, bcrypt_salt).then(function(encryptedPassword) {
-		dbConnection.query(`SELECT user_id FROM Users WHERE email = ? AND pword = ?`,
-			[lfEmail, encryptedPassword],
-			function(error, result) {
-				if (error) {
-					return response.status(500).send(error);
-				}
-				return response.status(200).json({msg: 'Success'});;
+	const { lfEmail, lfPassword } = request.body.formData;
+
+	dbConnection.query(`SELECT user_id, email, admin, pword FROM Users WHERE email = ?`,
+		[lfEmail],
+		function(error, rows) {
+			if (error) {
+				return response.status(500).send(error);
 			}
-		);
-	});
+			if (rows.length) {
+				bcrypt.compare(lfPassword, rows[0].pword, function (pwError, pwResult) {
+					if (pwResult === true) {
+						const accessToken = jwt.sign({ user: rows[0].user_id, email: rows[0].email,  role: (rows[0].admin ? 'admin' : 'user') }, accessTokenSecret);
+						return response.status(200).json({ msg: 'Success', accessToken });
+					} else {
+						return response.status(403).json({ msg: 'Cannot authenticate user' });
+					}
+				});
+			} else {
+				return response.status(403).json({ msg: 'Cannot authenticate user' });
+			}
+		}
+	);
 });
 
 app.post('/distance-healing', [
