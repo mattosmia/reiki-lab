@@ -345,6 +345,11 @@ table {
 		border-bottom: 1px solid $grey--light;
 	}
 }
+
+.need-approval td {
+	background-color: $grey;
+}
+
 // components
 @import '_header.scss';
 @import '_footer.scss';
@@ -357,3 +362,4 @@ table {
 @import '_loginform.scss';
 @import '_volunteerslist.scss';
 @import '_contentpage.scss';
+@import '_admin.scss';
