@@ -5,6 +5,9 @@ import axios from "axios";
 import FormValidation from './__FormValidation';
 import { returnCountriesObject, createDropdownOptions, fetchList } from './__Utils';
 
+
+
+
 class RegistrationForm extends Component {
 	constructor(props) {
 		super(props);
@@ -130,6 +133,8 @@ class RegistrationForm extends Component {
 		});
 	}
 
+
+
 	render () {
 		return (
 			<section className="registration-form">
@@ -138,14 +143,17 @@ class RegistrationForm extends Component {
 					{ !this.state.formSubmitSuccess &&
 					<>
 					<p>Create your account or <Link to="/login">log in</Link></p>
+					<p><Link to="/avatar">Upload your Avatar</Link></p>
 					<form noValidate className="form">
 						{ this.state.formSubmitError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
+						
+
 						<label htmlFor="rfFirstName">First name</label>
 						<input type="text" name="rfFirstName" id="rfFirstName" placeholder="First name" onChange={this.handleChange} />
 						<label htmlFor="rfLastName">Last name</label>
 						<input type="text" name="rfLastName" id="rfLastName" placeholder="Last name" onChange={this.handleChange} />
 						<label htmlFor="rfDOB">Date of Birth</label>
-						<input type="text" name="rfDOB" id="rfDOB" placeholder="Date of Birth" onChange={this.handleChange} />
+						<input type="text" name="rfDOB" id="rfDOB" placeholder="Date of Birth (YEAR/MONTH/DAY)" onChange={this.handleChange} />
 						<label htmlFor="rfNationality">Nationality</label>
 						<select	name="rfNationality" id="rfNationality" onChange={this.handleChange}>
 							<option>Nationality</option>

@@ -14,7 +14,10 @@
     "express-fileupload": "^1.1.7-alpha.3",
     "express-validator": "^6.4.0",
     "mysql": "^2.18.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "react-avatar-edit": "^0.8.3",
+    "react-avatar-uploader": "^1.0.3",
+    "react-awesome-gravatar": "^2.0.3"
   },
   "scripts": {
     "start": "node index.js",
