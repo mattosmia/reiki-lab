@@ -109,16 +109,11 @@ app.post('/register', [
 	check('rfFacebook').trim().escape(),
 	check('rfInstagram').trim().escape()
 ], (request, response) => {
-	const rfFirstName = request.body.rfFirstName;
-	const rfLastName = request.body.rfLastName;
-	const rfNationality = request.body.rfNationality;
-	const rfCountryRes = request.body.rfCountryRes;
-	const rfEmail = request.body.rfEmail;
+	const { rfFirstName, rfLastName, rfNationality, rfCountryRes, rfEmail, rfPassword, rfDOB, rfTherapies } = request.body;
+
+	const isVolunteer = request.body.rfVolunteer === true? 'Y' : 'N';
 	const rfFacebook = request.body.rfFacebook || null;
 	const rfInstagram = request.body.rfInstagram || null;
-	const rfPassword = request.body.rfPassword;
-	const rfDOB = request.body.rfDOB;
-	const rfTherapies = request.body.rfTherapies;
 
 	const isVolunteer = request.body.rfVolunteer === true? 'Y' : 'N';
 	const formattedDOB = rfDOB.replace(/(\d{2})\/(\d{2})\/(\d{4})/,'$3-$2-$1');
@@ -190,10 +185,7 @@ app.post('/distance-healing', [
 	check('dhfDOB').trim().toDate(),
 	check('dhfCountryRes').escape()
 ], (request, response) => {
-	const dhfFirstName = request.body.dhfFirstName;
-	const dhfLastName = request.body.dhfLastName;
-	const dhfDOB = request.body.dhfDOB;
-	const dhfCountryRes = request.body.dhfCountryRes;
+	const { dhfFirstName, dhfLastName, dhfDOB, dhfCountryRes } = request.body;
 
 	const formattedDOB = dhfDOB.replace(/(\d{2})\/(\d{2})\/(\d{4})/,'$3-$2-$1');
 	
