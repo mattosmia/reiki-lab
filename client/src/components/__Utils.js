@@ -37,5 +37,12 @@ export const logOut = () => {
 }
 
 export const isAuthenticated = () => {
-	console.log(cookie.load('rljwt'));
+	const jwtCookie = cookie.load('rljwt');
+	if (! jwtCookie) return false;
+	if (jwtCookie) return true;
+}
+
+export const authHeaders = () => {
+	if (! isAuthenticated()) return false;
+	return { headers: { 'Authorization': 'Bearer ' + cookie.load('rljwt').accessToken } };
 }

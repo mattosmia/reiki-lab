@@ -14,10 +14,6 @@ if (process.env.NODE_ENV !== 'production') {
 	const dotenv = require('dotenv').config();
 }
 const port = process.env.PORT || 5000;
-const accessTokenSecret = process.env.JWT_ACCESS_SECRET;
-const refreshTokenSecret = process.env.JWT_REFRESH_SECRET;
-const tokenExpiry = '20m';
-const refreshTokens = [];
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -26,6 +22,11 @@ const bcrypt_salt = 12;
 
 app.use(cors());
 app.use(express.static(path.join('client', 'build')));
+
+const accessTokenSecret = process.env.JWT_ACCESS_SECRET;
+const refreshTokenSecret = process.env.JWT_REFRESH_SECRET;
+const refreshTokens = [];
+const tokenExpiry = '30m';
 
 // DB connection
 const dbConnection = mysql.createConnection(process.env.JAWSDB_URL);
@@ -39,13 +40,12 @@ dbConnection.connect((error) => {
 
 const authJWT = (request, response, next) => {
     const authHeader = request.headers.authorization;
-
     if (authHeader) {
         const token = authHeader.split(' ')[1];
 
         jwt.verify(token, accessTokenSecret, (error, user) => {
-			console.log('authJWT',error, user)
             if (error) {
+				response.clearCookie('rljwt');
                 return response.sendStatus(403);
             }
             request.user = user;
@@ -86,7 +86,7 @@ app.get('/account-details', authJWT, (request, response) => {
 	if (! request) return response.status(500).send({msg: 'Failed to retrieve user'});
 	if (! request.user) return response.status(500).send({msg: 'Failed to retrieve user'});
 	dbConnection.query(`SELECT u.user_id, u.email, u.first_name, u.last_name, DATE_FORMAT(u.dob,"%d/%m/%Y") as dob, u.nationality, u.residence, u.volunteer, u.image, u.facebook_url, u.instagram_url, vt.therapy_id FROM Users u LEFT JOIN Vol_therapies vt ON vt.vol_id = u.user_id WHERE u.user_id = ?`,
-	[ request.user.user ],
+	[ request.user.uid ],
 	function(error, rows) {
 			if (error) {
 				return response.status(500).send(error);
@@ -111,7 +111,7 @@ app.get('/account-details', authJWT, (request, response) => {
 	);
 });
 
-app.get('/users-report', (request, response) => {
+app.get('/users-report', authJWT, (request, response) => {
 	dbConnection.query(`SELECT user_id, email, first_name, last_name, DATE_FORMAT(dob,"%d/%m/%Y") as dob, nationality, residence, volunteer, facebook_url, instagram_url, DATE_FORMAT(approved_date,"%d/%m/%Y %T") as approved_date, DATE_FORMAT(registration_date,"%d/%m/%Y %T") as registration_date FROM users ORDER BY registration_date DESC`,
 		function(error, rows) {
 			if (error) {
@@ -216,11 +216,12 @@ app.post('/login', [
 			if (rows.length) {
 				bcrypt.compare(lfPassword, rows[0].pword, function (pwError, pwResult) {
 					if (pwResult === true) {
-						const tokenUserData = { user: rows[0].user_id, email: rows[0].email, role: (rows[0].admin ? 'admin' : 'user') };
-						const accessToken = jwt.sign(tokenUserData, accessTokenSecret, { expiresIn: tokenExpiry });
-						const refreshToken = jwt.sign(tokenUserData, refreshTokenSecret);
+						const tokenUserObj = { uid: rows[0].user_id, email: rows[0].email, role: (rows[0].admin ? 'admin' : 'user') };
+						const accessToken = jwt.sign(tokenUserObj, accessTokenSecret, { expiresIn: tokenExpiry });
+						const refreshToken = jwt.sign(tokenUserObj, refreshTokenSecret);
 						refreshTokens.push(refreshToken);
-						return response.status(200).json({ msg: 'Success', accessToken, refreshToken });
+
+						return response.status(200).json({ accessToken, refreshToken });
 					} else {
 						return response.status(403).json({ msg: 'Cannot authenticate user' });
 					}
@@ -235,21 +236,14 @@ app.post('/login', [
 app.post('/token', (request, response) => {
     const { token } = request.body;
 
-    if (!token) {
-        return response.sendStatus(401);
-    }
-
-    if (!refreshTokens.includes(token)) {
-        return response.sendStatus(403);
-    }
-
+    if (!token) return response.sendStatus(401);
+	if (!refreshTokens.includes(token)) return response.sendStatus(403);
+	
     jwt.verify(token, refreshTokenSecret, (error, user) => {
         if (error) {
             return response.sendStatus(403);
         }
-
-        const accessToken = jwt.sign({ user: user.user, email: user.email, role: user.role }, accessTokenSecret, { expiresIn: tokenExpiry });
-
+        const accessToken = jwt.sign({ uid: user.uid, email: user.email, role: user.role }, accessTokenSecret, { expiresIn: tokenExpiry });
         response.json({
             accessToken
         });
@@ -261,6 +255,93 @@ app.post('/logout', (request, response) => {
     refreshTokens = refreshTokens.filter(t => t !== token);
 
     response.status(200).send({ msg: "Success" });
+});
+
+
+app.post('/delete-account', authJWT, (request, response) => {
+	if (! request) return response.status(500).send({msg: 'Failed to retrieve user'});
+	if (! request.user) return response.status(500).send({msg: 'Failed to retrieve user'});
+
+	dbConnection.query(`DELETE FROM Users WHERE user_id = ?`,
+		[ request.user.uid ],
+		function(error, rows) {
+			if (error) {
+				return response.status(500).send(error);
+			}
+			refreshTokens = [];
+			return response.clearCookie('rljwt').status(200).send({ msg: "Success" });
+		}
+	)
+});
+
+app.post('/update-account', authJWT, [
+	check('mafFirstName').trim().escape(),
+	check('mafLastName').trim().escape(),
+	check('mafEmail').trim().normalizeEmail(),
+	check('mafDOB').trim(),
+	check('mafNationality').escape(),
+	check('mafCountryRes').escape(),
+	check('mafFacebook').trim(),
+	check('mafInstagram').trim()
+], (request, response) => {
+	const { mafFirstName, mafLastName, mafNationality, mafCountryRes, mafEmail, mafPassword, mafDOB, mafTherapies } = request.body;
+
+	const isVolunteer = request.body.mafVolunteer === true? 'Y' : 'N';
+	const mafFacebook = request.body.mafFacebook || null;
+	const mafInstagram = request.body.mafInstagram || null;
+	const formattedDOB = mafDOB.replace(/(\d{2})\/(\d{2})\/(\d{4})/,'$3-$2-$1');
+
+    const errors = validationResult(request);
+	if (!errors.isEmpty()) {
+		return response.status(422).json({ errors: errors.array() });
+	}
+
+	const userId = request.user.uid;
+	dbConnection.query(`UPDATE Users SET email = ?, first_name = ?, last_name = ?, dob = ?, nationality = ?, residence = ?, volunteer = ?, facebook_url = ?, instagram_url = ? WHERE user_id = ?`,
+		[mafEmail, mafFirstName, mafLastName, formattedDOB, mafNationality, mafCountryRes, isVolunteer, mafFacebook, mafInstagram, userId],
+		function(error, result) {
+			if (error) {
+				return response.status(500).send(error);
+			}
+			if (mafTherapies.length > 0) {
+				let queryValues = [];
+				for (var i = 0; i < mafTherapies.length; i++) {
+					queryValues.push([userId,mafTherapies[i]])
+				}
+				dbConnection.query(`DELETE FROM vol_therapies WHERE vol_id = ?`,
+					[userId],
+					function(error, result) {
+						if (error) {
+							return response.status(500).send(error);
+						}
+						dbConnection.query(`INSERT INTO vol_therapies (vol_id, therapy_id) VALUES ?`,
+							[queryValues],
+							function(error, result) {
+								if (error) {
+									return response.status(500).send(error);
+								}
+
+								if (mafPassword) {
+									bcrypt.hash(mafPassword, bcrypt_salt).then(function(encryptedPassword) {
+										dbConnection.query(`UPDATE Users SET pword = ? WHERE user_id = ?`,
+											[encryptedPassword, userId],
+											function(error, result) {
+												if (error) {
+													return response.status(500).send(error);
+												}
+												return response.status(200).json({msg: 'Success'});
+											})
+									}.catch(error => response.status(500).send(error)));
+								} else {
+									return response.status(200).json({msg: 'Success'});
+								}
+							}
+						);
+					}
+				);
+			}
+		}
+	);
 });
 
 app.post('/distance-healing', [
