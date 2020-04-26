@@ -14,7 +14,10 @@ if (process.env.NODE_ENV !== 'production') {
 	const dotenv = require('dotenv').config();
 }
 const port = process.env.PORT || 5000;
-const accessTokenSecret = process.env.JWT_SECRET;
+const accessTokenSecret = process.env.JWT_ACCESS_SECRET;
+const refreshTokenSecret = process.env.JWT_REFRESH_SECRET;
+const tokenExpiry = '20m';
+const refreshTokens = [];
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -115,7 +118,6 @@ app.post('/register', [
 	const rfFacebook = request.body.rfFacebook || null;
 	const rfInstagram = request.body.rfInstagram || null;
 
-	const isVolunteer = request.body.rfVolunteer === true? 'Y' : 'N';
 	const formattedDOB = rfDOB.replace(/(\d{2})\/(\d{2})\/(\d{4})/,'$3-$2-$1');
 
 	const errors = validationResult(request);
@@ -166,8 +168,11 @@ app.post('/login', [
 			if (rows.length) {
 				bcrypt.compare(lfPassword, rows[0].pword, function (pwError, pwResult) {
 					if (pwResult === true) {
-						const accessToken = jwt.sign({ user: rows[0].user_id, email: rows[0].email,  role: (rows[0].admin ? 'admin' : 'user') }, accessTokenSecret);
-						return response.status(200).json({ msg: 'Success', accessToken });
+						const tokenUserData = { user: rows[0].user_id, email: rows[0].email, role: (rows[0].admin ? 'admin' : 'user') };
+						const accessToken = jwt.sign(tokenUserData, accessTokenSecret, { expiresIn: tokenExpiry });
+						const refreshToken = jwt.sign(tokenUserData, refreshTokenSecret);
+						refreshTokens.push(refreshToken);
+						return response.status(200).json({ msg: 'Success', accessToken, refreshToken });
 					} else {
 						return response.status(403).json({ msg: 'Cannot authenticate user' });
 					}
@@ -178,6 +183,55 @@ app.post('/login', [
 		}
 	);
 });
+
+app.post('/token', (request, response) => {
+    const { token } = request.body;
+
+    if (!token) {
+        return response.sendStatus(401);
+    }
+
+    if (!refreshTokens.includes(token)) {
+        return response.sendStatus(403);
+    }
+
+    jwt.verify(token, refreshTokenSecret, (error, user) => {
+        if (error) {
+            return response.sendStatus(403);
+        }
+
+        const accessToken = jwt.sign({ user: user.user, email: user.email, role: user.role }, accessTokenSecret, { expiresIn: tokenExpiry });
+
+        response.json({
+            accessToken
+        });
+    });
+});
+
+app.post('/logout', (request, response) => {
+    const { token } = request.body;
+    refreshTokens = refreshTokens.filter(t => t !== token);
+
+    response.status(200).send({ msg: "Success" });
+});
+
+const authJWT = (request, response, next) => {
+    const authHeader = request.headers.authorization;
+
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+
+        jwt.verify(token, accessTokenSecret, (error, user) => {
+            if (error) {
+                return response.sendStatus(403);
+            }
+            request.user = user;
+            next();
+        });
+    } else {
+        response.sendStatus(401);
+    }
+};
 
 app.post('/distance-healing', [
 	check('dhfFirstName').trim().escape(),
