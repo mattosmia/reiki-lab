@@ -10,14 +10,15 @@ class MyAccountForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			loading: true,
 			countriesList: [],
 			therapiesList: [],
 			formSubmitted: false,
 			formSubmitError: false,
 			formSubmitSuccess: false,
 			formValid: false,
-			showDeleteAccount: false,
-			retrievedDetails: false,
+			showDeleteAccountOptions: false,
+			accountDeleted: false,
 			formFieldValid: {
 				'mafFirstName': false,
 				'mafLastName': false,
@@ -48,8 +49,9 @@ class MyAccountForm extends Component {
 		}
 	}
 
+	jwtHeaders = { headers: { 'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoyLCJlbWFpbCI6Im1hdHRvc21pYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTU4NzkzMDA5MywiZXhwIjoxNTg3OTMxMjkzfQ.Gr9pDs-q50jcGQNF472ifpv3MIgi9fEV8W2y7W1mplI"}};
+
 	componentDidMount() {
-		const jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoyLCJlbWFpbCI6Im1hdHRvc21pYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTU4NzkyODI4NSwiZXhwIjoxNTg3OTI5NDg1fQ.Y3-3F-fRyoBTseMLV2rjBpawijs4badacERFHpxY4RY";
 		let obj = {};
 		for (let fieldName of Object.keys(this.state.formFieldValid)) {
 			obj = {...obj, ...FormValidation(fieldName, this.state.formFieldValues) }
@@ -63,10 +65,10 @@ class MyAccountForm extends Component {
 				this.setState({
 					therapiesList: response.data,
 				}, () => {
-					fetchList('/account-details',{ headers: { 'Authorization': 'Bearer ' + jwtToken }}).then(response => {
+					fetchList('/account-details', this.jwtHeaders).then(response => {
 							this.setState({
 								formFieldValues: response.data,
-								retrievedDetails: true
+								loading: false
 							});
 						}
 					)
@@ -136,13 +138,33 @@ class MyAccountForm extends Component {
 		});
 	}
 
+	deleteAccount = () => {
+		this.setState({
+			formSubmitted: true,
+			formSubmitError: false
+		}, () => {
+			axios.post('/delete-account', this.jwtHeaders)
+			.then(res => {
+				this.setState({
+					formSubmitSuccess: true,
+					accountDeleted: true
+				})
+			}).catch(error => 
+				this.setState({
+					formSubmitError: true
+				})
+			);
+		});
+	}
+
 	render () {
 		return (
 			<section className="my-account-form">
 				<div className="wrapper">
 					<h1 className="module-heading module-heading--pink">My account</h1>
-					{ ! this.state.retrievedDetails && <Loading />}
-					{ this.state.retrievedDetails && ! this.state.formSubmitSuccess &&
+					{ this.state.loading && <Loading />}
+					{ this.state.accountDeleted && <p>Your account has been deleted. Please go back to our <Link to="/">homepage</Link>.</p>}
+					{ ! this.state.loading && ! this.state.accountDeleted &&
 					<>
 					<p>Update your account details or <Link to="/logout">log out</Link></p>
 					<form noValidate className="form">
@@ -184,13 +206,13 @@ class MyAccountForm extends Component {
 						<label htmlFor="mafPasswordConfirmation">Password Confirmation</label>
 						<input type="password" name="mafPasswordConfirmation" id="mafPasswordConfirmation" placeholder="Password Confirmation" onChange={this.handleChange} />
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Save changes</button>
-						<p className="small"><span className="a-link" onClick={() => this.setState({ showDeleteAccount: true })}>Delete my account</span></p>
-						{ this.state.showDeleteAccount && 
+						<p className="small"><span className="a-link" onClick={() => this.setState({ showDeleteAccountOptions: true })}>Delete my account</span></p>
+						{ this.state.showDeleteAccountOptions && 
 						<div className="my-account-form__delete">
 							<p>Are you sure you'd like to delete your account?</p>
 							<div className="my-account-form__delete__buttons">
-								<button type="button" className='btn btn--grey'>Yes</button>
-								<button type="button" className='btn btn--secondary' onClick={() => this.setState({ showDeleteAccount: false })}>No</button>
+								<button type="button" className={`btn btn--grey${this.state.formSubmitted? ' btn--waiting': ''}`} onClick={this.deleteAccount}>Yes</button>
+								<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} onClick={() => this.setState({ showDeleteAccountOptions: false })}>No</button>
 							</div>
 						</div>}
 					</form>

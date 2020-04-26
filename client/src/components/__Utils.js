@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from "axios";
+import cookie from 'react-cookies';
 
 import CountriesObj from '../json/countries.json';
 
@@ -10,7 +11,7 @@ export const returnCountriesObject = () => {
 }
 
 export const createDropdownOptions = (list, sel) => {
-	return list.map((entry,k) => <option key={k} value={entry.value? entry.value : entry.name} selected={sel.includes(entry.value)}>{entry.name}</option>)
+	return list.map((entry,k) => <option key={k} value={entry.value? entry.value : entry.name} selected={sel? sel.includes(entry.value): false}>{entry.name}</option>)
 }
 
 export const fetchList = (endpoint, options) => {
@@ -29,10 +30,12 @@ export const countryAlpha3ToName = (str) => {
 
 export const logOut = () => {
 	axios.get('/logout')
-	.then(response => response)
+	.then(response => {
+		cookie.remove('rljwt', { path: '/' })
+	})
 	.catch(error => { console.error('Error logging out', error);});
 }
 
 export const isAuthenticated = () => {
-	return true
+	console.log(cookie.load('rljwt'));
 }

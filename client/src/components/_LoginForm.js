@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
+import cookie from 'react-cookies';
 
 import FormValidation from './__FormValidation';
 
@@ -8,6 +9,7 @@ class LoginForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			loading: false,
 			formSubmitted: false,
 			formSubmitError: false,
 			formSubmitSuccess: false,
@@ -64,6 +66,7 @@ class LoginForm extends Component {
 		}, () => {
 			axios.post('/login', this.state.formFieldValues)
 			.then(res => {
+				cookie.save('rljwt', res.data, { path: '/' })
 				this.setState({
 					formSubmitSuccess: true
 				})
@@ -87,6 +90,7 @@ class LoginForm extends Component {
 						<input type="email" name="lfEmail" id="lfEmail" placeholder="Email" onChange={this.handleChange} />
 						<label htmlFor="lfPassword">Password</label>
 						<input type="password" name="lfPassword" id="lfPassword" placeholder="Password" onChange={this.handleChange} />
+						{this.state.formValid}{this.state.formSubmitted}
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Log in</button>
 						<p className="small"><Link to="/forgot-password">Forgotten password?</Link></p>
 					</form>

@@ -53,11 +53,15 @@ ReactDOM.render(
 					<Route exact path="/volunteers" component={Volunteers} />
 					<Route exact path="/what-is-reiki" component={AboutReiki} />
 					<Route exact path="/contact" component={Contact} />
-					<Route exact path="/login" component={Login} />
 					<Route exact path="/register" component={Register} />
 					<Route exact path="/terms-conditions" component={TermsConditions} />
 					<Route exact path="/privacy-policy" component={PrivacyPolicy} />
 					<Route exact path="/cookie-policy" component={CookiePolicy} />
+
+					<Route exact path="/login">
+						{isAuthenticated() ? <Redirect to="/my-account" /> : <Login />}
+					</Route>
+
 					<PrivateRoute exact path="/admin" component={Admin} />
 					<PrivateRoute exact path="/my-account" component={MyAccount} />
 				</Switch>
