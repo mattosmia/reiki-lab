@@ -1,0 +1,35 @@
+footer {
+	color: $grey;
+	font-size: 2.1rem;
+	.footer__nav {
+		&-top {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		&-bottom{
+			font-size: 1.9rem;
+			color: $blue--light;
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-end;
+			margin-top: 2rem;
+		}
+		&--social-media {
+			text-transform: uppercase;
+			ul {
+				margin-top: 1rem;
+				display: inline-block;
+				li {
+					display: inline-block;
+					padding: 0 1rem 0 0;
+					a {
+						display: block;
+						width: 4rem;
+						height: 4rem;
+					}
+				}
+			}
+		}
+	}
+}

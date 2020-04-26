@@ -1,0 +1,45 @@
+header {
+	margin-bottom: 2.4rem;
+	.header__top {
+		background-color: $blue;
+		color: $white;
+		.wrapper {
+			padding: 4rem 1.5rem 3rem;
+			display: flex;
+			align-items: center;
+		}
+	}
+	.header__account-buttons {
+		text-align: right;
+		flex: 1;
+		.btn {
+			text-transform: none;
+			margin-left: 1.6rem;
+			font-size: 1.8rem;
+			text-align: center;
+		}
+	}
+	.header__logo {
+		width: 20.5rem;
+		height: 20.5rem;
+		background: $blue url('../images/02-reiki-lab_symbol.svg') no-repeat center;
+		background-size: 80%;
+		border: 1rem solid $white;
+		border-radius: 50%;
+		margin: -7rem auto 1.5rem;
+	}
+	.header__main-nav {
+		color: $grey;
+		text-transform: uppercase;
+		font-size: 2.4rem;
+		text-align: center;
+		ul {
+			display: flex;
+			justify-content: space-between;
+		}
+		a.active {
+			color: $pink;
+			text-decoration: none;
+		}
+	}
+}

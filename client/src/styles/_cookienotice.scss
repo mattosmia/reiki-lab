@@ -1,0 +1,15 @@
+.cookie-notice {
+	position: sticky;
+	bottom: 0;
+	color: $white;
+	background-color: $pink;
+	font-size: 1.4rem;
+	.wrapper {
+		padding-top: 3rem;
+		padding-bottom: 2.5rem;
+		display: flex;
+	}
+	button {
+		margin-left: 1rem;
+	}
+}

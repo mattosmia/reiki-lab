@@ -1,0 +1,365 @@
+@import '__variables.scss';
+@import '__icons.scss';
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
+
+*,
+*::before,
+*::after {
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-family: 'Roboto Condensed', sans-serif;
+	font-size: 10px;
+	color: $black;
+	background: $white;
+	scroll-behavior: smooth;
+}
+
+#root {
+	width: 100%;
+}
+
+/* visually hidden */
+.vh {
+	position: absolute !important;
+	clip: rect(1px, 1px, 1px, 1px);
+	padding: 0 !important;
+	border: 0 !important;
+	height: 1px !important;
+	width: 1px !important;
+	overflow: hidden;
+}
+
+:focus {
+	outline: none;
+	&:not([tabindex='-1']) {
+		outline-offset: 2px;
+		outline: 2px dashed $pink;
+	}
+}
+
+.unstyled-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+	font-weight: 400;
+}
+
+a {
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+p {
+	font-size: 3.2rem;
+	margin: 0 auto 5rem;
+	text-align: center;
+	a {
+		color: $pink;
+		text-decoration: underline;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+	&.small {
+		font-size: 2.2rem;
+		a {
+			color: $blue--light;
+		}
+	}
+}
+
+.btn {
+	cursor: pointer;
+	display: inline-block;
+	text-align: center;
+	font-size: 3.4rem;
+	border: 2px solid $white;
+	text-transform: uppercase;
+	padding: 0.7rem 1.6rem;
+	color: $white;
+	background: transparent; 
+	&--secondary {
+		background: $pink;
+		border-color: $pink;
+	}
+	&--waiting {
+		cursor: wait;
+	}
+	&:disabled {
+		cursor: default;
+		background: $grey;
+		border-color: $grey;
+	}
+}
+
+.module-heading {
+	text-align: center;
+	font-size: 4.4rem;
+	color: $white;
+	text-transform: uppercase;
+	text-align: center;
+	margin-bottom: 5rem;
+	&:after {
+		content: '';
+		display: block;
+		width: 8.7rem;
+		height: 1rem;
+		margin: 2.2rem auto 0;
+		background: $white;
+	}
+
+	&--pink {
+		color: $pink;
+		&:after {
+			background: $blue;
+		}		
+		& + p {
+			color: $grey;
+		}
+	}
+	
+}
+
+.icon {
+    background-repeat: no-repeat;
+    background-size: contain;
+	background-position: center;
+    &__sm {
+        &--facebook {
+			@extend .icon-facebook-footer;
+        }
+        &--instagram {
+			@extend .icon-instagram-footer;
+        }
+    }
+    &__contact {
+        &--email {
+			@extend .icon-email;
+        }
+        &--facebook {
+			@extend .icon-facebook;
+        }
+        &--instagram {
+			@extend .icon-instagram;
+        }
+    }
+}
+
+.error-message {
+	color: $pink;
+	font-size: 2rem;
+}
+
+
+/* helper classes */
+.wrapper {
+	margin: 0 auto;
+	width: 100%;
+	max-width: 120rem;
+	padding: 8rem 1.5rem;
+	&--padded-small {
+		padding: 1rem;
+	}
+	&--narrower {
+		max-width: 78rem;
+	}
+	&--narrow {
+		max-width: 90rem;
+	}
+}
+
+.form {
+	color: $grey;
+	margin: 0 auto;
+	padding: 5rem 1.5rem 7.2rem;
+	width: 100%;
+	border: 5px solid $blue;
+	max-width: 560px;
+	background-color: $white;
+	label {
+		&.inline-label {
+			font-size: 2.2rem;
+			line-height: 3.2rem;
+			margin-bottom: 2.6rem;
+		}
+		&:not(.inline-label) {
+			@extend .vh;
+		}
+	}
+
+	button,
+	input,
+	select,
+	textarea,
+	.inline-label {
+		display: block;
+		width: 100%;
+		margin: 0 auto;
+		max-width: 392px;
+	}
+
+	input,
+	select,
+	textarea {
+		font-size: 2.4rem;
+		border: 1px solid transparent;
+		border-bottom-color: $purple;
+		padding: .8rem 0;
+		margin-bottom: 2.6rem;
+		resize: vertical;
+	}
+
+	select[multiple] {
+		option:first-of-type {
+			border-bottom: 1px solid $purple;
+			margin-bottom: 1rem;
+		}
+	}
+
+	input[type='checkbox'] {
+		@extend .vh;
+
+		& + .inline-label {
+			position: relative;
+			padding-left: 4rem;
+			&:before {
+				content: '';
+				display: inline-block;
+				width: 3.2rem;
+				height: 3.2rem;
+				border: 0.4rem solid $blue;
+				background: $white;
+				position: absolute;
+				top: 0;
+				left: 0;
+				transition: 200ms background ease-in;
+			}
+			&:after {
+				content: '';
+				display: inline-block;
+				width: 3.2rem;
+				height: 3.2rem;
+				background-image: none;
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 2rem;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		}
+		&:checked + .inline-label {
+			&:before {
+				background-color: $blue;
+			}
+			&:after {
+				@extend .icon-tick;
+			}
+		}
+	}
+}
+
+.box {
+	display: inline-block;
+	background-color: $grey;
+	transition: 200ms background-color ease-in;
+	&:hover,
+	&.active {
+		background-color: $pink;
+		text-decoration: none;
+	}
+	&:not(:last-of-type) {
+		margin-right: 2rem;
+	}
+}
+
+.cover-link {
+	position: relative;
+	a {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		
+		span {
+			@extend .vh;
+		}
+	}
+}
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	div {
+		@extend .box;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 3.6rem;
+		color: $white;
+		width: 5rem;
+		height: 5rem;
+		cursor: pointer;
+	}
+}
+
+table {
+	width: 100%;
+	font-size: 1.8rem;
+	margin-bottom: 4rem;
+	border-spacing: 0;
+	border: 5px solid $blue;
+	td,
+	th {
+		text-align: center;
+		padding: 1.5rem 1rem;
+	}
+	th {
+		background-color: $blue;
+		color: $white;
+	}
+	td:not(:last-of-type) {
+		border-right: 1px solid $grey--light;
+	}
+	tr:not(:last-of-type) td {
+		border-bottom: 1px solid $grey--light;
+	}
+}
+
+.need-approval td {
+	background-color: $grey;
+}
+
+// components
+@import '_header.scss';
+@import '_footer.scss';
+@import '_cookienotice.scss';
+@import '_hero.scss';
+@import '_textwithbutton.scss';
+@import '_threecolumns.scss';
+@import '_contactform.scss';
+@import '_registrationform.scss';
+@import '_loginform.scss';
+@import '_volunteerslist.scss';
+@import '_contentpage.scss';
+@import '_admin.scss';
