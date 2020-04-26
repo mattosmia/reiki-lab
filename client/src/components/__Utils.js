@@ -1,9 +1,11 @@
 import React from 'react';
 import axios from "axios";
 
-export const processCountriesObject = (obj) => {
+import CountriesObj from '../json/countries.json';
+
+export const returnCountriesObject = () => {
 	let array = [];
-	obj.map(entry => array.push({'name': entry.country_name, 'value': entry.alpha_3}));
+	CountriesObj.map(entry => array.push({'name': entry.country_name, 'value': entry.alpha_3}));
 	return array;
 }
 
@@ -11,19 +13,15 @@ export const createDropdownOptions = (list) => {
 	return list.map((entry,k) => <option key={k} value={entry.value? entry.value : entry.name}>{entry.name}</option>)
 }
 
-export const fetchTherapiesList = () => {
+export const fetchList = (endpoint) => {
 	return new Promise((resolve, reject) => {
-		axios.get('/therapies')
+		axios.get(endpoint)
 		.then(response => resolve(response))
-		.catch(error => { console.error('Error fetching therapies', error); reject(error)});
+		.catch(error => { console.error('Error fetching ' + endpoint, error); reject(error)});
 	});
 }
 
-export const fetchVolunteersList = () => {
-	return new Promise((resolve, reject) => {
-		axios.get('/volunteers')
-		.then(response => resolve(response))
-		.catch(error => { console.error('Error fetching volunteers', error); reject(error)});
-	});
+export const countryAlpha3ToName = (str) => {
+	const country = returnCountriesObject().filter(country => country.value === str);
+	return country[0] ? country[0]['name'] : '';
 }
-

@@ -168,6 +168,7 @@ p {
 	font-size: 2rem;
 }
 
+
 /* helper classes */
 .wrapper {
 	margin: 0 auto;
@@ -303,6 +304,45 @@ p {
 		span {
 			@extend .vh;
 		}
+	}
+}
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	div {
+		@extend .box;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 3.6rem;
+		color: $white;
+		width: 5rem;
+		height: 5rem;
+		cursor: pointer;
+	}
+}
+
+table {
+	width: 100%;
+	font-size: 1.8rem;
+	margin-bottom: 4rem;
+	border-spacing: 0;
+	border: 5px solid $blue;
+	td,
+	th {
+		text-align: center;
+		padding: 1.5rem 1rem;
+	}
+	th {
+		background-color: $blue;
+		color: $white;
+	}
+	td:not(:last-of-type) {
+		border-right: 1px solid $grey--light;
+	}
+	tr:not(:last-of-type) td {
+		border-bottom: 1px solid $grey--light;
 	}
 }
 // components

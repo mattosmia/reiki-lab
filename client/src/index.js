@@ -22,6 +22,8 @@ import CookiePolicy from './components/CookiePolicy';
 import CookieNotice from './components/_CookieNotice';
 import ScrollToTop from './components/__ScrollToTop';
 
+import Admin from './components/Admin';
+
 ReactDOM.render(
 	<React.StrictMode>
 		<BrowserRouter>
@@ -41,6 +43,9 @@ ReactDOM.render(
 					<Route exact path="/terms-conditions" component={TermsConditions} />
 					<Route exact path="/privacy-policy" component={PrivacyPolicy} />
 					<Route exact path="/cookie-policy" component={CookiePolicy} />
+
+
+					<Route exact path="/admin" component={Admin} />
 				</Switch>
 			</main>
 			<Footer />

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import axios from "axios";
 
 import FormValidation from './__FormValidation';
-import { processCountriesObject, createDropdownOptions } from './__Utils';
-import CountriesObj from '../json/countries.json';
+import { returnCountriesObject, createDropdownOptions } from './__Utils';
 
 class DistanceHealingForm extends Component {
 	constructor(props) {
@@ -41,7 +40,7 @@ class DistanceHealingForm extends Component {
 		this.setValidateFields(obj);
 
 		this.setState({
-			countriesList: processCountriesObject(CountriesObj),
+			countriesList: returnCountriesObject(),
 		});
 	}
 

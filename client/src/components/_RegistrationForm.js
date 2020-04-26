@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from "axios";
 
 import FormValidation from './__FormValidation';
-import { processCountriesObject, createDropdownOptions, fetchTherapiesList } from './__Utils';
-import CountriesObj from '../json/countries.json';
+import { returnCountriesObject, createDropdownOptions, fetchList } from './__Utils';
 
 class RegistrationForm extends Component {
 	constructor(props) {
@@ -59,10 +58,10 @@ class RegistrationForm extends Component {
 		this.setValidateFields(obj);
 
 		this.setState({
-			countriesList: processCountriesObject(CountriesObj),
+			countriesList: returnCountriesObject()
 		});
 
-		fetchTherapiesList().then(response => {
+		fetchList('/therapies').then(response => {
 			this.setState({
 				therapiesList: response.data,
 			});

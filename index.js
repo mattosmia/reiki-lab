@@ -45,6 +45,32 @@ app.get('/therapies', (request, response) => {
 	);
 });
 
+app.get('/distance-healing-report', (request, response) => {
+	dbConnection.query(`SELECT first_name, last_name, DATE_FORMAT(dob,"%d/%m/%Y") as dob, residence, DATE_FORMAT(date,"%d/%m/%Y %T") as date FROM Distance_healing ORDER BY date ASC`,
+		function(error, rows) {
+			if (error) {
+				return response.status(500).send(error);
+			}
+			let distanceHealingReport = [];
+			rows.forEach(row => distanceHealingReport.push(row));
+			return response.status(200).json(distanceHealingReport);
+		}
+	);
+});
+
+app.get('/users-report', (request, response) => {
+	dbConnection.query(`SELECT user_id, email, first_name, last_name, DATE_FORMAT(dob,"%d/%m/%Y") as dob, nationality, residence, volunteer, facebook_url, instagram_url, DATE_FORMAT(approved_date,"%d/%m/%Y %T") as approved_date, DATE_FORMAT(registration_date,"%d/%m/%Y %T") as registration_date FROM users ORDER BY user_id ASC`,
+		function(error, rows) {
+			if (error) {
+				return response.status(500).send(error);
+			}
+			let usersReport = [];
+			rows.forEach(row => usersReport.push(row));
+			return response.status(200).json(usersReport);
+		}
+	);
+});
+
 app.get('/volunteers', (request, response) => {
 	dbConnection.query(`SELECT u.user_id, u.email, u.first_name, u.last_name, u.image, u.facebook_url, u.instagram_url, t.therapy_name FROM Users u, Vol_therapies vt, Therapies t WHERE u.volunteer = 'Y' AND vt.vol_id = u.user_id AND vt.therapy_id = t.therapy_id AND u.approved_date IS NOT NULL`,
 		function(error, rows) {

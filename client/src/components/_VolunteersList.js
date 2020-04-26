@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import VolunteersListItem from './_VolunteersListItem';
-import { fetchVolunteersList } from './__Utils';
+import { fetchList } from './__Utils';
 
 class VolunteersList extends Component {
 	constructor(props) {
@@ -14,7 +14,7 @@ class VolunteersList extends Component {
 	}
 
     componentDidMount() {
-		fetchVolunteersList().then(response => {
+		fetchList('/volunteers').then(response => {
 			this.setState({
 				volunteerList: Object.values(response.data)
 			});
@@ -43,7 +43,7 @@ class VolunteersList extends Component {
 			<div className="volunteers-list__columns">
 				{this.state.currentVolunteerPage && this.loadVolunteerPage()}
 			</div>
-			<div className="volunteers-list__pagination">
+			<div className="volunteers-list__pagination pagination">
 				{this.state.currentVolunteerPage && this.volunteerPagination()}
 			</div>
 			</>}
