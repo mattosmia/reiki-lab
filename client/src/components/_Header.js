@@ -12,6 +12,8 @@ function Header() {
 				<nav className="header__account-buttons">
 					<Link to="/login" className="btn">Login</Link>
 					<Link to="/register" className="btn btn--secondary">Sign Up</Link>
+					<Link to="/my-account" className="btn">My Account</Link>
+					<Link to="/logout" className="btn btn--secondary">Log Out</Link>
 				</nav>
 			</div>
 		</div>

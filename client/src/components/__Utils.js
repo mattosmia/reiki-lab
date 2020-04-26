@@ -9,13 +9,14 @@ export const returnCountriesObject = () => {
 	return array;
 }
 
-export const createDropdownOptions = (list) => {
-	return list.map((entry,k) => <option key={k} value={entry.value? entry.value : entry.name}>{entry.name}</option>)
+export const createDropdownOptions = (list, selected) => {
+	return list.map((entry,k) => <option key={k} value={entry.value? entry.value : entry.name} selected={selected.includes(entry.value)}>{entry.name}</option>)
 }
 
-export const fetchList = (endpoint) => {
+export const fetchList = (endpoint, options) => {
+	options = options || {};
 	return new Promise((resolve, reject) => {
-		axios.get(endpoint)
+		axios.get(endpoint, options)
 		.then(response => resolve(response))
 		.catch(error => { console.error('Error fetching ' + endpoint, error); reject(error)});
 	});
@@ -24,4 +25,14 @@ export const fetchList = (endpoint) => {
 export const countryAlpha3ToName = (str) => {
 	const country = returnCountriesObject().filter(country => country.value === str);
 	return country[0] ? country[0]['name'] : '';
+}
+
+export const logOut = () => {
+	axios.get('/logout')
+	.then(response => response)
+	.catch(error => { console.error('Error logging out', error);});
+}
+
+export const isAuthenticated = () => {
+	return true
 }

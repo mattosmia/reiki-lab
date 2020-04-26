@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import * as serviceWorker from './serviceWorker';
 
 import './styles/global.scss';
@@ -22,7 +22,22 @@ import CookiePolicy from './components/CookiePolicy';
 import CookieNotice from './components/_CookieNotice';
 import ScrollToTop from './components/__ScrollToTop';
 
+import { isAuthenticated } from './components/__Utils';
 import Admin from './components/Admin';
+import MyAccount from './components/MyAccount';
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={props => (
+		! isAuthenticated() ?
+            // not authenticated - redirect to log in
+            <Redirect to={{
+				pathname: '/login',
+				state: { from: props.location } }}
+			/>
+			:
+			<Component {...props} />
+	)} />
+)
 
 ReactDOM.render(
 	<React.StrictMode>
@@ -43,9 +58,8 @@ ReactDOM.render(
 					<Route exact path="/terms-conditions" component={TermsConditions} />
 					<Route exact path="/privacy-policy" component={PrivacyPolicy} />
 					<Route exact path="/cookie-policy" component={CookiePolicy} />
-
-
-					<Route exact path="/admin" component={Admin} />
+					<PrivateRoute exact path="/admin" component={Admin} />
+					<PrivateRoute exact path="/my-account" component={MyAccount} />
 				</Switch>
 			</main>
 			<Footer />

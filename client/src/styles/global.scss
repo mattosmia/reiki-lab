@@ -59,7 +59,9 @@ h5 {
 	font-weight: 400;
 }
 
-a {
+a,
+.a-link {
+	cursor: pointer;
 	text-decoration: none;
 
 	&:hover {
@@ -80,7 +82,8 @@ p {
 	}
 	&.small {
 		font-size: 2.2rem;
-		a {
+		a,
+		.a-link {
 			color: $blue--light;
 		}
 	}
@@ -99,6 +102,10 @@ p {
 	&--secondary {
 		background: $pink;
 		border-color: $pink;
+	} 
+	&--grey {
+		color: $grey;
+		border-color: $grey;
 	}
 	&--waiting {
 		cursor: wait;
@@ -359,6 +366,7 @@ table {
 @import '_threecolumns.scss';
 @import '_contactform.scss';
 @import '_registrationform.scss';
+@import '_myaccountform.scss';
 @import '_loginform.scss';
 @import '_volunteerslist.scss';
 @import '_contentpage.scss';

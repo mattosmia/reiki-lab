@@ -37,6 +37,25 @@ dbConnection.connect((error) => {
 	console.log('Database connection started');
 });
 
+const authJWT = (request, response, next) => {
+    const authHeader = request.headers.authorization;
+
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+
+        jwt.verify(token, accessTokenSecret, (error, user) => {
+			console.log('authJWT',error, user)
+            if (error) {
+                return response.sendStatus(403);
+            }
+            request.user = user;
+            next();
+        });
+    } else {
+        response.sendStatus(401);
+    }
+};
+
 app.get('/therapies', (request, response) => {
 	dbConnection.query(`SELECT therapy_id, therapy_name FROM Therapies ORDER BY therapy_name ASC`,
 		function(error, rows) {
@@ -59,6 +78,35 @@ app.get('/distance-healing-report', (request, response) => {
 			let distanceHealingReport = [];
 			rows.forEach(row => distanceHealingReport.push(row));
 			return response.status(200).json(distanceHealingReport);
+		}
+	);
+});
+
+app.get('/account-details', authJWT, (request, response) => {
+	if (! request) return response.status(500).send({msg: 'Failed to retrieve user'});
+	if (! request.user) return response.status(500).send({msg: 'Failed to retrieve user'});
+	dbConnection.query(`SELECT u.user_id, u.email, u.first_name, u.last_name, DATE_FORMAT(u.dob,"%d/%m/%Y") as dob, u.nationality, u.residence, u.volunteer, u.image, u.facebook_url, u.instagram_url, vt.therapy_id FROM Users u LEFT JOIN Vol_therapies vt ON vt.vol_id = u.user_id WHERE u.user_id = ?`,
+	[ request.user.user ],
+	function(error, rows) {
+			if (error) {
+				return response.status(500).send(error);
+			}
+			let accountDetails = {};
+				rows.forEach(row => {
+				accountDetails['mafUserId'] = row.user_id;
+				accountDetails['mafEmail'] = row.email;
+				accountDetails['mafFirstName'] = row.first_name;
+				accountDetails['mafLastName'] = row.last_name;
+				accountDetails['mafDOB'] = row.dob;
+				accountDetails['mafNationality'] = row.nationality;
+				accountDetails['mafCountryRes'] = row.residence;
+				accountDetails['mafFacebook'] = row.facebook_url;
+				accountDetails['mafInstagram'] = row.instagram_url;
+				accountDetails['mafVolunteer'] = row.volunteer === 'Y' ? true : false;
+				if (! accountDetails['mafTherapies']) accountDetails['mafTherapies'] = [];
+				accountDetails['mafTherapies'].push(row.therapy_id)
+			});	
+			return response.status(200).json(accountDetails);
 		}
 	);
 });
@@ -214,24 +262,6 @@ app.post('/logout', (request, response) => {
 
     response.status(200).send({ msg: "Success" });
 });
-
-const authJWT = (request, response, next) => {
-    const authHeader = request.headers.authorization;
-
-    if (authHeader) {
-        const token = authHeader.split(' ')[1];
-
-        jwt.verify(token, accessTokenSecret, (error, user) => {
-            if (error) {
-                return response.sendStatus(403);
-            }
-            request.user = user;
-            next();
-        });
-    } else {
-        response.sendStatus(401);
-    }
-};
 
 app.post('/distance-healing', [
 	check('dhfFirstName').trim().escape(),
