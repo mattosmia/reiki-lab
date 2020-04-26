@@ -45,7 +45,7 @@ class RegistrationForm extends Component {
 				'rfVolunteer': false,
 				'rfFacebook': '',
 				'rfInstagram': '',
-				'rfTherapies': '',
+				'rfTherapies': [],
 				'rfTerms': false
 			}
 		}
@@ -75,8 +75,25 @@ class RegistrationForm extends Component {
 
 	handleChange = (e) => {
 		e.persist();
-		const fieldValue = (e.target.type === 'checkbox'? e.target.checked : e.target.value);
 		const fieldName = e.target.name;
+
+		let fieldValue;
+		
+		switch (e.target.type) {
+			case 'checkbox':
+				fieldValue = e.target.checked;
+			break;
+			case 'select-multiple':
+				fieldValue = [];
+				const allOptions = e.target.options;
+				for (let i = 0; i < allOptions.length; i++) {
+					if (allOptions[i].selected) fieldValue.push(allOptions[i].value);
+				}
+			break;
+			default:
+				fieldValue = e.target.value;
+		}
+
 		this.setState({
 			formFieldValues: { ...this.state.formFieldValues, [fieldName]: fieldValue },
 			formSubmitError: false
