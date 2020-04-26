@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import * as serviceWorker from './serviceWorker';
+import Avatar from 'react-avatar-edit'
 
 import './styles/global.scss';
 
@@ -43,6 +44,7 @@ ReactDOM.render(
 					<Route exact path="/terms-conditions" component={TermsConditions} />
 					<Route exact path="/privacy-policy" component={PrivacyPolicy} />
 					<Route exact path="/cookie-policy" component={CookiePolicy} />
+					<Route exact path="/avatar" component={Avatar} />
 
 
 					<Route exact path="/admin" component={Admin} />
