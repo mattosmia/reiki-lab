@@ -16,14 +16,16 @@ class DistanceHealingForm extends Component {
 			formSubmitSuccess: false,
 			formValid: false,
 			formFieldValid: {
-				'dhfFullName': false,
+				'dhfFirstName': false,
+				'dhfLastName': false,
 				'dhfDOB': false,
 				'dhfCountryRes': false,
 				'dhfConfirmList': false,
 				'dhfTerms': false
 			},
 			formFieldValues: {
-				'dhfFullName': '',
+				'dhfFirstName': '',
+				'dhfLastName': '',
 				'dhfDOB': '',
 				'dhfCountryRes': '',
 				'dhfConfirmList': false,
@@ -75,9 +77,8 @@ class DistanceHealingForm extends Component {
 			formSubmitError: false
 		}, () => {
 			const formData = this.state.formFieldValues;
-			axios.post('/register', { formData })
+			axios.post('/distance-healing', { formData })
 			.then(res => {
-			  console.log(res);
 				this.setState({
 					formSubmitSuccess: true
 				})
@@ -98,8 +99,10 @@ class DistanceHealingForm extends Component {
 					<>
 					<form noValidate className="form">
 						{ this.state.formSubmitError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }>
-						<label htmlFor="dhfFullName">Full name</label>
-						<input type="text" name="dhfFullName" id="dhfFullName" placeholder="Full name" onChange={this.handleChange} />
+						<label htmlFor="dhfFirstName">First name</label>
+						<input type="text" name="dhfFirstName" id="dhfFirstName" placeholder="First name" onChange={this.handleChange} />
+						<label htmlFor="dhfLastName">Last name</label>
+						<input type="text" name="dhfLastName" id="dhfLastName" placeholder="Last name" onChange={this.handleChange} />
 						<label htmlFor="dhfDOB">Date of Birth</label>
 						<input type="text" name="dhfDOB" id="dhfDOB" placeholder="Date of Birth" onChange={this.handleChange} />
 						<label htmlFor="dhfCountryRes">Country of Residence</label>
@@ -112,7 +115,7 @@ class DistanceHealingForm extends Component {
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Add me to the list</button>
 					</form>
 					</>}
-					{ this.state.formSubmitSuccess && <p>Thank you for creating your account. You can now <Link to="/login">log in</Link>.</p> }
+					{ this.state.formSubmitSuccess && <p>Thank you for submitting your details. You are now on this month's Distance Healing list.</p> }
 				</div>
 			</section>
 		);

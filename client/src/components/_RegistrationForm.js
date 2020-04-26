@@ -119,7 +119,6 @@ class RegistrationForm extends Component {
 			const formData = this.state.formFieldValues;
 			axios.post('/register', { formData })
 			.then(res => {
-			  console.log(res);
 				this.setState({
 					formSubmitSuccess: true
 				})

@@ -147,6 +147,30 @@ app.post('/login', [
 	});
 });
 
+app.post('/distance-healing', [
+	check('dhfFirstName').trim().escape(),
+	check('dhfLastName').trim().escape(),
+	check('dhfDOB').trim().toDate(),
+	check('dhfCountryRes').escape()
+], (request, response) => {
+	const dhfFirstName = request.body.formData.dhfFirstName;
+	const dhfLastName = request.body.formData.dhfLastName;
+	const dhfDOB = request.body.formData.dhfDOB;
+	const dhfCountryRes = request.body.formData.dhfCountryRes;
+
+	const formattedDOB = dhfDOB.replace(/(\d{2})\/(\d{2})\/(\d{4})/,'$3-$2-$1');
+	
+	dbConnection.query(`INSERT INTO Distance_healing (first_name, last_name, dob, residence, date) VALUES (?, ?, ?, ?, NOW())`,
+		[dhfFirstName, dhfLastName, formattedDOB, dhfCountryRes],
+		function(error, result) {
+			if (error) {
+				return response.status(500).send(error);
+			}
+			return response.status(200).json({msg: 'Success'});
+		}
+	);
+});
+
 app.get('/*', (request, response) => {
 	response.sendFile('index.html', { root: './client/build' });
 });

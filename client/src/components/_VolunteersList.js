@@ -17,7 +17,7 @@ class VolunteersList extends Component {
 		fetchVolunteersList().then(response => {
 			this.setState({
 				volunteerList: Object.values(response.data)
-			}, () => console.log(this.state.volunteerList));
+			});
 		});
 	}
 
