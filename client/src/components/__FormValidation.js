@@ -49,6 +49,14 @@ function FormValidation(fieldName,fieldValues) {
 		case 'dhfTerms':
 			// user must tick terms
 			return { [fieldName]: (fieldValue === true) }
+		case 'lfEmail':
+			// required field, must follow email pattern
+			if (! (fieldValue !== '' && emailRegex.test(fieldValue) === true)) return { [fieldName]: false }
+			return { [fieldName]: true }
+		case 'lfPassword':
+			// required field, must be at least 6 characters long
+			if (! (fieldValue !== '' && passwordRegex.test(fieldValue) === true)) return { [fieldName]: false }
+			return { [fieldName]: true }
 		default:
 			// any other field does not require validation
 			return { [fieldName]: true }

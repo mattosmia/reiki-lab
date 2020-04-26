@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 
 import { fetchList } from './__Utils';
 import AdminDistanceHealingReportRow from './_AdminDistanceHealingReportRow';
+import Loading from './__Loading';
 
 class AdminDistanceHealingReport extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			loading: true,
 			currentReportPage: 1,
 			entriesPerPage: 50,
 			reportList: []
@@ -16,7 +18,8 @@ class AdminDistanceHealingReport extends Component {
     componentDidMount() {
 		fetchList('/distance-healing-report').then(response => {
 			this.setState({
-				reportList: Object.values(response.data)
+				reportList: Object.values(response.data),
+				loading: false
 			});
 		});
 	}
@@ -38,7 +41,8 @@ class AdminDistanceHealingReport extends Component {
 		return (
 		<section className="admin-dashboard__report wrapper wrapper--padded-small">
 			<h1 className="module-heading module-heading--pink">Distance Healing Report</h1>
-			{ this.state.reportList.length > 0 && <>
+			{ this.state.loading && <Loading /> }
+			{ ! this.state.loading && this.state.reportList.length > 0 && <>
 			<table className="admin-dashboard__table">
                 <thead>
 					<tr>
@@ -64,7 +68,7 @@ class AdminDistanceHealingReport extends Component {
 				{this.state.currentReportPage && this.createPagination()}
 			</div>
 			</>}
-			{ ! this.state.reportList.length && <p>There are no entries available at the moment.</p>}
+			{ ! this.state.loading && ! this.state.reportList.length && <p>There are no entries available at the moment.</p>}
 		</section>
 		)
 	};

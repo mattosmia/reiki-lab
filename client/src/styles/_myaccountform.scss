@@ -1,0 +1,22 @@
+.my-account-form {
+	.small {
+		margin-top: 3rem;
+        margin-bottom: 0;
+    }
+    &__delete {
+        p {
+            margin: 3rem auto;
+            font-size: 2.4rem;
+            color: $pink;
+            text-transform: uppercase;
+        }
+        &__buttons {
+            display: flex;
+            justify-content: center;
+            button {
+                width: auto;
+                margin: 0 2rem;
+            }
+        }
+    }
+}
