@@ -38,11 +38,19 @@ export const logOut = () => {
 
 export const isAuthenticated = () => {
 	const jwtCookie = cookie.load('rljwt');
-	if (! jwtCookie) return false;
-	if (jwtCookie) return true;
+	return new Promise((resolve, reject) => {
+		if (! jwtCookie) {
+			resolve({});
+		} else {
+			axios.get('/checkToken', authHeaders())
+			.then(response => {console.log('isAuthenticated',response.data);resolve(response.data)})
+			.catch(error => { console.error('Error fetching token', error);resolve({})});
+		}
+	});
 }
 
 export const authHeaders = () => {
-	if (! isAuthenticated()) return false;
-	return { headers: { 'Authorization': 'Bearer ' + cookie.load('rljwt').accessToken } };
+	const jwtCookie = cookie.load('rljwt');
+	if (! jwtCookie) return false;
+	return { headers: { 'Authorization': 'Bearer ' + jwtCookie.accessToken } };
 }
