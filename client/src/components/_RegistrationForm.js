@@ -72,6 +72,22 @@ class RegistrationForm extends Component {
 		this.setState({ formValid: ! Object.values(this.state.formFieldValid).includes(false) });
 	}
 
+	handleFocus = (e) => {
+		if (e.target.value === '') {
+			if (e.target.name === 'rfFacebook'){
+				e.target.value = 'https://facebook.com/';
+			} else if (e.target.name === 'rfInstagram'){
+				e.target.value = 'https://instagram.com/';
+			}
+		}
+	}
+
+	handleBlur = (e) => {
+		if ((e.target.name === 'rfFacebook' && e.target.value === 'https://facebook.com/') || (e.target.name === 'rfInstagram' && e.target.value === 'https://instagram.com/')) {
+			e.target.value = ''
+		}
+	}
+
 	handleChange = (e) => {
 		e.persist();
 		const fieldName = e.target.name;
@@ -167,9 +183,9 @@ class RegistrationForm extends Component {
 						{this.state.formFieldValues.rfVolunteer && 
 						<>
 							<label htmlFor="rfFacebook">Facebook URL</label>
-							<input type="text" name="rfFacebook" id="rfFacebook" placeholder="Facebook URL" onChange={this.handleChange} />
+							<input type="text" name="rfFacebook" id="rfFacebook" placeholder="Facebook URL" onChange={this.handleChange} onFocus={this.handleFocus} onBlur={this.handleBlur} />
 							<label htmlFor="rfInstagram">Instagram URL</label>
-							<input type="text" name="rfInstagram" id="rfInstagram" placeholder="Instagram URL" onChange={this.handleChange} />
+							<input type="text" name="rfInstagram" id="rfInstagram" placeholder="Instagram URL" onChange={this.handleChange} onFocus={this.handleFocus} onBlur={this.handleBlur} />
 							<label htmlFor="rfTherapies">Therapies</label>
 							<select	name="rfTherapies" id="rfTherapies" onChange={this.handleChange} multiple>
 								<option disabled>Therapies</option>

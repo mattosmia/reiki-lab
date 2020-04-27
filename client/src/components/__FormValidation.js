@@ -7,7 +7,6 @@ const passwordRegex = /^.{6,}$/;
 
 function FormValidation(fieldName,fieldValues) {
 	const fieldValue = fieldValues[fieldName];
-	console.log(fieldValue,fieldName)
 	switch (fieldName) {
 		// REGISTRATION FORM - start
 		case 'rfFirstName':
@@ -92,6 +91,7 @@ function FormValidation(fieldName,fieldValues) {
 		case 'cfSubject':
 		case 'cfMessage':
 			if (fieldValue === '') return { [fieldName]: false }
+			return { [fieldName]: true }
 		default:
 			// any other field does not require validation
 			return { [fieldName]: true }

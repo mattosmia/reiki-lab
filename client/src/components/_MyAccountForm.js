@@ -78,6 +78,22 @@ class MyAccountForm extends Component {
 		this.setState({ formValid: ! Object.values(this.state.formFieldValid).includes(false) });
 	}
 
+	handleFocus = (e) => {
+		if (e.target.value === '') {
+			if (e.target.name === 'rfFacebook'){
+				e.target.value = 'https://facebook.com/';
+			} else if (e.target.name === 'rfInstagram'){
+				e.target.value = 'https://instagram.com/';
+			}
+		}
+	}
+
+	handleBlur = (e) => {
+		if ((e.target.name === 'rfFacebook' && e.target.value === 'https://facebook.com/') || (e.target.name === 'rfInstagram' && e.target.value === 'https://instagram.com/')) {
+			e.target.value = ''
+		}
+	}
+
 	handleChange = (e) => {
 		e.persist();
 		const fieldName = e.target.name;
@@ -191,9 +207,9 @@ class MyAccountForm extends Component {
 						{this.state.formFieldValues.mafVolunteer && 
 						<>
 							<label htmlFor="mafFacebook">Facebook URL</label>
-							<input type="text" name="mafFacebook" id="mafFacebook" placeholder="Facebook URL" onChange={this.handleChange} defaultValue={this.state.formFieldValues.mafFacebook} />
+							<input type="text" name="mafFacebook" id="mafFacebook" placeholder="Facebook URL" onChange={this.handleChange} defaultValue={this.state.formFieldValues.mafFacebook} onFocus={this.handleFocus} onBlur={this.handleBlur} />
 							<label htmlFor="mafInstagram">Instagram URL</label>
-							<input type="text" name="mafInstagram" id="mafInstagram" placeholder="Instagram URL" onChange={this.handleChange} defaultValue={this.state.formFieldValues.mafInstagram} />
+							<input type="text" name="mafInstagram" id="mafInstagram" placeholder="Instagram URL" onChange={this.handleChange} defaultValue={this.state.formFieldValues.mafInstagram} onFocus={this.handleFocus} onBlur={this.handleBlur} />
 							<label htmlFor="mafTherapies">Therapies</label>
 							<select	name="mafTherapies" id="mafTherapies" onChange={this.handleChange} multiple>
 								<option disabled>Therapies</option>
