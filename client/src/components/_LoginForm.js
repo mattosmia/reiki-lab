@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import axios from "axios";
 import cookie from 'react-cookies';
 
@@ -37,7 +37,7 @@ class LoginForm extends Component {
 					obj = {...obj, ...FormValidation(fieldName, this.state.formFieldValues) }
 				}
 				this.setValidateFields(obj);
-				this.setState({ loading: false })
+				this.setState({ loading: false }, () => this.props.setAuth(user))
 			}
 		})
 	}
@@ -115,4 +115,4 @@ class LoginForm extends Component {
 	}
 }
 
-export default LoginForm;
+export default withRouter(LoginForm);

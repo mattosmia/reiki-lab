@@ -9,17 +9,22 @@ class Header extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isLoggedIn: false
+			isLoggedIn: {}
 		}
 	}
 	componentDidMount() {
-		if (isAuthenticated()) {
-			this.setState({
-				isLoggedIn: true
-			})
-		}
+		this.setState({
+			isLoggedIn: this.props.user
+		})
 	}
 
+	componentDidUpdate(prevState, prevProps) {
+		if (this.state.isLoggedIn !== this.props.user) {
+			this.setState({
+				isLoggedIn: this.props.user
+			});
+		}
+	}
 	render() {
 		return (
 			<header>
@@ -27,7 +32,7 @@ class Header extends Component {
 					<div className="wrapper">
 						<Link to="/"><img src={logo} alt="Reiki Lab" /></Link>
 						<nav className="header__account-buttons">
-							{ this.state.isLoggedIn? <>
+							{ this.state.isLoggedIn.uid ? <>
 							<Link to="/my-account" className="btn">My Account</Link>
 							<Link to="/logout" className="btn btn--secondary">Log Out</Link>
 							</> : <>

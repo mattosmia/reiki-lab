@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
+import { withRouter } from 'react-router-dom';
 
 import LoginForm from './_LoginForm';
 import ContactForm from './_ContactForm';
@@ -15,14 +16,16 @@ class Logout extends Component {
 			logoutSuccess: false
 		}
 	}
-
 	componentDidMount() {
-		axios.post('/logout', this.state.formFieldValues)
+		axios.post('/logout')
 			.then(res => {
 				this.setState({
 					loading: false,
 					logoutSuccess: true
-				},() => this.props.history.push({pathname: '/login'}))
+				},() => {
+					this.props.history.push('/login');
+					this.props.setAuth({})
+				})
 			}).catch(error => 
 				this.setState({
 					loading: false,
@@ -51,4 +54,4 @@ class Logout extends Component {
 	}
 }
 
-export default Logout;
+export default withRouter(Logout);

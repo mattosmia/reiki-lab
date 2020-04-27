@@ -1,5 +1,6 @@
 import React from 'react';
 
+import {withRouter} from 'react-router-dom';
 import LoginForm from './_LoginForm';
 import ContactForm from './_ContactForm';
 import TextWithButton from './_TextWithButton';
@@ -14,4 +15,4 @@ function Login(props) {
 	);
 }
 
-export default Login;
+export default withRouter(Login);

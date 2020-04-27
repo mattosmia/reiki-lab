@@ -33,39 +33,50 @@ class App extends Component {
 		this.state = {
 			user: {}
 		}
+		this.setAuth = this.setAuth.bind(this);
+	}
+
+	componentDidMount() {
+		isAuthenticated().then(user => {
+			this.setAuth(user);
+		})
+	}
+
+	setAuth = (user) => {
+		this.setState({user})
 	}
 
 	render() {
 		return (
 		<BrowserRouter>
 			<ScrollToTop />
-			<Header />
+			{ this.state.user && <Header user={this.state.user} setAuth={this.setAuth} {...this.props} />}}
 			<main>
 				<Switch>
 					{/* Content pages */}
-					<Route exact path="/" component={Home} />
-					<Route exact path="/about" component={About} />
-					<Route exact path="/contact" component={Contact} />
-					<Route exact path="/distance-healing" component={DistanceHealing} />
-					<Route exact path="/events" component={Events} />
-					<Route exact path="/volunteers" component={Volunteers} />
-					<Route exact path="/what-is-reiki" component={AboutReiki} />
+					<Route exact path="/" render={() => <Home setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/about" render={() => <About setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/contact" render={() => <Contact setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/distance-healing" render={() => <DistanceHealing setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/events" render={() => <Events setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/volunteers" render={() => <Volunteers setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/what-is-reiki" render={() => <AboutReiki setAuth={this.setAuth} {...this.props} />} />
 
 					{/* Account pages -- non restricted routes */}
-					<Route exact path="/login" component={Login} />
-					<Route exact path="/forgot-password" component={ForgotPassword} />
-					<Route exact path="/logout" component={Logout} />
-					<Route exact path="/register" component={Register} />
-					<Route exact path="/reset-password/:id" component={ResetPassword} />
+					<Route exact path="/login" render={() => <Login setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/forgot-password" render={() => <ForgotPassword setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/logout" render={() => <Logout setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/register" render={() => <Register setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/reset-password/:id" render={() => <ResetPassword setAuth={this.setAuth} {...this.props} />} />
 
 					{/* Account pages -- restricted routes */}
-					<Route exact path="/admin" component={Admin} />
-					<Route exact path="/my-account" component={MyAccount} />
+					<Route exact path="/admin" render={() => <Admin setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/my-account" render={() => <MyAccount setAuth={this.setAuth} {...this.props} />} />
 
 					{/* Terms content pages */}
-					<Route exact path="/cookie-policy" component={CookiePolicy} />
-					<Route exact path="/terms-conditions" component={TermsConditions} />
-					<Route exact path="/privacy-policy" component={PrivacyPolicy} />
+					<Route exact path="/cookie-policy" render={() => <CookiePolicy setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/terms-conditions" render={() => <TermsConditions setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/privacy-policy" render={() => <PrivacyPolicy setAuth={this.setAuth} {...this.props} />} />
 				</Switch>
 			</main>
 			<Footer />

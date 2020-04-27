@@ -50,6 +50,7 @@ class MyAccountForm extends Component {
 	}
 	componentDidMount() {
 		isAuthenticated().then(user => {
+			this.props.setAuth(user);
 			if (! Object.keys(user).length) {
 				this.props.history.replace('/login');
 			} else {
