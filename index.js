@@ -247,7 +247,7 @@ app.post('/login', [
 
 app.post('/token', (request, response) => {
     const { token } = request.body;
-
+console.log('TOKEN',request.body, token)
     if (!token) return response.sendStatus(401);
 	if (!refreshTokens.includes(token)) return response.sendStatus(403);
 	
@@ -256,10 +256,14 @@ app.post('/token', (request, response) => {
             return response.sendStatus(403);
         }
         const accessToken = jwt.sign({ uid: user.uid, email: user.email, role: user.role }, accessTokenSecret, { expiresIn: tokenExpiry });
-        response.json({
+        return response.status(200).json({
             accessToken
         });
     });
+});
+
+app.get('/checkToken',authJWT, (request, response) => {
+	return response.status(200).json(request.user);
 });
 
 app.post('/logout', (request, response) => {
