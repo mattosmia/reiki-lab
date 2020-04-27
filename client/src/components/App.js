@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import '../styles/global.scss';
 
@@ -20,71 +20,58 @@ import CookiePolicy from './CookiePolicy';
 import CookieNotice from './_CookieNotice';
 import ScrollToTop from './__ScrollToTop';
 
-import { isAuthenticated } from './__Utils';
 import Admin from './Admin';
 import MyAccount from './MyAccount';
 import Logout from './Logout';
 import ForgotPassword from './ForgotPassword';
 import ResetPassword from './ResetPassword';
-
-const PrivateRoute = ({ component: Component, ...rest }) => (
-	<Route {...rest} render={props => (
-		! isAuthenticated() ?
-			// not authenticated - redirect to log in
-			<Redirect to={{
-				pathname: '/login',
-				state: { from: props.location } }}
-			/>
-			:
-			<Component {...props} />
-	)} />
-)
+import { isAuthenticated } from './__Utils';
 
 class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			loading: true,
-			logoutError: false,
-			logoutSuccess: false
+			user: {}
 		}
 	}
 
 	render() {
 		return (
-		<BrowserRouter withRouter>
+		<BrowserRouter>
 			<ScrollToTop />
 			<Header />
 			<main>
 				<Switch>
+					{/* Content pages */}
 					<Route exact path="/" component={Home} />
 					<Route exact path="/about" component={About} />
+					<Route exact path="/contact" component={Contact} />
 					<Route exact path="/distance-healing" component={DistanceHealing} />
 					<Route exact path="/events" component={Events} />
 					<Route exact path="/volunteers" component={Volunteers} />
 					<Route exact path="/what-is-reiki" component={AboutReiki} />
-					<Route exact path="/contact" component={Contact} />
-					<Route exact path="/register" component={Register} />
-					<Route exact path="/terms-conditions" component={TermsConditions} />
-					<Route exact path="/privacy-policy" component={PrivacyPolicy} />
-					<Route exact path="/cookie-policy" component={CookiePolicy} />
 
+					{/* Account pages -- non restricted routes */}
+					<Route exact path="/login" component={Login} />
 					<Route exact path="/forgot-password" component={ForgotPassword} />
-
+					<Route exact path="/logout" component={Logout} />
+					<Route exact path="/register" component={Register} />
 					<Route exact path="/reset-password/:id" component={ResetPassword} />
 
-					<Route exact path="/login" component={Login} />
+					{/* Account pages -- restricted routes */}
+					<Route exact path="/admin" component={Admin} />
+					<Route exact path="/my-account" component={MyAccount} />
 
-					<PrivateRoute exact path="/admin" component={Admin} />
-					<PrivateRoute exact path="/my-account" component={MyAccount} />
-					<PrivateRoute exact path="/logout" component={Logout} />
+					{/* Terms content pages */}
+					<Route exact path="/cookie-policy" component={CookiePolicy} />
+					<Route exact path="/terms-conditions" component={TermsConditions} />
+					<Route exact path="/privacy-policy" component={PrivacyPolicy} />
 				</Switch>
 			</main>
 			<Footer />
 			<CookieNotice />
 		</BrowserRouter>
 		);
-	}
-}
+}}
 
 export default App;
