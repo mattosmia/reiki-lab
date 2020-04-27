@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
-import { fetchList } from './__Utils';
+import { fetchList, authHeaders } from './__Utils';
 import AdminUsersReportRow from './_AdminUsersReportRow';
 import Loading from './__Loading';
 
@@ -9,24 +10,32 @@ class AdminUsersReport extends Component {
 		super(props);
 		this.state = {
 			loading: true,
+			requestError: false,
+			requestSuccess: false,
 			currentReportPage: 1,
 			entriesPerPage: 50,
 			reportList: []
 		}
+		this.approveVolunteer = this.approveVolunteer.bind(this);
+		this.deleteUser = this.deleteUser.bind(this);
 	}
 
 	componentDidMount() {
+		this.loadReportEntries();
+	}
+
+	loadReportEntries = () => {
 		fetchList('/users-report').then(response => {
 			this.setState({
 				reportList: Object.values(response.data),
 				loading: false
 			});
-		});
+		})
 	}
 
 	loadPage = () => {
 		const initialIdx = (this.state.currentReportPage - 1) * this.state.entriesPerPage;
-		return this.state.reportList.slice(initialIdx, initialIdx + this.state.entriesPerPage).map((data, idx) => <AdminUsersReportRow key={idx} data={data} />)
+		return this.state.reportList.slice(initialIdx, initialIdx + this.state.entriesPerPage).map((data, idx) => <AdminUsersReportRow key={idx} data={data} approveVolunteer={this.approveVolunteer} deleteUser={this.deleteUser} />)
 	}
 
 	createPagination = () => {
@@ -35,6 +44,52 @@ class AdminUsersReport extends Component {
 			pagination.push(<div key={i} onClick={() => this.setState({currentReportPage: i+1})} className={(i+1) === this.state.currentReportPage? 'active' : ''}>{i+1}</div>);
 		}
 		return pagination;
+	}
+
+	approveVolunteer = (user_id) => {
+		this.setState({
+			loading: true
+		}, () => {
+			axios.post('/approve-volunteer', { user_id }, authHeaders())
+			.then(res => {
+				this.setState({
+					requestError: false,
+					requestSuccess: true
+				}, this.loadReportEntries)
+			}).catch(error => {
+				this.setState({
+					loading: false,
+					requestError: true,
+					requestSuccess: false
+				});
+				if (error.response.status === 401 || error.response.status === 403) {
+					this.props.history.push('/login');
+				}
+			});
+		});
+	}
+
+	deleteUser = (user_id) => {
+		this.setState({
+			loading: true
+		}, () => {
+			axios.post('/delete-user', { user_id }, authHeaders())
+			.then(res => {
+				this.setState({
+					requestError: false,
+					requestSuccess: true
+				}, this.loadReportEntries)
+			}).catch(error => {
+				this.setState({
+					loading: false,
+					requestError: true,
+					requestSuccess: false
+				});
+				if (error.response.status === 401 || error.response.status === 403) {
+					this.props.history.push('/login');
+				}
+			});
+		});
 	}
 
 	render () {
@@ -66,6 +121,9 @@ class AdminUsersReport extends Component {
 						</th>
 						<th>
 							Volunteer
+						</th>
+						<th>
+							
 						</th>
 					</tr>
 				</thead>
