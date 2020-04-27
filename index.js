@@ -123,6 +123,7 @@ app.get('/account-details', authJWT, (request, response) => {
 	);
 });
 
+// 
 app.get('/users-report', authJWT, (request, response) => {
 	dbConnection.query(`SELECT user_id, email, first_name, last_name, DATE_FORMAT(dob,"%d/%m/%Y") as dob, nationality, residence, volunteer, facebook_url, instagram_url, DATE_FORMAT(approved_date,"%d/%m/%Y %T") as approved_date, DATE_FORMAT(registration_date,"%d/%m/%Y %T") as registration_date FROM users ORDER BY registration_date DESC`,
 		function(error, rows) {
@@ -132,6 +133,43 @@ app.get('/users-report', authJWT, (request, response) => {
 			let usersReport = [];
 			rows.forEach(row => usersReport.push(row));
 			return response.status(200).json(usersReport);
+		}
+	);
+});
+
+
+app.post('/approve-volunteer', authJWT, (request, response) => {
+	const { role } = request.user;
+	if (role !== 'admin') {
+		return response.status(403).send(error);
+	}
+	const { user_id } = request.body;
+	console.log('>>>',user_id)
+	dbConnection.query(`UPDATE Users SET approved_date = NOW() WHERE user_id = ?`,
+	[ user_id ],
+		function(error, rows) {
+		if (error) {
+			return response.status(500).send(error);
+		}
+		return response.status(200).json({msg: 'Success'});
+		}
+	);
+});
+
+
+app.post('/delete-user', authJWT, (request, response) => {
+	const { role } = request.user;
+	if (role !== 'admin') {
+		return response.status(403).send(error);
+	}
+	const { user_id } = request.body;
+	dbConnection.query(`DELETE FROM Users WHERE user_id = ?`,
+	[ user_id ],
+		function(error, rows) {
+		if (error) {
+			return response.status(500).send(error);
+		}
+		return response.status(200).json({msg: 'Success'});
 		}
 	);
 });
