@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { isAuthenticated } from './__Utils';
-
 import logo from '../images/01-reiki-lab_logo-type-white.svg';
 
 class Header extends Component {

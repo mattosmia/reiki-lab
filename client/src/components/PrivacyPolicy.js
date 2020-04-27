@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import ContentPage from './_ContentPage';
 import TextWithButton from './_TextWithButton';
