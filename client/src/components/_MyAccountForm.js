@@ -53,7 +53,6 @@ class MyAccountForm extends Component {
 			if (! Object.keys(user).length) {
 				this.props.history.replace('/login');
 			} else {
-				console.log('++',this.props)
 				this.setState({
 					countriesList: returnCountriesObject()
 				}, () => {
