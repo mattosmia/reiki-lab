@@ -4,7 +4,7 @@ import MyAccountForm from './_MyAccountForm';
 function MyAccount(props) {
 	return (
 		<>
-			<MyAccountForm />
+			<MyAccountForm {...props} />
 		</>
 	);
 }
