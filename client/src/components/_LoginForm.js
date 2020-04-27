@@ -5,12 +5,13 @@ import cookie from 'react-cookies';
 
 import FormValidation from './__FormValidation';
 import Loading from './__Loading';
+import { isAuthenticated } from './__Utils';
 
 class LoginForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			loading: false,
+			loading: true,
 			formSubmitted: false,
 			formSubmitError: false,
 			formSubmitSuccess: false,
@@ -27,11 +28,18 @@ class LoginForm extends Component {
 	}
 
 	componentDidMount() {
-		let obj = {};
-		for (let fieldName of Object.keys(this.state.formFieldValid)) {
-			obj = {...obj, ...FormValidation(fieldName, this.state.formFieldValues) }
-		}
-		this.setValidateFields(obj);
+		isAuthenticated().then(user => {
+			if (Object.keys(user).length) {
+				this.props.history.push('/my-account');
+			} else {
+				let obj = {};
+				for (let fieldName of Object.keys(this.state.formFieldValid)) {
+					obj = {...obj, ...FormValidation(fieldName, this.state.formFieldValues) }
+				}
+				this.setValidateFields(obj);
+				this.setState({ loading: false })
+			}
+		})
 	}
 
 	checkFormValid = () => { 
