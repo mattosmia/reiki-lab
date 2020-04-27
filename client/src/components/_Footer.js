@@ -8,7 +8,7 @@ function Footer() {
 	return (
 		<footer className="wrapper wrapper--narrow">
 			<nav className="footer__nav-top">
-				<img src={logo} alt="Reiki Lab" />
+				<Link to="/"><img src={logo} alt="Reiki Lab" /></Link>
 				<div className="footer__nav--social-media">
 					<div>Follow us</div>
 					<ul className="unstyled-list">

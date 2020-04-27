@@ -92,8 +92,8 @@ class ContactForm extends Component {
 					<h1 className="module-heading">Get in touch</h1>
 					<form noValidate className="form">
 						<img className="contact-form__icon" src={envelope} alt="Contact form" />
-						{ this.state.formSubmitSuccess && <p className="success-message">Thanks for your message, we will be in touch shortly</p> }>
-						{ this.state.formSubmitError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }>
+						{ this.state.formSubmitSuccess && <p className="success-message">Thanks for your message, we will be in touch shortly</p> }
+						{ this.state.formSubmitError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
 						<label htmlFor="cfName">Full name</label>
 						<input type="text" name="cfName" id="cfName" placeholder="Full name" onChange={this.handleChange} />
 						<label htmlFor="cfEmail">Email address</label>
