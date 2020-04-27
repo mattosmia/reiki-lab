@@ -13,6 +13,7 @@ function FormValidation(fieldName,fieldValues) {
 		case 'rfFirstName':
 		case 'rfLastName':
 		case 'dhfFullName':
+		case 'cfName':
 			// required field, must follow name pattern
 			return { [fieldName]: (fieldValue !== '' && nameRegex.test(fieldValue) === true)}
 		case 'rfNationality':
@@ -61,6 +62,7 @@ function FormValidation(fieldName,fieldValues) {
 			return { [fieldName]: (fieldValue === true) }
 		case 'lfEmail':
 		case 'fpfEmail':
+		case 'cfEmail':
 			// required field, must follow email pattern
 			if (! (fieldValue !== '' && emailRegex.test(fieldValue) === true)) return { [fieldName]: false }
 			return { [fieldName]: true }
@@ -68,6 +70,9 @@ function FormValidation(fieldName,fieldValues) {
 			// required field, must be at least 6 characters long
 			if (! (fieldValue !== '' && passwordRegex.test(fieldValue) === true)) return { [fieldName]: false }
 			return { [fieldName]: true }
+		case 'cfSubject':
+		case 'cfMessage':
+			if (fieldValue === '') return { [fieldName]: false }
 		default:
 			// any other field does not require validation
 			return { [fieldName]: true }

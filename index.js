@@ -376,6 +376,7 @@ app.post('/distance-healing', [
 		}
 	);
 });
+
 app.post('/forgot-password', (request, response) => {
 	const { fpfEmail } = request.body;
 
@@ -477,6 +478,41 @@ app.post('/reset-password',[
 			return response.status(200).json({msg: 'Invalid key', error: true});
 		}
 	})
+});
+
+app.post('/contact', (request, response) => {
+	const { cfName, cfEmail, cfSubject, cfMessage } = request.body;
+
+	const sgRequest = sg.emptyRequest({
+		method: 'POST',
+		path: '/v3/mail/send',
+		body: {
+			personalizations: [{
+				to: [{ email: 'mattosmia@gmail.com' }],
+				subject: `Reiki Lab Contact Form - ${cfSubject}`,
+			}],
+			from: {
+				email: 'reikilab@reikilabdublin.com',
+			},
+			content: [{
+				type: 'text/plain',
+				value: `
+Reiki Lab Contact Form - this was posted from the website\n\n
+-------------------------------------------------------------\n\n
+Name: ${cfName}\n
+Email: ${cfEmail}\n\n
+Subject: ${cfSubject}\n
+Message: ${cfMessage}\n
+				`,
+			}]
+		}
+	});
+	sg.API(sgRequest)
+	.then(resp => {
+		return response.status(200).json({msg: 'Success'});
+	}).catch(error => {
+		return response.status(500).send(error);
+	});
 });
 
 app.get('/*', (request, response) => {
