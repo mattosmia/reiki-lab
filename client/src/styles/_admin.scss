@@ -18,4 +18,21 @@
 			}
 		}
 	}
+	&__table {
+		.icon {
+			width: 20px;
+			height: 20px;
+			margin: 0 auto;
+			cursor: pointer;
+		}
+	}
+}
+
+.row-volunteer {
+	td {
+		background-color: $purple--25;
+	}
+	&.need-approval td {
+		background-color: $purple--50;
+	}
 }
