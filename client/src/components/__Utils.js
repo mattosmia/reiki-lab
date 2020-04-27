@@ -43,7 +43,7 @@ export const isAuthenticated = () => {
 			resolve({});
 		} else {
 			axios.get('/checkToken', authHeaders())
-			.then(response => {console.log('isAuthenticated',response.data);resolve(response.data)})
+			.then(response => { resolve(response.data)})
 			.catch(error => { console.error('Error fetching token', error);resolve({})});
 		}
 	});
