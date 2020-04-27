@@ -343,7 +343,7 @@ app.post('/update-account', authJWT, [
 												}
 												return response.status(200).json({msg: 'Success'});
 											})
-									}.catch(error => response.status(500).send(error)));
+									});
 								} else {
 									return response.status(200).json({msg: 'Success'});
 								}
