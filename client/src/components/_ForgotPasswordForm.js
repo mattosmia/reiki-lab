@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import axios from "axios";
-import cookie from 'react-cookies';
 
 import FormValidation from './__FormValidation';
 import Loading from './__Loading';
 
-class LoginForm extends Component {
+class ForgotPasswordForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -16,12 +14,10 @@ class LoginForm extends Component {
 			formSubmitSuccess: false,
 			formValid: false,
 			formFieldValid: {
-				'lfEmail': false,
-				'lfPassword': false
+				'fpfEmail': false
 			},
 			formFieldValues: {
-				'lfEmail': '',
-				'lfPassword': ''
+				'fpfEmail': ''
 			}
 		}
 	}
@@ -62,22 +58,24 @@ class LoginForm extends Component {
 	
 	submitForm = () => {
 		this.setState({
-			loading: true,
 			formSubmitted: true,
-			formSubmitError: false
+			formSubmitError: false,
+			loading: true
 		}, () => {
-			axios.post('/login', this.state.formFieldValues)
+			axios.post('/forgot-password', this.state.formFieldValues)
 			.then(res => {
-				cookie.save('rljwt', res.data, { path: '/' });
 				this.setState({
-					loading: false,
-					formSubmitSuccess: true
-				}, () => this.props.history.push('/my-account'))
+					formSubmitSuccess: true,
+					formSubmitted: false,
+					formSubmitError: false,
+					loading: false
+				})
 			}).catch(error => 
 				this.setState({
-					loading: false,
+					formSubmitSuccess: false,
 					formSubmitted: false,
-					formSubmitError: true
+					formSubmitError: true,
+					loading: false
 				})
 			);
 		});
@@ -85,26 +83,24 @@ class LoginForm extends Component {
 
 	render () {
 		return (
-			<section className="login-form">
+			<section className="forgot-password-form">
 				<div className="wrapper">
-					<h1 className="module-heading module-heading--pink">Log in</h1>
-					{ this.state.loading && <Loading />}
-					{ ! this.state.loading && <>
-					<p>Please, enter your details below or <Link to="/register">sign up</Link></p>
+					<h1 className="module-heading module-heading--pink">Forgot password</h1>
+					{this.state.loading && <Loading />}
+					{! this.state.loading && ! this.state.formSubmitSuccess && <>
+					<p>We will send you an email with instructions on how to reset your password</p>
 					<form noValidate className="form">
-						{this.state.formSubmitError && <p className="error-message">Please verify your details and try again</p>}
-						<label htmlFor="lfEmail">Email</label>
-						<input type="email" name="lfEmail" id="lfEmail" placeholder="Email" onChange={this.handleChange} />
-						<label htmlFor="lfPassword">Password</label>
-						<input type="password" name="lfPassword" id="lfPassword" placeholder="Password" onChange={this.handleChange} />
-						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Log in</button>
-						<p className="small"><Link to="/forgot-password">Forgotten password?</Link></p>
-					</form>
-					</>}
+						{! this.state.loading && this.state.formSubmitError && <p className="error-message">There has been an error. Please try again.</p>}
+						<label htmlFor="fpfEmail">Email</label>
+						<input type="email" name="fpfEmail" id="fpfEmail" placeholder="Email" onChange={this.handleChange} />
+						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Email me</button>
+					</form></>}
+					{! this.state.loading && this.state.formSubmitSuccess &&
+					<p>If the email address provided is registered with us, you will receive instructions shortly.</p>}
 				</div>
 			</section>
 		);
 	}
 }
 
-export default LoginForm;
+export default ForgotPasswordForm;

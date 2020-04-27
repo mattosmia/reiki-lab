@@ -1,17 +1,17 @@
 import React from 'react';
 
-import LoginForm from './_LoginForm';
+import ForgotPasswordForm from './_ForgotPasswordForm';
 import ContactForm from './_ContactForm';
 import TextWithButton from './_TextWithButton';
 
-function Login(props) {
+function ForgotPassword(props) {
 	return (
 		<>
-			<LoginForm {...props} />
+			<ForgotPasswordForm />
 			<TextWithButton />
 			<ContactForm />
 		</>
 	);
 }
 
-export default Login;
+export default ForgotPassword;

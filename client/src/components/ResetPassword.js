@@ -1,17 +1,17 @@
 import React from 'react';
 
-import LoginForm from './_LoginForm';
+import ResetPasswordForm from './_ResetPasswordForm';
 import ContactForm from './_ContactForm';
 import TextWithButton from './_TextWithButton';
 
-function Login(props) {
+function ResetPassword(props) {
 	return (
-		<>
-			<LoginForm {...props} />
+		<>	
+			<ResetPasswordForm emailKey={props.match.params.id} />
 			<TextWithButton />
 			<ContactForm />
 		</>
 	);
 }
 
-export default Login;
+export default ResetPassword;

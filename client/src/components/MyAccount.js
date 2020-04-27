@@ -1,7 +1,7 @@
 import React from 'react';
 import MyAccountForm from './_MyAccountForm';
 
-function MyAccount() {
+function MyAccount(props) {
 	return (
 		<>
 			<MyAccountForm />

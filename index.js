@@ -13,6 +13,7 @@ const router = express.Router();
 if (process.env.NODE_ENV !== 'production') {
 	const dotenv = require('dotenv').config();
 }
+
 const port = process.env.PORT || 5000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,7 +26,7 @@ app.use(express.static(path.join('client', 'build')));
 
 const accessTokenSecret = process.env.JWT_ACCESS_SECRET;
 const refreshTokenSecret = process.env.JWT_REFRESH_SECRET;
-const refreshTokens = [];
+let refreshTokens = [];
 const tokenExpiry = '30m';
 
 // DB connection
@@ -38,6 +39,18 @@ dbConnection.connect((error) => {
 	console.log('Database connection started');
 });
 
+const sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
+
+const randomUUIDGenerator = () => {
+	// http://stackoverflow.com/a/8809472
+	let d = new Date().getTime();
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		const r = (d + Math.random()*16)%16 | 0;
+		d = Math.floor(d/16);
+		return (c==='x' ? r : (r&0x3|0x8)).toString(16);
+	});
+}
+
 const authJWT = (request, response, next) => {
     const authHeader = request.headers.authorization;
     if (authHeader) {
@@ -45,8 +58,7 @@ const authJWT = (request, response, next) => {
 
         jwt.verify(token, accessTokenSecret, (error, user) => {
             if (error) {
-				response.clearCookie('rljwt');
-                return response.sendStatus(403);
+                return response.clearCookie('rljwt').sendStatus(403);
             }
             request.user = user;
             next();
@@ -254,7 +266,7 @@ app.post('/logout', (request, response) => {
     const { token } = request.body;
     refreshTokens = refreshTokens.filter(t => t !== token);
 
-    response.status(200).send({ msg: "Success" });
+    response.clearCookie('rljwt').status(200).send({ msg: "Success" });
 });
 
 
@@ -363,6 +375,108 @@ app.post('/distance-healing', [
 			return response.status(200).json({msg: 'Success'});
 		}
 	);
+});
+app.post('/forgot-password', (request, response) => {
+	const { fpfEmail } = request.body;
+
+	dbConnection.query(`SELECT user_id FROM Users WHERE email = ?`,
+		[fpfEmail],
+		function(error, rows) {
+			if (error) {
+				return response.status(500).send(error);
+			}
+			if (rows.length) {
+				const email_key = randomUUIDGenerator();
+				dbConnection.query(`INSERT INTO forgot_pw_key (user_id, email_key, valid_until) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 2 DAY)) ON DUPLICATE KEY UPDATE email_key = ?, valid_until = DATE_ADD(NOW(), INTERVAL 2 DAY)`,
+				[rows[0].user_id, email_key, email_key],
+				function(error) {
+					if (error) {
+						return response.status(500).send(error);
+					}
+					const sgRequest = sg.emptyRequest({
+						method: 'POST',
+						path: '/v3/mail/send',
+						body: {
+							personalizations: [{
+								to: [{ email: fpfEmail }],
+								subject: 'Reiki Lab - Reset your Password',
+							}],
+							from: {
+								email: 'reikilab@reikilabdublin.com',
+							},
+							content: [{
+								type: 'text/plain',
+								value: `Hello!\n\nTo reset your Reiki Lab password, please visit the following link: https://reikilab.herokuapp.com/reset-password/${email_key}\n\n Thank you!\n\nReiki Lab`,
+							}]
+						}
+					});
+					sg.API(sgRequest)
+					.then(resp => {
+						return response.status(200).json({msg: 'Success'});
+					}).catch(error => {
+						return response.status(500).send(error);
+					});
+				});
+			} else {
+				return response.status(200).json({msg: 'Success'});
+			}
+		}
+	)
+})
+
+
+app.get('/check-reset-key',[
+	check('rpfKey').trim().escape()
+], (request, response) => {
+	const { rpfKey } = request.query;
+
+	dbConnection.query(`SELECT u.user_id, u.email FROM Users u, forgot_pw_key fpk WHERE fpk.email_key = ? AND TIMEDIFF(fpk.valid_until, NOW()) > 0 AND u.user_id = fpk.user_id`,
+	[ rpfKey ],
+	function(error, rows) {
+		if (error) {
+			return response.status(500).send(error);
+		}
+		if (rows.length) {
+			return response.status(200).json({msg: 'Success'});
+		}
+		return response.status(200).json({msg: 'Invalid key', error: true});
+	})
+})
+
+app.post('/reset-password',[
+	check('rpfKey').trim().escape()
+], (request, response) => {
+	const { rpfKey, rpfPassword } = request.body;
+
+	dbConnection.query(`SELECT u.user_id, u.email FROM Users u, forgot_pw_key fpk WHERE fpk.email_key = ? AND TIMEDIFF(fpk.valid_until, NOW()) > 0 AND u.user_id = fpk.user_id`,
+	[ rpfKey ],
+	function(error, rows) {
+		if (error) {
+			return response.status(500).send(error);
+		}
+		if (rows.length) {
+			const userId = rows[0].user_id;
+			bcrypt.hash(rpfPassword, bcrypt_salt).then(function(encryptedPassword) {
+				dbConnection.query(`UPDATE Users SET pword = ? WHERE user_id = ?`,
+					[encryptedPassword, userId],
+					function(error, result) {
+						if (error) {
+							return response.status(500).send(error);
+						}
+						dbConnection.query(`DELETE FROM forgot_pw_key WHERE user_id = ?`,
+						[userId],
+						function(error, result) {
+							if (error) {
+								return response.status(500).send(error);
+							}
+							return response.status(200).json({msg: 'Success'});
+						})
+					})
+			});
+		} else {
+			return response.status(200).json({msg: 'Invalid key', error: true});
+		}
+	})
 });
 
 app.get('/*', (request, response) => {

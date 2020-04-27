@@ -7,6 +7,7 @@ const passwordRegex = /^.{6,}$/;
 
 function FormValidation(fieldName,fieldValues) {
 	const fieldValue = fieldValues[fieldName];
+	console.log(fieldValue,fieldName)
 	switch (fieldName) {
 		// REGISTRATION FORM - start
 		case 'rfFirstName':
@@ -39,6 +40,15 @@ function FormValidation(fieldName,fieldValues) {
 				return { rfPassword: true, rfPasswordConfirmation: true }
 			}
 			return { [fieldName]: false }
+		case 'rpfPassword':
+		case 'rpfPasswordConfirmation':
+			// required field, must be at least 6 characters long
+			if (! (fieldValue !== '' && passwordRegex.test(fieldValue) === true)) return { [fieldName]: false }
+			// check if they match, set both as valid if so
+			if (fieldValues['rpfPassword'] === fieldValues['rpfPasswordConfirmation']) {
+				return { rpfPassword: true, rpfPasswordConfirmation: true }
+			}
+			return { [fieldName]: false }
 		case 'rfVolunteer':
 		case 'rfTherapies':
 			// if volunteer is ticked, therapies is required 
@@ -50,6 +60,7 @@ function FormValidation(fieldName,fieldValues) {
 			// user must tick terms
 			return { [fieldName]: (fieldValue === true) }
 		case 'lfEmail':
+		case 'fpfEmail':
 			// required field, must follow email pattern
 			if (! (fieldValue !== '' && emailRegex.test(fieldValue) === true)) return { [fieldName]: false }
 			return { [fieldName]: true }

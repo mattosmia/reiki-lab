@@ -16,6 +16,7 @@ export const createDropdownOptions = (list, sel) => {
 
 export const fetchList = (endpoint, options) => {
 	options = options || {};
+	console.log('fetchList',options)
 	return new Promise((resolve, reject) => {
 		axios.get(endpoint, options)
 		.then(response => resolve(response))
