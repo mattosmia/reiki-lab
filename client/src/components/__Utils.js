@@ -10,8 +10,8 @@ export const returnCountriesObject = () => {
 	return array;
 }
 
-export const createDropdownOptions = (list, sel) => {
-	return list.map((entry,k) => <option key={k} value={entry.value? entry.value : entry.name} selected={sel? sel.includes(entry.value): false}>{entry.name}</option>)
+export const createDropdownOptions = (list) => {
+	return list.map((entry,k) => <option key={k} value={entry.value? entry.value : entry.name}>{entry.name}</option>)
 }
 
 export const fetchList = (endpoint, options) => {

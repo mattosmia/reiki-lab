@@ -25,8 +25,8 @@ class MyAccountForm extends Component {
 				'mafDOB': false,
 				'mafNationality': false,
 				'mafCountryRes': false,
-				'mafPassword': false,
-				'mafPasswordConfirmation': false,
+				'mafPassword': true,
+				'mafPasswordConfirmation': true,
 				'mafVolunteer': false,
 				'mafFacebook': false,
 				'mafInstagram': false,
@@ -49,12 +49,6 @@ class MyAccountForm extends Component {
 		}
 	}
 	componentDidMount() {
-		let obj = {};
-		for (let fieldName of Object.keys(this.state.formFieldValid)) {
-			obj = {...obj, ...FormValidation(fieldName, this.state.formFieldValues) }
-		}
-		this.setValidateFields(obj);
-
 		this.setState({
 			countriesList: returnCountriesObject()
 		}, () => {
@@ -66,9 +60,17 @@ class MyAccountForm extends Component {
 							this.setState({
 								formFieldValues: response.data,
 								loading: false
+							}, () => {
+								let obj = {};
+								for (let fieldName of Object.keys(this.state.formFieldValid)) {
+									obj = {...obj, ...FormValidation(fieldName, this.state.formFieldValues) }
+								}
+								this.setValidateFields(obj)
 							});
 						}
-					)
+					).catch(error => {
+						console.log(error)
+					})
 				});
 			});
 		});
@@ -141,14 +143,20 @@ class MyAccountForm extends Component {
 			.then(res => {
 				this.setState({
 					formSubmitSuccess: true,
-					formSubmitted: false
+					formSubmitted: false,
+					formSubmitError: false,
+					formFieldValues: {...this.state.formFieldValues, mafPassword: '', mafPasswordConfirmation: ''}
 				})
-			}).catch(error => 
+			}).catch(error => {
 				this.setState({
 					formSubmitted: false,
-					formSubmitError: true
-				})
-			);
+					formSubmitError: true,
+					formSubmitSuccess: false
+				});
+				if (error.response.status === 401 || error.response.status === 403) {
+					this.props.history.push('/login');
+				}
+			});
 		});
 	}
 
@@ -164,11 +172,16 @@ class MyAccountForm extends Component {
 					accountDeleted: true,
 					formSubmitted: false
 				})
-			}).catch(error => 
+			}).catch(error => {
 				this.setState({
-					formSubmitError: true
-				})
-			);
+					formSubmitted: false,
+					formSubmitError: true,
+					formSubmitSuccess: false
+				});
+				if (error.response.status === 401 || error.response.status === 403) {
+					this.props.history.push('/login');
+				}
+			});
 		});
 	}
 
@@ -192,14 +205,14 @@ class MyAccountForm extends Component {
 						<label htmlFor="mafDOB">Date of Birth</label>
 						<input type="text" name="mafDOB" id="mafDOB" placeholder="Date of Birth" onChange={this.handleChange} defaultValue={this.state.formFieldValues.mafDOB} />
 						<label htmlFor="mafNationality">Nationality</label>
-						<select	name="mafNationality" id="mafNationality" onChange={this.handleChange}>
+						<select	name="mafNationality" id="mafNationality" defaultValue={this.state.formFieldValues.mafNationality} onChange={this.handleChange}>
 							<option>Nationality</option>
-							{ createDropdownOptions(this.state.countriesList, this.state.formFieldValues.mafNationality) }
+							{ createDropdownOptions(this.state.countriesList) }
 						</select>
 						<label htmlFor="mafCountryRes">Country of Residence</label>
-						<select	name="mafCountryRes" id="mafCountryRes" onChange={this.handleChange}>
+						<select	name="mafCountryRes" id="mafCountryRes" defaultValue={this.state.formFieldValues.mafCountryRes} onChange={this.handleChange}>
 							<option>Country of Residence</option>
-							{ createDropdownOptions(this.state.countriesList, this.state.formFieldValues.mafCountryRes) }
+							{ createDropdownOptions(this.state.countriesList) }
 						</select>
 						<label htmlFor="mafEmail">Email</label>
 						<input type="email" name="mafEmail" id="mafEmail" placeholder="Email" defaultValue={this.state.formFieldValues.mafEmail} />
@@ -211,9 +224,9 @@ class MyAccountForm extends Component {
 							<label htmlFor="mafInstagram">Instagram URL</label>
 							<input type="text" name="mafInstagram" id="mafInstagram" placeholder="Instagram URL" onChange={this.handleChange} defaultValue={this.state.formFieldValues.mafInstagram} onFocus={this.handleFocus} onBlur={this.handleBlur} />
 							<label htmlFor="mafTherapies">Therapies</label>
-							<select	name="mafTherapies" id="mafTherapies" onChange={this.handleChange} multiple>
+							<select	name="mafTherapies" id="mafTherapies" defaultValue={this.state.formFieldValues.mafTherapies} onChange={this.handleChange} multiple>
 								<option disabled>Therapies</option>
-								{ createDropdownOptions(this.state.therapiesList, this.state.formFieldValues.mafTherapies) }
+								{ createDropdownOptions(this.state.therapiesList) }
 							</select>
 						</>}
 						<label htmlFor="mafPassword">Password</label>
