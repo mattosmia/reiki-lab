@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from "axios";
 
 import FormValidation from './__FormValidation';
-import { returnCountriesObject, createDropdownOptions, fetchList, authHeaders } from './__Utils';
+import { returnCountriesObject, createDropdownOptions, fetchList, authHeaders, isAuthenticated } from './__Utils';
 import Loading from './__Loading';
 
 class MyAccountForm extends Component {
@@ -49,31 +49,38 @@ class MyAccountForm extends Component {
 		}
 	}
 	componentDidMount() {
-		this.setState({
-			countriesList: returnCountriesObject()
-		}, () => {
-			fetchList('/therapies').then(response => {
+		isAuthenticated().then(user => {
+			if (! Object.keys(user).length) {
+				this.props.history.replace('/login');
+			} else {
+				console.log('++',this.props)
 				this.setState({
-					therapiesList: response.data,
+					countriesList: returnCountriesObject()
 				}, () => {
-					fetchList('/account-details', authHeaders()).then(response => {
-							this.setState({
-								formFieldValues: response.data,
-								loading: false
-							}, () => {
-								let obj = {};
-								for (let fieldName of Object.keys(this.state.formFieldValid)) {
-									obj = {...obj, ...FormValidation(fieldName, this.state.formFieldValues) }
+					fetchList('/therapies').then(response => {
+						this.setState({
+							therapiesList: response.data,
+						}, () => {
+							fetchList('/account-details', authHeaders()).then(response => {
+									this.setState({
+										formFieldValues: response.data,
+										loading: false
+									}, () => {
+										let obj = {};
+										for (let fieldName of Object.keys(this.state.formFieldValid)) {
+											obj = {...obj, ...FormValidation(fieldName, this.state.formFieldValues) }
+										}
+										this.setValidateFields(obj)
+									});
 								}
-								this.setValidateFields(obj)
-							});
-						}
-					).catch(error => {
-						console.log(error)
-					})
+							).catch(error => {
+								console.log(error)
+							})
+						});
+					});
 				});
-			});
-		});
+			}
+		})
 	}
 
 	checkFormValid = () => { 
