@@ -26,6 +26,7 @@ import Logout from './Logout';
 import ForgotPassword from './ForgotPassword';
 import ResetPassword from './ResetPassword';
 import { isAuthenticated } from './__Utils';
+import NotFound from './NotFound';
 
 class App extends Component {
 	constructor(props) {
@@ -77,6 +78,9 @@ class App extends Component {
 					<Route exact path="/cookie-policy" render={() => <CookiePolicy setAuth={this.setAuth} {...this.props} />} />
 					<Route exact path="/terms-conditions" render={() => <TermsConditions setAuth={this.setAuth} {...this.props} />} />
 					<Route exact path="/privacy-policy" render={() => <PrivacyPolicy setAuth={this.setAuth} {...this.props} />} />
+
+					{/* 404 */}
+					<Route component={NotFound} />
 				</Switch>
 			</main>
 			<Footer />
