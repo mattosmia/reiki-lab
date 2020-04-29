@@ -215,6 +215,10 @@ p {
 		&:not(.inline-label) {
 			@extend .vh;
 		}
+		a {
+			color: $blue;
+			text-decoration: underline;	
+		}
 	}
 
 	button,
