@@ -20,7 +20,7 @@ class Header extends Component {
 		if (this.state.isLoggedIn !== this.props.user) {
 			this.setState({
 				isLoggedIn: this.props.user
-			});
+			},() => console.log('user',this.state.isLoggedIn));
 		}
 	}
 	render() {
@@ -31,6 +31,7 @@ class Header extends Component {
 						<Link to="/"><img src={logo} alt="Reiki Lab" /></Link>
 						<nav className="header__account-buttons">
 							{ this.state.isLoggedIn.uid ? <>
+							{ this.state.isLoggedIn.role === 'admin' ? <Link to="/admin">Admin</Link> : ''}
 							<Link to="/my-account" className="btn">My Account</Link>
 							<Link to="/logout" className="btn btn--secondary">Log Out</Link>
 							</> : <>
