@@ -25,7 +25,7 @@ class AdminUsersReport extends Component {
 	}
 
 	loadReportEntries = () => {
-		fetchList('/users-report').then(response => {
+		fetchList('/users-report', authHeaders()).then(response => {
 			this.setState({
 				reportList: Object.values(response.data),
 				loading: false
