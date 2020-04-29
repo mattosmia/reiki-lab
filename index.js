@@ -69,10 +69,11 @@ const authJWT = (request, response, next) => {
     }
 };
 
-const checkAdmin = (role) => {
+const checkAdmin = (role, response) => {
 	if (role !== 'admin') {
-		return response.status(403).send(error);
+		return response.status(403).send({msg: 'Not admin'});
 	}
+	return true;
 }
 /* --------------- */
 
@@ -133,7 +134,7 @@ app.get('/account-details', authJWT, (request, response) => {
 	);
 });
 
-// 
+
 app.get('/users-report', authJWT, (request, response) => {
 	dbConnection.query(`SELECT user_id, email, first_name, last_name, DATE_FORMAT(dob,"%d/%m/%Y") as dob, nationality, residence, volunteer, facebook_url, instagram_url, DATE_FORMAT(approved_date,"%d/%m/%Y %T") as approved_date, DATE_FORMAT(registration_date,"%d/%m/%Y %T") as registration_date FROM users ORDER BY registration_date DESC`,
 		function(error, rows) {
@@ -149,7 +150,7 @@ app.get('/users-report', authJWT, (request, response) => {
 
 
 app.post('/update-volunteer', authJWT, (request, response) => {
-	if (checkAdmin(request.user)) {
+	if (checkAdmin(request.user.role, response)) {
 		const { user_id, action } = request.body;
 		const approved_date = (action === 'approve'? 'NOW()' : null);
 		dbConnection.query(`UPDATE Users SET approved_date = ? WHERE user_id = ?`,
@@ -166,17 +167,29 @@ app.post('/update-volunteer', authJWT, (request, response) => {
 
 
 app.post('/delete-user', authJWT, (request, response) => {
-	if (checkAdmin(request.user)) {
+	if (checkAdmin(request.user.role, response)) {
 		const { user_id } = request.body;
 		dbConnection.query(`DELETE FROM Users WHERE user_id = ?`,
 		[ user_id ],
-			function(error, rows) {
+			function(error) {
 			if (error) {
 				return response.status(500).send(error);
 			}
 			return response.status(200).json({msg: 'Success'});
 			}
 		);
+	}
+});
+
+app.post('/purge-list', authJWT, (request, response) => {
+	if (checkAdmin(request.user.role, response)) {
+	dbConnection.query(`DELETE FROM Distance_healing WHERE DATEDIFF(NOW(), date) > 30`,
+		function(error) {
+			if (error) {
+				return response.status(500).send(error);
+			}
+			return response.status(200).json({msg: 'Success'});
+		});
 	}
 });
 
@@ -293,7 +306,6 @@ app.post('/login', [
 
 app.post('/token', (request, response) => {
     const { token } = request.body;
-console.log('TOKEN',request.body, token)
     if (!token) return response.sendStatus(401);
 	if (!refreshTokens.includes(token)) return response.sendStatus(403);
 	
