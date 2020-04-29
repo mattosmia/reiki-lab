@@ -19,7 +19,8 @@ function VolunteersListItem(props) {
 			{props.data.first_name} {props.data.last_name}
 		</div>
 		<div className="volunteers-list__therapies">
-			{props.data.therapies.join(', ')}
+			{props.data.therapies.slice(0,3).join(', ')}
+			{props.data.therapies.length > 3? <span title={props.data.therapies.slice(3).join(', ')}> + {props.data.therapies.length - 3} more</span>:''}
 		</div>
 	</div>
   );
