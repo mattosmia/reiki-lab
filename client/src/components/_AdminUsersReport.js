@@ -16,7 +16,7 @@ class AdminUsersReport extends Component {
 			entriesPerPage: 50,
 			reportList: []
 		}
-		this.approveVolunteer = this.approveVolunteer.bind(this);
+		this.updateVolunteer = this.updateVolunteer.bind(this);
 		this.deleteUser = this.deleteUser.bind(this);
 	}
 
@@ -35,7 +35,7 @@ class AdminUsersReport extends Component {
 
 	loadPage = () => {
 		const initialIdx = (this.state.currentReportPage - 1) * this.state.entriesPerPage;
-		return this.state.reportList.slice(initialIdx, initialIdx + this.state.entriesPerPage).map((data, idx) => <AdminUsersReportRow key={idx} data={data} approveVolunteer={this.approveVolunteer} deleteUser={this.deleteUser} />)
+		return this.state.reportList.slice(initialIdx, initialIdx + this.state.entriesPerPage).map((data, idx) => <AdminUsersReportRow key={idx} data={data} updateVolunteer={this.updateVolunteer} deleteUser={this.deleteUser} />)
 	}
 
 	createPagination = () => {
@@ -46,11 +46,11 @@ class AdminUsersReport extends Component {
 		return pagination;
 	}
 
-	approveVolunteer = (user_id) => {
+	updateVolunteer = (action,user_id) => {
 		this.setState({
 			loading: true
 		}, () => {
-			axios.post('/approve-volunteer', { user_id }, authHeaders())
+			axios.post('/update-volunteer', { user_id, action }, authHeaders())
 			.then(res => {
 				this.setState({
 					requestError: false,

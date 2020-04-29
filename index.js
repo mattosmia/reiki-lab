@@ -41,6 +41,7 @@ dbConnection.connect((error) => {
 
 const sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
 
+/*---- Helpers ----*/
 const randomUUIDGenerator = () => {
 	// http://stackoverflow.com/a/8809472
 	let d = new Date().getTime();
@@ -68,6 +69,14 @@ const authJWT = (request, response, next) => {
     }
 };
 
+const checkAdmin = (role) => {
+	if (role !== 'admin') {
+		return response.status(403).send(error);
+	}
+}
+/* --------------- */
+
+
 app.get('/therapies', (request, response) => {
 	dbConnection.query(`SELECT therapy_id, therapy_name FROM Therapies ORDER BY therapy_name ASC`,
 		function(error, rows) {
@@ -81,7 +90,8 @@ app.get('/therapies', (request, response) => {
 	);
 });
 
-app.get('/distance-healing-report', (request, response) => {
+
+app.get('/distance-healing-report', authJWT, (request, response) => {
 	dbConnection.query(`SELECT first_name, last_name, DATE_FORMAT(dob,"%d/%m/%Y") as dob, residence, DATE_FORMAT(date,"%d/%m/%Y %T") as date FROM Distance_healing ORDER BY date ASC`,
 		function(error, rows) {
 			if (error) {
@@ -138,40 +148,36 @@ app.get('/users-report', authJWT, (request, response) => {
 });
 
 
-app.post('/approve-volunteer', authJWT, (request, response) => {
-	const { role } = request.user;
-	if (role !== 'admin') {
-		return response.status(403).send(error);
+app.post('/update-volunteer', authJWT, (request, response) => {
+	if (checkAdmin(request.user)) {
+		const { user_id, action } = request.body;
+		const approved_date = (action === 'approve'? 'NOW()' : null);
+		dbConnection.query(`UPDATE Users SET approved_date = ? WHERE user_id = ?`,
+		[ approved_date, user_id ],
+			function(error, rows) {
+			if (error) {
+				return response.status(500).send(error);
+			}
+			return response.status(200).json({msg: 'Success'});
+			}
+		);
 	}
-	const { user_id } = request.body;
-	console.log('>>>',user_id)
-	dbConnection.query(`UPDATE Users SET approved_date = NOW() WHERE user_id = ?`,
-	[ user_id ],
-		function(error, rows) {
-		if (error) {
-			return response.status(500).send(error);
-		}
-		return response.status(200).json({msg: 'Success'});
-		}
-	);
 });
 
 
 app.post('/delete-user', authJWT, (request, response) => {
-	const { role } = request.user;
-	if (role !== 'admin') {
-		return response.status(403).send(error);
+	if (checkAdmin(request.user)) {
+		const { user_id } = request.body;
+		dbConnection.query(`DELETE FROM Users WHERE user_id = ?`,
+		[ user_id ],
+			function(error, rows) {
+			if (error) {
+				return response.status(500).send(error);
+			}
+			return response.status(200).json({msg: 'Success'});
+			}
+		);
 	}
-	const { user_id } = request.body;
-	dbConnection.query(`DELETE FROM Users WHERE user_id = ?`,
-	[ user_id ],
-		function(error, rows) {
-		if (error) {
-			return response.status(500).send(error);
-		}
-		return response.status(200).json({msg: 'Success'});
-		}
-	);
 });
 
 app.get('/volunteers', (request, response) => {

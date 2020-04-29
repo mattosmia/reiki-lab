@@ -24,7 +24,7 @@ function AdminDistanceHealingReportRow(props) {
 				{props.data.registration_date}
 			</td>
 			<td>
-				{props.data.volunteer === 'Y'? (props.data.approved_date ? 'Yes' : <span className="a-link" onClick={() => props.approveVolunteer(props.data.user_id)}>Approve?</span>) : 'No'}
+				{props.data.volunteer === 'Y'? (props.data.approved_date ? <span className="a-link" onClick={() => props.updateVolunteer('remove',props.data.user_id)}>Remove?</span> : <span className="a-link" onClick={() => props.updateVolunteer('approve',props.data.user_id)}>Approve?</span>) : '-'}
 			</td>
 			<td>
 				<div className="icon icon-delete" onClick={() => props.deleteUser(props.data.user_id)}></div>

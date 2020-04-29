@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { fetchList } from './__Utils';
+import { fetchList, authHeaders } from './__Utils';
 import AdminDistanceHealingReportRow from './_AdminDistanceHealingReportRow';
 import Loading from './__Loading';
 
@@ -16,7 +16,7 @@ class AdminDistanceHealingReport extends Component {
 	}
 
     componentDidMount() {
-		fetchList('/distance-healing-report').then(response => {
+		fetchList('/distance-healing-report', authHeaders()).then(response => {
 			this.setState({
 				reportList: Object.values(response.data),
 				loading: false
