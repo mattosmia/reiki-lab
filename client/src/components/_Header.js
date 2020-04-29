@@ -20,7 +20,7 @@ class Header extends Component {
 		if (this.state.isLoggedIn !== this.props.user) {
 			this.setState({
 				isLoggedIn: this.props.user
-			},() => console.log('user',this.state.isLoggedIn));
+			});
 		}
 	}
 	render() {
