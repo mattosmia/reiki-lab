@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from "axios";
 
 import FormValidation from './__FormValidation';
@@ -108,7 +109,7 @@ class DistanceHealingForm extends Component {
 							{ this.state.countriesList.length > 0 && createDropdownOptions(this.state.countriesList) }
 						</select>
 						<input type="checkbox" id="dhfConfirmList" name="dhfConfirmList" onChange={this.handleChange} /><label className="inline-label" htmlFor="dhfConfirmList">Please, place me on this month's distance healing list</label>
-						<input type="checkbox" id="dhfTerms" name="dhfTerms" onChange={this.handleChange} /><label className="inline-label" htmlFor="dhfTerms">I agree with the Terms & Conditions</label>
+						<input type="checkbox" id="dhfTerms" name="dhfTerms" onChange={this.handleChange} /><label className="inline-label" htmlFor="dhfTerms">I agree with the <Link to="/terms-conditions">Terms & Conditions</Link></label>
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Add me to the list</button>
 					</form>
 					</>}
