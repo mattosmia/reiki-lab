@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import {withRouter} from 'react-router-dom';
 
 import { fetchList, authHeaders } from './__Utils';
 import AdminDistanceHealingReportRow from './_AdminDistanceHealingReportRow';
@@ -9,6 +11,8 @@ class AdminDistanceHealingReport extends Component {
 		super(props);
 		this.state = {
 			loading: true,
+			requestError: false,
+			requestSuccess: false,
 			currentReportPage: 1,
 			entriesPerPage: 50,
 			reportList: []
@@ -16,10 +20,40 @@ class AdminDistanceHealingReport extends Component {
 	}
 
     componentDidMount() {
+		this.loadEntries();
+	}
+
+	loadEntries = () =>  {
 		fetchList('/distance-healing-report', authHeaders()).then(response => {
 			this.setState({
 				reportList: Object.values(response.data),
 				loading: false
+			});
+		});
+	}
+
+	purgeOldEntries = () => {
+		this.setState({
+			loading: true,
+			requestError: false,
+			requestSuccess: true
+		}, () => {
+			axios.post('/purge-list', { empty: ''}, authHeaders())
+			.then(res => {
+				this.setState({
+					loading: false,
+					requestError: false,
+					requestSuccess: true
+				}, this.loadEntries)
+			}).catch(error => {
+				this.setState({
+					loading: false,
+					requestError: true,
+					requestSuccess: false
+				});
+				if (error.response.status === 401 || error.response.status === 403) {
+					this.props.history.push('/login');
+				}
 			});
 		});
 	}
@@ -43,6 +77,9 @@ class AdminDistanceHealingReport extends Component {
 			<h1 className="module-heading module-heading--pink">Distance Healing Report</h1>
 			{ this.state.loading && <Loading /> }
 			{ ! this.state.loading && this.state.reportList.length > 0 && <>
+			{ this.state.requestSuccess && <p className="success-message">Entries older than 30 days have been removed.</p> }
+			{ this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
+			<button className="btn btn--secondary" onClick={this.purgeOldEntries}>Remove entries older than 30 days</button>
 			<table className="admin-dashboard__table">
                 <thead>
 					<tr>
@@ -74,4 +111,4 @@ class AdminDistanceHealingReport extends Component {
 	};
 }
 
-export default AdminDistanceHealingReport;
+export default withRouter(AdminDistanceHealingReport);

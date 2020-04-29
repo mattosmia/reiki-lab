@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 
 import { fetchList, authHeaders } from './__Utils';
@@ -21,10 +22,10 @@ class AdminUsersReport extends Component {
 	}
 
 	componentDidMount() {
-		this.loadReportEntries();
+		this.loadEntries();
 	}
 
-	loadReportEntries = () => {
+	loadEntries = () => {
 		fetchList('/users-report', authHeaders()).then(response => {
 			this.setState({
 				reportList: Object.values(response.data),
@@ -53,9 +54,10 @@ class AdminUsersReport extends Component {
 			axios.post('/update-volunteer', { user_id, action }, authHeaders())
 			.then(res => {
 				this.setState({
+					loading: false,
 					requestError: false,
 					requestSuccess: true
-				}, this.loadReportEntries)
+				}, this.loadEntries)
 			}).catch(error => {
 				this.setState({
 					loading: false,
@@ -78,7 +80,7 @@ class AdminUsersReport extends Component {
 				this.setState({
 					requestError: false,
 					requestSuccess: true
-				}, this.loadReportEntries)
+				}, this.loadEntries)
 			}).catch(error => {
 				this.setState({
 					loading: false,
@@ -141,4 +143,4 @@ class AdminUsersReport extends Component {
 	};
 }
 
-export default AdminUsersReport;
+export default withRouter(AdminUsersReport);
