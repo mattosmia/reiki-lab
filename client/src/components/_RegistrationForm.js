@@ -4,6 +4,7 @@ import axios from "axios";
 
 import FormValidation from './__FormValidation';
 import { returnCountriesObject, createDropdownOptions, fetchList } from './__Utils';
+import Loading from './__Loading';
 
 class RegistrationForm extends Component {
 	constructor(props) {
@@ -60,7 +61,7 @@ class RegistrationForm extends Component {
 
 		this.setState({
 			countriesList: returnCountriesObject()
-		}, fetchList('/therapies').then(response => {
+		}, () => fetchList('/therapies').then(response => {
 			this.setState({
 				therapiesList: response.data,
 				loading: false
@@ -153,7 +154,8 @@ class RegistrationForm extends Component {
 			<section className="registration-form">
 				<div className="wrapper">
 					<h1 className="module-heading module-heading--pink">Sign up</h1>
-					{ !this.state.requestSuccess &&
+					{ this.state.loading && <Loading />}
+					{ ! this.state.loading && !this.state.requestSuccess &&
 					<>
 					<p>Create your account or <Link to="/login">log in</Link></p>
 					<form noValidate className="form">
@@ -199,7 +201,7 @@ class RegistrationForm extends Component {
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Create account</button>
 					</form>
 					</>}
-					{ this.state.requestSuccess && <p>Thank you for creating your account. You can now <Link to="/login">log in</Link>.</p> }
+					{ ! this.state.loading && this.state.requestSuccess && <p>Thank you for creating your account. You can now <Link to="/login">log in</Link>.</p> }
 				</div>
 			</section>
 		);
