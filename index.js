@@ -207,8 +207,8 @@ app.post('/register', [
 	check('rfDOB').trim(),
 	check('rfNationality').escape(),
 	check('rfCountryRes').escape(),
-	check('rfFacebook').trim().escape(),
-	check('rfInstagram').trim().escape()
+	check('rfFacebook').trim(),
+	check('rfInstagram').trim()
 ], (request, response) => {
 	const { rfFirstName, rfLastName, rfNationality, rfCountryRes, rfEmail, rfPassword, rfDOB, rfTherapies } = request.body;
 
