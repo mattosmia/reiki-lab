@@ -45,7 +45,7 @@ class Logout extends Component {
 					<ContactForm />
 				</>}
 				{ ! this.state.loading && this.state.logoutError && <>
-					<p>There has been an error. Please try again later</p>
+					<p>Sorry, an error occurred. Please try again.</p>
 					<TextWithButton />
 					<ContactForm />
 				</>}

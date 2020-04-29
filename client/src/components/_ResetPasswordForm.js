@@ -105,7 +105,7 @@ class ResetPasswordForm extends Component {
 					{! this.state.loading && ! this.state.requestSuccess && ! this.state.formFatalError && <>
 					<p>Please enter your new password below</p>
 					<form noValidate className="form">
-						{! this.state.loading && this.state.requestError && <p className="error-message">There has been an error. Please try again.</p>}
+						{! this.state.loading && this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p>}
 						<label htmlFor="rpfPassword">Password</label>
 						<input type="password" name="rpfPassword" id="rpfPassword" placeholder="Password" onChange={this.handleChange} />
 						<label htmlFor="rpfPasswordConfirmation">Password Confirmation</label>

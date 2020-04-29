@@ -90,7 +90,7 @@ class ForgotPasswordForm extends Component {
 					{! this.state.loading && ! this.state.requestSuccess && <>
 					<p>We will send you an email with instructions on how to reset your password</p>
 					<form noValidate className="form">
-						{! this.state.loading && this.state.requestError && <p className="error-message">There has been an error. Please try again.</p>}
+						{! this.state.loading && this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p>}
 						<label htmlFor="fpfEmail">Email</label>
 						<input type="email" name="fpfEmail" id="fpfEmail" placeholder="Email" onChange={this.handleChange} />
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Email me</button>
