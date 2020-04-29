@@ -204,7 +204,7 @@ app.post('/register', [
 	check('rfFirstName').trim().escape(),
 	check('rfLastName').trim().escape(),
 	check('rfEmail').trim().normalizeEmail(),
-	check('rfDOB').trim().toDate(),
+	check('rfDOB').trim(),
 	check('rfNationality').escape(),
 	check('rfCountryRes').escape(),
 	check('rfFacebook').trim().escape(),
@@ -401,7 +401,7 @@ app.post('/update-account', authJWT, [
 app.post('/distance-healing', [
 	check('dhfFirstName').trim().escape(),
 	check('dhfLastName').trim().escape(),
-	check('dhfDOB').trim().toDate(),
+	check('dhfDOB').trim(),
 	check('dhfCountryRes').escape()
 ], (request, response) => {
 	const { dhfFirstName, dhfLastName, dhfDOB, dhfCountryRes } = request.body;
