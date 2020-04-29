@@ -11,8 +11,8 @@ class ContactForm extends Component {
 		this.state = {
 			countriesList: [],
 			formSubmitted: false,
-			formSubmitError: false,
-			formSubmitSuccess: false,
+			requestError: false,
+			requestSuccess: false,
 			formValid: false,
 			formFieldValid: {
 				'cfName': false,
@@ -47,7 +47,7 @@ class ContactForm extends Component {
 		const fieldName = e.target.name;
 		this.setState({
 			formFieldValues: { ...this.state.formFieldValues, [fieldName]: fieldValue },
-			formSubmitError: false
+			requestError: false
 		}, () => {
 			this.setValidateFields(FormValidation(fieldName, this.state.formFieldValues));
 		})
@@ -65,21 +65,21 @@ class ContactForm extends Component {
 	submitForm = () => {
 		this.setState({
 			formSubmitted: true,
-			formSubmitError: false,
-			formSubmitSuccess: false
+			requestError: false,
+			requestSuccess: false
 		}, () => {
 			axios.post('/contact', this.state.formFieldValues)
 			.then(res => {
 				this.setState({
 					formSubmitted: false,
-					formSubmitError: false,
-					formSubmitSuccess: true
+					requestError: false,
+					requestSuccess: true
 				})
 			}).catch(error => 
 				this.setState({
 					formSubmitted: false,
-					formSubmitError: true,
-					formSubmitSuccess: false
+					requestError: true,
+					requestSuccess: false
 				})
 			);
 		});
@@ -92,8 +92,8 @@ class ContactForm extends Component {
 					<h1 className="module-heading">Get in touch</h1>
 					<form noValidate className="form">
 						<img className="contact-form__icon" src={envelope} alt="Contact form" />
-						{ this.state.formSubmitSuccess && <p className="success-message">Thanks for your message, we will be in touch shortly</p> }
-						{ this.state.formSubmitError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
+						{ this.state.requestSuccess && <p className="success-message">Thanks for your message, we will be in touch shortly</p> }
+						{ this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
 						<label htmlFor="cfName">Full name</label>
 						<input type="text" name="cfName" id="cfName" placeholder="Full name" onChange={this.handleChange} />
 						<label htmlFor="cfEmail">Email address</label>

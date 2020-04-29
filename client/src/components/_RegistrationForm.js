@@ -9,11 +9,12 @@ class RegistrationForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			loading: true,
 			countriesList: [],
 			therapiesList: [],
 			formSubmitted: false,
-			formSubmitError: false,
-			formSubmitSuccess: false,
+			requestError: false,
+			requestSuccess: false,
 			formValid: false,
 			formFieldValid: {
 				'rfFirstName': false,
@@ -59,13 +60,12 @@ class RegistrationForm extends Component {
 
 		this.setState({
 			countriesList: returnCountriesObject()
-		});
-
-		fetchList('/therapies').then(response => {
+		}, fetchList('/therapies').then(response => {
 			this.setState({
 				therapiesList: response.data,
+				loading: false
 			});
-		});
+		}));
 	}
 
 	checkFormValid = () => { 
@@ -111,7 +111,7 @@ class RegistrationForm extends Component {
 
 		this.setState({
 			formFieldValues: { ...this.state.formFieldValues, [fieldName]: fieldValue },
-			formSubmitError: false
+			requestError: false
 		}, () => {
 			this.setValidateFields(FormValidation(fieldName, this.state.formFieldValues));
 		})
@@ -128,18 +128,21 @@ class RegistrationForm extends Component {
 
 	submitForm = () => {
 		this.setState({
+			loading: true,
 			formSubmitted: true,
-			formSubmitError: false
+			requestError: false
 		}, () => {
 			axios.post('/register', this.state.formFieldValues)
 			.then(res => {
 				this.setState({
-					formSubmitSuccess: true
+					loading: false,
+					requestSuccess: true
 				})
 			}).catch(error => 
 				this.setState({
+					loading: true,
 					formSubmitted: false,
-					formSubmitError: true
+					requestError: true
 				})
 			);
 		});
@@ -150,11 +153,11 @@ class RegistrationForm extends Component {
 			<section className="registration-form">
 				<div className="wrapper">
 					<h1 className="module-heading module-heading--pink">Sign up</h1>
-					{ !this.state.formSubmitSuccess &&
+					{ !this.state.requestSuccess &&
 					<>
 					<p>Create your account or <Link to="/login">log in</Link></p>
 					<form noValidate className="form">
-						{ this.state.formSubmitError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
+						{ this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
 						<label htmlFor="rfFirstName">First name</label>
 						<input type="text" name="rfFirstName" id="rfFirstName" placeholder="First name" onChange={this.handleChange} />
 						<label htmlFor="rfLastName">Last name</label>
@@ -196,7 +199,7 @@ class RegistrationForm extends Component {
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Create account</button>
 					</form>
 					</>}
-					{ this.state.formSubmitSuccess && <p>Thank you for creating your account. You can now <Link to="/login">log in</Link>.</p> }
+					{ this.state.requestSuccess && <p>Thank you for creating your account. You can now <Link to="/login">log in</Link>.</p> }
 				</div>
 			</section>
 		);

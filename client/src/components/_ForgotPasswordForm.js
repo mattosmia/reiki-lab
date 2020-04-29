@@ -10,8 +10,8 @@ class ForgotPasswordForm extends Component {
 		this.state = {
 			loading: false,
 			formSubmitted: false,
-			formSubmitError: false,
-			formSubmitSuccess: false,
+			requestError: false,
+			requestSuccess: false,
 			formValid: false,
 			formFieldValid: {
 				'fpfEmail': false
@@ -41,7 +41,7 @@ class ForgotPasswordForm extends Component {
 		
 		this.setState({
 			formFieldValues: { ...this.state.formFieldValues, [fieldName]: fieldValue },
-			formSubmitError: false
+			requestError: false
 		}, () => {
 			this.setValidateFields(FormValidation(fieldName, this.state.formFieldValues));
 		})
@@ -59,22 +59,22 @@ class ForgotPasswordForm extends Component {
 	submitForm = () => {
 		this.setState({
 			formSubmitted: true,
-			formSubmitError: false,
+			requestError: false,
 			loading: true
 		}, () => {
 			axios.post('/forgot-password', this.state.formFieldValues)
 			.then(res => {
 				this.setState({
-					formSubmitSuccess: true,
+					requestSuccess: true,
 					formSubmitted: false,
-					formSubmitError: false,
+					requestError: false,
 					loading: false
 				})
 			}).catch(error => 
 				this.setState({
-					formSubmitSuccess: false,
+					requestSuccess: false,
 					formSubmitted: false,
-					formSubmitError: true,
+					requestError: true,
 					loading: false
 				})
 			);
@@ -87,15 +87,15 @@ class ForgotPasswordForm extends Component {
 				<div className="wrapper">
 					<h1 className="module-heading module-heading--pink">Forgot password</h1>
 					{this.state.loading && <Loading />}
-					{! this.state.loading && ! this.state.formSubmitSuccess && <>
+					{! this.state.loading && ! this.state.requestSuccess && <>
 					<p>We will send you an email with instructions on how to reset your password</p>
 					<form noValidate className="form">
-						{! this.state.loading && this.state.formSubmitError && <p className="error-message">There has been an error. Please try again.</p>}
+						{! this.state.loading && this.state.requestError && <p className="error-message">There has been an error. Please try again.</p>}
 						<label htmlFor="fpfEmail">Email</label>
 						<input type="email" name="fpfEmail" id="fpfEmail" placeholder="Email" onChange={this.handleChange} />
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Email me</button>
 					</form></>}
-					{! this.state.loading && this.state.formSubmitSuccess &&
+					{! this.state.loading && this.state.requestSuccess &&
 					<p>If the email address provided is registered with us, you will receive instructions shortly.</p>}
 				</div>
 			</section>

@@ -14,8 +14,8 @@ class MyAccountForm extends Component {
 			countriesList: [],
 			therapiesList: [],
 			formSubmitted: false,
-			formSubmitError: false,
-			formSubmitSuccess: false,
+			requestError: false,
+			requestSuccess: false,
 			formValid: false,
 			showDeleteAccountOptions: false,
 			accountDeleted: false,
@@ -126,7 +126,7 @@ class MyAccountForm extends Component {
 
 		this.setState({
 			formFieldValues: { ...this.state.formFieldValues, [fieldName]: fieldValue },
-			formSubmitError: false
+			requestError: false
 		}, () => {
 			this.setValidateFields(FormValidation(fieldName, this.state.formFieldValues));
 		})
@@ -144,21 +144,21 @@ class MyAccountForm extends Component {
 	submitForm = () => {
 		this.setState({
 			formSubmitted: true,
-			formSubmitError: false
+			requestError: false
 		}, () => {
 			axios.post('/update-account', this.state.formFieldValues, authHeaders())
 			.then(res => {
 				this.setState({
-					formSubmitSuccess: true,
+					requestSuccess: true,
 					formSubmitted: false,
-					formSubmitError: false,
+					requestError: false,
 					formFieldValues: {...this.state.formFieldValues, mafPassword: '', mafPasswordConfirmation: ''}
 				})
 			}).catch(error => {
 				this.setState({
 					formSubmitted: false,
-					formSubmitError: true,
-					formSubmitSuccess: false
+					requestError: true,
+					requestSuccess: false
 				});
 				if (error.response.status === 401 || error.response.status === 403) {
 					this.props.history.push('/login');
@@ -170,20 +170,20 @@ class MyAccountForm extends Component {
 	deleteAccount = () => {
 		this.setState({
 			formSubmitted: true,
-			formSubmitError: false
+			requestError: false
 		}, () => {
 			axios.post('/delete-account', {}, authHeaders())
 			.then(res => {
 				this.setState({
-					formSubmitSuccess: true,
+					requestSuccess: true,
 					accountDeleted: true,
 					formSubmitted: false
 				})
 			}).catch(error => {
 				this.setState({
 					formSubmitted: false,
-					formSubmitError: true,
-					formSubmitSuccess: false
+					requestError: true,
+					requestSuccess: false
 				});
 				if (error.response.status === 401 || error.response.status === 403) {
 					this.props.history.push('/login');
@@ -203,8 +203,8 @@ class MyAccountForm extends Component {
 					<>
 					<p>Update your account details or <Link to="/logout">log out</Link></p>
 					<form noValidate className="form">
-						{ this.state.formSubmitSuccess && <p className="success-message">Your account has been updated.</p> }
-						{ this.state.formSubmitError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
+						{ this.state.requestSuccess && <p className="success-message">Your account has been updated.</p> }
+						{ this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
 						<label htmlFor="mafFirstName">First name</label>
 						<input type="text" name="mafFirstName" id="mafFirstName" placeholder="First name" onChange={this.handleChange} defaultValue={this.state.formFieldValues.mafFirstName} />
 						<label htmlFor="mafLastName">Last name</label>

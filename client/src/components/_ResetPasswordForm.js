@@ -13,8 +13,8 @@ class ResetPasswordForm extends Component {
 			loading: true,
 			formSubmitted: false,
 			formFatalError: false,
-			formSubmitError: false,
-			formSubmitSuccess: false,
+			requestError: false,
+			requestSuccess: false,
 			formValid: false,
 			formFieldValid: {
 				'rpfKey': true,
@@ -56,7 +56,7 @@ class ResetPasswordForm extends Component {
 		
 		this.setState({
 			formFieldValues: { ...this.state.formFieldValues, [fieldName]: fieldValue },
-			formSubmitError: false
+			requestError: false
 		}, () => {
 			this.setValidateFields(FormValidation(fieldName, this.state.formFieldValues));
 		})
@@ -74,22 +74,22 @@ class ResetPasswordForm extends Component {
 	submitForm = () => {
 		this.setState({
 			formSubmitted: true,
-			formSubmitError: false,
+			requestError: false,
 			loading: true
 		}, () => {
 			axios.post('/reset-password', this.state.formFieldValues)
 			.then(res => {
 				this.setState({
-					formSubmitSuccess: true,
+					requestSuccess: true,
 					formSubmitted: false,
-					formSubmitError: false,
+					requestError: false,
 					loading: false
 				})
 			}).catch(error => 
 				this.setState({
-					formSubmitSuccess: false,
+					requestSuccess: false,
 					formSubmitted: false,
-					formSubmitError: true,
+					requestError: true,
 					loading: false
 				})
 			);
@@ -102,17 +102,17 @@ class ResetPasswordForm extends Component {
 				<div className="wrapper">
 					<h1 className="module-heading module-heading--pink">Reset password</h1>
 					{this.state.loading && <Loading />}
-					{! this.state.loading && ! this.state.formSubmitSuccess && ! this.state.formFatalError && <>
+					{! this.state.loading && ! this.state.requestSuccess && ! this.state.formFatalError && <>
 					<p>Please enter your new password below</p>
 					<form noValidate className="form">
-						{! this.state.loading && this.state.formSubmitError && <p className="error-message">There has been an error. Please try again.</p>}
+						{! this.state.loading && this.state.requestError && <p className="error-message">There has been an error. Please try again.</p>}
 						<label htmlFor="rpfPassword">Password</label>
 						<input type="password" name="rpfPassword" id="rpfPassword" placeholder="Password" onChange={this.handleChange} />
 						<label htmlFor="rpfPasswordConfirmation">Password Confirmation</label>
 						<input type="password" name="rpfPasswordConfirmation" id="rpfPasswordConfirmation" placeholder="Password Confirmation" onChange={this.handleChange} />
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Change password</button>
 					</form></>}
-					{! this.state.loading && this.state.formSubmitSuccess &&
+					{! this.state.loading && this.state.requestSuccess &&
 					<p>Your password has been updated. Please <Link to={'/login'}>log in</Link> with your new credentials.</p>}
 					{! this.state.loading && this.state.formFatalError &&
 					<p>Your link seems to have expired. Please request another password reset link <Link to={'/forgot-password'}>here</Link>.</p>}

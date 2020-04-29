@@ -13,8 +13,8 @@ class LoginForm extends Component {
 		this.state = {
 			loading: true,
 			formSubmitted: false,
-			formSubmitError: false,
-			formSubmitSuccess: false,
+			requestError: false,
+			requestSuccess: false,
 			formValid: false,
 			formFieldValid: {
 				'lfEmail': false,
@@ -53,7 +53,7 @@ class LoginForm extends Component {
 		
 		this.setState({
 			formFieldValues: { ...this.state.formFieldValues, [fieldName]: fieldValue },
-			formSubmitError: false
+			requestError: false
 		}, () => {
 			this.setValidateFields(FormValidation(fieldName, this.state.formFieldValues));
 		})
@@ -72,20 +72,20 @@ class LoginForm extends Component {
 		this.setState({
 			loading: true,
 			formSubmitted: true,
-			formSubmitError: false
+			requestError: false
 		}, () => {
 			axios.post('/login', this.state.formFieldValues)
 			.then(res => {
 				cookie.save('rljwt', res.data, { path: '/' });
 				this.setState({
 					loading: false,
-					formSubmitSuccess: true
+					requestSuccess: true
 				}, () => this.props.history.push('/my-account'))
 			}).catch(error => 
 				this.setState({
 					loading: false,
 					formSubmitted: false,
-					formSubmitError: true
+					requestError: true
 				})
 			);
 		});
@@ -100,7 +100,7 @@ class LoginForm extends Component {
 					{ ! this.state.loading && <>
 					<p>Please, enter your details below or <Link to="/register">sign up</Link></p>
 					<form noValidate className="form">
-						{this.state.formSubmitError && <p className="error-message">Please verify your details and try again</p>}
+						{this.state.requestError && <p className="error-message">Please verify your details and try again</p>}
 						<label htmlFor="lfEmail">Email</label>
 						<input type="email" name="lfEmail" id="lfEmail" placeholder="Email" onChange={this.handleChange} />
 						<label htmlFor="lfPassword">Password</label>

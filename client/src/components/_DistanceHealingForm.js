@@ -10,8 +10,8 @@ class DistanceHealingForm extends Component {
 		this.state = {
 			countriesList: [],
 			formSubmitted: false,
-			formSubmitError: false,
-			formSubmitSuccess: false,
+			requestError: false,
+			requestSuccess: false,
 			formValid: false,
 			formFieldValid: {
 				'dhfFirstName': false,
@@ -54,7 +54,7 @@ class DistanceHealingForm extends Component {
 		const fieldName = e.target.name;
 		this.setState({
 			formFieldValues: { ...this.state.formFieldValues, [fieldName]: fieldValue },
-			formSubmitError: false
+			requestError: false
 		}, () => {
 			this.setValidateFields(FormValidation(fieldName, this.state.formFieldValues));
 		})
@@ -72,17 +72,17 @@ class DistanceHealingForm extends Component {
 	submitForm = () => {
 		this.setState({
 			formSubmitted: true,
-			formSubmitError: false
+			requestError: false
 		}, () => {
 			axios.post('/distance-healing', this.state.formFieldValues)
 			.then(res => {
 				this.setState({
-					formSubmitSuccess: true
+					requestSuccess: true
 				})
 			}).catch(error => 
 				this.setState({
 					formSubmitted: false,
-					formSubmitError: true
+					requestError: true
 				})
 			);
 		});
@@ -92,10 +92,10 @@ class DistanceHealingForm extends Component {
 		return (
 			<section className="distance-healing-form">
 				<div className="wrapper">
-					{ !this.state.formSubmitSuccess &&
+					{ !this.state.requestSuccess &&
 					<>
 					<form noValidate className="form">
-						{ this.state.formSubmitError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }>
+						{ this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }>
 						<label htmlFor="dhfFirstName">First name</label>
 						<input type="text" name="dhfFirstName" id="dhfFirstName" placeholder="First name" onChange={this.handleChange} />
 						<label htmlFor="dhfLastName">Last name</label>
@@ -112,7 +112,7 @@ class DistanceHealingForm extends Component {
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Add me to the list</button>
 					</form>
 					</>}
-					{ this.state.formSubmitSuccess && <p>Thank you for submitting your details. You are now on this month's Distance Healing list.</p> }
+					{ this.state.requestSuccess && <p>Thank you for submitting your details. You are now on this month's Distance Healing list.</p> }
 				</div>
 			</section>
 		);
