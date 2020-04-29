@@ -16,6 +16,7 @@ class RegistrationForm extends Component {
 			formSubmitted: false,
 			requestError: false,
 			requestSuccess: false,
+			requestUserExists: false,
 			formValid: false,
 			formFieldValid: {
 				'rfFirstName': false,
@@ -137,14 +138,18 @@ class RegistrationForm extends Component {
 			.then(res => {
 				this.setState({
 					loading: false,
-					requestSuccess: true
+					requestSuccess: true,
+					requestUserExists: false
 				})
-			}).catch(error => 
+			}).catch(error => {
+				const isUserExistsError = (error.response && error.response.data && error.response.data.msg === 'User exists') ? true : false;
 				this.setState({
-					loading: true,
+					loading: false,
 					formSubmitted: false,
-					requestError: true
+					requestError: true,
+					requestUserExists: isUserExistsError
 				})
+			}
 			);
 		});
 	}
@@ -155,7 +160,7 @@ class RegistrationForm extends Component {
 				<div className="wrapper">
 					<h1 className="module-heading module-heading--pink">Sign up</h1>
 					{ this.state.loading && <Loading />}
-					{ ! this.state.loading && !this.state.requestSuccess &&
+					{ ! this.state.loading && !this.state.requestSuccess && !this.state.requestUserExists &&
 					<>
 					<p>Create your account or <Link to="/login">log in</Link></p>
 					<form noValidate className="form">
@@ -202,6 +207,7 @@ class RegistrationForm extends Component {
 					</form>
 					</>}
 					{ ! this.state.loading && this.state.requestSuccess && <p>Thank you for creating your account. You can now <Link to="/login">log in</Link>.</p> }
+					{ ! this.state.loading && this.state.requestUserExists && <p>Your email address is already registered. <Link to="/login">Log in</Link> or <Link to="/forgot-password">reset your password</Link></p> }
 				</div>
 			</section>
 		);

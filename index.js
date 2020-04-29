@@ -229,6 +229,8 @@ app.post('/register', [
 			[rfEmail, rfFirstName, rfLastName, formattedDOB, rfNationality, rfCountryRes, encryptedPassword, isVolunteer, rfFacebook, rfInstagram],
 			function(error, result) {
 				if (error) {
+					if (error.code === 'ER_DUP_ENTRY') 
+					return response.status(500).json({msg: 'User exists'});
 					return response.status(500).send(error);
 				}
 				if (rfTherapies.length > 0) {
