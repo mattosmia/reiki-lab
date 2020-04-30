@@ -96,7 +96,7 @@ class DistanceHealingForm extends Component {
 					{ !this.state.requestSuccess &&
 					<>
 					<form noValidate className="form">
-						{ this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }>
+						{ this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
 						<label htmlFor="dhfFirstName">First name</label>
 						<input type="text" name="dhfFirstName" id="dhfFirstName" placeholder="First name *" onChange={this.handleChange} />
 						<span className="form__field-description">No special characters allowed</span>
