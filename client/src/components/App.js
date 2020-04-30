@@ -55,29 +55,29 @@ class App extends Component {
 			<main>
 				<Switch>
 					{/* Content pages */}
-					<Route exact path="/" render={() => <Home setAuth={this.setAuth} {...this.props} />} />
-					<Route exact path="/about" render={() => <About setAuth={this.setAuth} {...this.props} />} />
-					<Route exact path="/contact" render={() => <Contact setAuth={this.setAuth} {...this.props} />} />
-					<Route exact path="/distance-healing" render={() => <DistanceHealing setAuth={this.setAuth} {...this.props} />} />
-					<Route exact path="/events" render={() => <Events setAuth={this.setAuth} {...this.props} />} />
-					<Route exact path="/volunteers" render={() => <Volunteers setAuth={this.setAuth} {...this.props} />} />
-					<Route exact path="/what-is-reiki" render={() => <AboutReiki setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/" render={(props) => <Home setAuth={this.setAuth} {...props} />} />
+					<Route exact path="/about" render={(props) => <About setAuth={this.setAuth} {...props} />} />
+					<Route exact path="/contact" render={(props) => <Contact setAuth={this.setAuth} {...props} />} />
+					<Route exact path="/distance-healing" render={(props) => <DistanceHealing setAuth={this.setAuth} {...props} />} />
+					<Route exact path="/events" render={(props) => <Events setAuth={this.setAuth} {...props} />} />
+					<Route exact path="/volunteers" render={(props) => <Volunteers setAuth={this.setAuth} {...props} />} />
+					<Route exact path="/what-is-reiki" render={(props) => <AboutReiki setAuth={this.setAuth} {...props} />} />
 
 					{/* Account pages -- non restricted routes */}
-					<Route exact path="/login" render={() => <Login setAuth={this.setAuth} {...this.props} />} />
-					<Route exact path="/forgot-password" render={() => <ForgotPassword setAuth={this.setAuth} {...this.props} />} />
-					<Route exact path="/logout" render={() => <Logout setAuth={this.setAuth} {...this.props} />} />
-					<Route exact path="/register" render={() => <Register setAuth={this.setAuth} {...this.props} />} />
-					<Route exact path="/reset-password/:id" render={() => <ResetPassword setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/login" render={(props) => <Login setAuth={this.setAuth} {...props} />} />
+					<Route exact path="/forgot-password" render={(props) => <ForgotPassword setAuth={this.setAuth} {...props} />} />
+					<Route exact path="/logout" render={(props) => <Logout setAuth={this.setAuth} {...props} />} />
+					<Route exact path="/register" render={(props) => <Register setAuth={this.setAuth} {...props} />} />
+					<Route exact path="/reset-password/:id" render={(props) => <ResetPassword setAuth={this.setAuth} {...props} />} />
 
 					{/* Account pages -- restricted routes */}
-					<Route exact path="/admin" render={() => <Admin setAuth={this.setAuth} {...this.props} />} />
-					<Route exact path="/my-account" render={() => <MyAccount setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/admin" render={(props) => <Admin setAuth={this.setAuth} {...props} />} />
+					<Route exact path="/my-account" render={(props) => <MyAccount setAuth={this.setAuth} {...props} />} />
 
 					{/* Terms content pages */}
-					<Route exact path="/cookie-policy" render={() => <CookiePolicy setAuth={this.setAuth} {...this.props} />} />
-					<Route exact path="/terms-conditions" render={() => <TermsConditions setAuth={this.setAuth} {...this.props} />} />
-					<Route exact path="/privacy-policy" render={() => <PrivacyPolicy setAuth={this.setAuth} {...this.props} />} />
+					<Route exact path="/cookie-policy" render={(props) => <CookiePolicy setAuth={this.setAuth} {...props} />} />
+					<Route exact path="/terms-conditions" render={(props) => <TermsConditions setAuth={this.setAuth} {...props} />} />
+					<Route exact path="/privacy-policy" render={(props) => <PrivacyPolicy setAuth={this.setAuth} {...props} />} />
 
 					{/* 404 */}
 					<Route component={NotFound} />
