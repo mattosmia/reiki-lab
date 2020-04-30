@@ -558,7 +558,7 @@ app.post('/contact', (request, response) => {
 			},
 			content: [{
 				type: 'text/plain',
-				value: `Hello!\n\nThanks for your message.\n\nWe will get back to you shortly.\n\nKind Regards\n\nReiki Lab`,
+				value: `
 Reiki Lab Contact Form - this was posted from the website\n\n
 -------------------------------------------------------------\n\n
 Name: ${cfName}\n
