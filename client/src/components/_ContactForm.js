@@ -102,6 +102,7 @@ class ContactForm extends Component {
 						<img className="contact-form__icon" src={envelope} alt="Contact form" />
 						{ this.state.requestSuccess && <p className="success-message">Thanks for your message, we will be in touch shortly!</p> }
 						{ this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
+						{ ! this.state.requestSuccess && <>
 						<label htmlFor="cfName">Full name</label>
 						<input type="text" name="cfName" id="cfName" placeholder="Full name *" onChange={this.handleChange} onBlur={this.handleBlur} />
 						<span className="form__field-description">No special characters allowed</span>
@@ -112,6 +113,7 @@ class ContactForm extends Component {
 						<label htmlFor="cfMessage">Message</label>
 						<textarea name="cfMessage" id="cfMessage" placeholder="Message *" onChange={this.handleChange} onBlur={this.handleBlur}></textarea>
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Send message</button>
+						</>}
 					</form>
 				</div>
 			</section>
