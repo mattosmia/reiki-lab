@@ -267,6 +267,8 @@ app.post('/register', [
 							return response.status(200).json({msg: 'Success'});
 						}
 					);
+				} else {
+					return response.status(200).json({msg: 'Success'});
 				}
 			}
 		);
