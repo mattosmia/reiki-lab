@@ -5,7 +5,6 @@ import axios from "axios";
 import FormValidation from './__FormValidation';
 import { returnCountriesObject, createDropdownOptions, fetchList, authHeaders, isAuthenticated } from './__Utils';
 import Loading from './__Loading';
-import UploadAvatar from './_UploadAvatar';
 
 class MyAccountForm extends Component {
 	constructor(props) {
