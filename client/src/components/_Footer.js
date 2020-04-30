@@ -8,7 +8,9 @@ function Footer() {
 	return (
 		<footer className="wrapper wrapper--narrow">
 			<nav className="footer__nav-top">
-				<Link to="/"><img src={logo} alt="Reiki Lab" /></Link>
+				<div className="footer__nav--logo">
+					<Link to="/"><img src={logo} alt="Reiki Lab" /></Link>
+				</div>
 				<div className="footer__nav--social-media">
 					<div>Follow us</div>
 					<ul className="unstyled-list">
@@ -16,16 +18,20 @@ function Footer() {
 						<li><a href="https://www.instagram.com/reikilab/" className="icon icon__sm--instagram" target="_blank" rel="noopener noreferrer"><span className="vh">Instagram</span></a></li>
 					</ul>
 				</div>
-				<ul className="footer__nav-main unstyled-list">
-					<li><Link to="/">Home</Link></li>
-					<li><Link to="/about">About Us</Link></li>
-					<li><Link to="/distance-healing">Distance Healing</Link></li>
-				</ul>
-				<ul className="footer__nav-main unstyled-list">
-					<li><a href="https://www.eventbrite.com/o/reiki-lab-29215302519" target="_blank" rel="noopener noreferrer">Events</a></li>
-					<li><Link to="/volunteers">Volunteers</Link></li>
-					<li><Link to="/contact">Contact Us</Link></li>
-				</ul>
+				<div className="footer__nav-main">
+					<ul className="footer__nav-main__list unstyled-list">
+						<li><Link to="/">Home</Link></li>
+						<li><Link to="/about">About Us</Link></li>
+						<li><Link to="/distance-healing">Distance Healing</Link></li>
+					</ul>
+				</div>
+				<div className="footer__nav-main">
+					<ul className="footer__nav-main__list unstyled-list">
+						<li><a href="https://www.eventbrite.com/o/reiki-lab-29215302519" target="_blank" rel="noopener noreferrer">Events</a></li>
+						<li><Link to="/volunteers">Volunteers</Link></li>
+						<li><Link to="/contact">Contact Us</Link></li>
+					</ul>
+				</div>
 			</nav>
 			<nav className="footer__nav-bottom">
 				<div>

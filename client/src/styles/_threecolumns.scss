@@ -2,11 +2,22 @@
 	&__columns {
 		display: flex;
 		justify-content: space-between;
+		flex-wrap: wrap;
+		@include desktop {
+			flex-wrap: nowrap;
+		}
 	}
 	&__column {
 		width: 100%;
-		max-width: 22rem;
 		text-align: center;
+		margin-bottom: 4rem;
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+		@include desktop {
+			margin-bottom: 0;
+			max-width: 22rem;
+		}
 	}
 	a {
 		display: block;

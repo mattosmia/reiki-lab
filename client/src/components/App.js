@@ -51,7 +51,7 @@ class App extends Component {
 		return (
 		<BrowserRouter>
 			<ScrollToTop />
-			{ this.state.user && <Header user={this.state.user} setAuth={this.setAuth} {...this.props} />}}
+			{ this.state.user && <Header user={this.state.user} setAuth={this.setAuth} {...this.props} />}
 			<main>
 				<Switch>
 					{/* Content pages */}

@@ -6,8 +6,20 @@ footer {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+			flex-wrap: wrap;
+			@include desktop {
+				flex-wrap: nowrap;
+			}
+			& > div {
+				width: 100%;
+				text-align: center;
+				@include desktop {
+					width: auto;
+					text-align: left;
+				}
+			}
 		}
-		&-bottom{
+		&-bottom {
 			font-size: 1.9rem;
 			color: $blue--light;
 			display: flex;
@@ -16,6 +28,10 @@ footer {
 			margin-top: 2rem;
 		}
 		&--social-media {
+			margin: 2rem auto;
+			@include desktop {
+				margin: 0;
+			}
 			text-transform: uppercase;
 			ul {
 				margin-top: 1rem;

@@ -9,10 +9,18 @@ $black: #000;
 $grey: #666;
 $grey--light: #D8D8D8;
 
-
 $purple--25: rgba(172, 121, 180, 0.2);
 $purple--50: rgba(172, 121, 180, 0.5);
 
 .color--blue {
-    color: $blue !important;
+	color: $blue !important;
+}
+
+
+$desktop-breakpoint: 768px;
+  
+@mixin desktop {
+	@media (min-width: #{$desktop-breakpoint}) {
+		@content;
+	}
 }
