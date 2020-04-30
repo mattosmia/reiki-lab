@@ -177,11 +177,11 @@ class RegistrationForm extends Component {
 						<input type="text" name="rfLastName" id="rfLastName" placeholder="Last name *" onChange={this.handleChange} onBlur={this.handleBlur} />
 						<span className="form__field-description">No special characters allowed</span>
 						<label htmlFor="rfDOB">Date of birth</label>
-						<input type="text" name="rfDOB" id="rfDOB" placeholder="Date of birth *" maxLength="10" onChange={this.handleChange} onBlur={this.handleBlur} />
+						<input type="text" name="rfDOB" id="rfDOB" placeholder="Date of birth DD/MM/YYYY*" maxLength="10" onChange={this.handleChange} onBlur={this.handleBlur} />
 						<span className="form__field-description">Date format DD/MM/YYYY</span>
 						<label htmlFor="rfNationality">Nationality</label>
 						<select	name="rfNationality" id="rfNationality" onChange={this.handleChange} onBlur={this.handleBlur}>
-							<option>Nationality *</option>
+							<option>Country you are from *</option>
 							{ this.state.countriesList.length > 0 && createDropdownOptions(this.state.countriesList) }
 						</select>
 						<label htmlFor="rfCountryRes">Country of residence</label>
