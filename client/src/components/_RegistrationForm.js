@@ -211,7 +211,7 @@ class RegistrationForm extends Component {
 								{ this.state.therapiesList.length > 0 && createDropdownOptions(this.state.therapiesList) }
 							</select>
 						</>}
-						<input type="checkbox" id="rfTerms" name="rfTerms" onChange={this.handleChange} onBlur={this.handleBlur} /><label className="inline-label" htmlFor="rfTerms">I agree with the <Link to="/terms-conditions">Terms & Conditions</Link> *</label>
+						<input type="checkbox" id="rfTerms" name="rfTerms" onChange={this.handleChange} onBlur={this.handleBlur} /><label className="inline-label" htmlFor="rfTerms">I agree with the <Link to="/terms-conditions" target="_blank" rel="noopener noreferrer">Terms & Conditions</Link> *</label>
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Create account</button>
 					</form>
 					</>}
