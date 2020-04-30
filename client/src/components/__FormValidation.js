@@ -13,7 +13,8 @@ function FormValidation(fieldName,fieldValues) {
 		case 'rfLastName':
 		case 'mafFirstName':
 		case 'mafLastName':
-		case 'dhfFullName':
+		case 'dhfFirstName':
+		case 'dhfLastName':
 		case 'cfName':
 			// required field, must follow name pattern
 			return { [fieldName]: (fieldValue !== '' && nameRegex.test(fieldValue) === true)}
