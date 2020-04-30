@@ -210,7 +210,6 @@ class MyAccountForm extends Component {
 					<form noValidate className="form">
 						{ this.state.requestSuccess && <p className="success-message">Your account has been updated.</p> }
 						{ this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
-						<UploadAvatar />
 						<label htmlFor="mafFirstName">First name</label>
 						<input type="text" name="mafFirstName" id="mafFirstName" placeholder="First name *" onChange={this.handleChange} onBlur={this.handleBlur} defaultValue={this.state.formFieldValues.mafFirstName} />
 						<span className="form__field-description">No special characters allowed</span>
