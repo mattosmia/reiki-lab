@@ -215,8 +215,8 @@ class RegistrationForm extends Component {
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Create account</button>
 					</form>
 					</>}
-					{ ! this.state.loading && this.state.requestSuccess && <p>Thank you for creating your account. You can now <Link to="/login">log in</Link>.</p> }
-					{ ! this.state.loading && this.state.requestUserExists && <p>Your email address is already registered. <Link to="/login">Log in</Link> or <Link to="/forgot-password">reset your password</Link></p> }
+					{ ! this.state.loading && this.state.requestSuccess && <p className="success-message">Thank you for creating your account. You can now <Link to="/login">log in</Link>.</p> }
+					{ ! this.state.loading && this.state.requestUserExists && <p className="success-message">Your email address is already registered. <Link to="/login">Log in</Link> or <Link to="/forgot-password">reset your password</Link></p> }
 				</div>
 			</section>
 		);
