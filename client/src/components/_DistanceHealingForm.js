@@ -116,7 +116,7 @@ class DistanceHealingForm extends Component {
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Add me to the list</button>
 					</form>
 					</>}
-					{ this.state.requestSuccess && <p>Thank you for submitting your details. You are now on this month's Distance Healing list.</p> }
+					{ this.state.requestSuccess && <p className="success-message">Thank you for submitting your details. You are now on this month's Distance Healing list.</p> }
 				</div>
 			</section>
 		);
