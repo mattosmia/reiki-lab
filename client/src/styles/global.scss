@@ -271,7 +271,7 @@ p {
 		resize: vertical;
 
 		&:focus + .form__field-description {
-			opacity: 100%;
+			opacity: 1;
 			height: auto;
 			margin-top: -11.5rem;
 			&:after {
