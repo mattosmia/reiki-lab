@@ -465,7 +465,7 @@ app.post('/forgot-password', (request, response) => {
 								subject: 'Reiki Lab - Reset your Password',
 							}],
 							from: {
-								email: 'carladgibin@gmail.com',
+								email: 'reikilab@reikilabdublin.com',
 							},
 							content: [{
 								type: 'text/plain',
@@ -550,15 +550,15 @@ app.post('/contact', (request, response) => {
 		path: '/v3/mail/send',
 		body: {
 			personalizations: [{
-				to: [{ email: 'carladgibin@gmail.com' }],
+				to: [{ email: 'mattosmia@gmail.com' }],
 				subject: `Reiki Lab Contact Form - ${cfSubject}`,
 			}],
 			from: {
-				email: 'carladgibin@gmail.com',
+				email: 'reikilab@reikilabdublin.com',
 			},
 			content: [{
 				type: 'text/plain',
-				value: `Hello!\n\nThanks for your message.\n\nWe will get back to you shortly.\n\nKind Regards\n\nReiki Lab`,
+				value: `
 Reiki Lab Contact Form - this was posted from the website\n\n
 -------------------------------------------------------------\n\n
 Name: ${cfName}\n
