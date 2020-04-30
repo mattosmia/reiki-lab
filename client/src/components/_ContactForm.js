@@ -53,6 +53,14 @@ class ContactForm extends Component {
 		})
 	}
 
+	handleBlur = (e) => {
+		if (! this.state.formFieldValid[e.target.name]) {
+			e.target.classList.add('error-field')
+		} else {
+			e.target.classList.remove('error-field')
+		}
+	}
+
 	setValidateFields = (obj) => {
 		this.setState({
 			formFieldValid: {
@@ -95,13 +103,14 @@ class ContactForm extends Component {
 						{ this.state.requestSuccess && <p className="success-message">Thanks for your message, we will be in touch shortly</p> }
 						{ this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
 						<label htmlFor="cfName">Full name</label>
-						<input type="text" name="cfName" id="cfName" placeholder="Full name" onChange={this.handleChange} />
+						<input type="text" name="cfName" id="cfName" placeholder="Full name *" onChange={this.handleChange} onBlur={this.handleBlur} />
+						<span className="form__field-description">No special characters allowed</span>
 						<label htmlFor="cfEmail">Email address</label>
-						<input type="email" name="cfEmail" id="cfEmail" placeholder="Email address" onChange={this.handleChange} />
+						<input type="email" name="cfEmail" id="cfEmail" placeholder="Email address *" onChange={this.handleChange} onBlur={this.handleBlur} />
 						<label htmlFor="cfSubject">Subject</label>
-						<input type="text" name="cfSubject" id="cfSubject" placeholder="Subject" onChange={this.handleChange} />
+						<input type="text" name="cfSubject" id="cfSubject" placeholder="Subject *" onChange={this.handleChange} onBlur={this.handleBlur} />
 						<label htmlFor="cfMessage">Message</label>
-						<textarea name="cfMessage" id="cfMessage" placeholder="Message" onChange={this.handleChange}></textarea>
+						<textarea name="cfMessage" id="cfMessage" placeholder="Message *" onChange={this.handleChange} onBlur={this.handleBlur}></textarea>
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Send message</button>
 					</form>
 				</div>

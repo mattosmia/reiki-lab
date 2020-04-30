@@ -88,6 +88,11 @@ class RegistrationForm extends Component {
 		if ((e.target.name === 'rfFacebook' && e.target.value === 'https://facebook.com/') || (e.target.name === 'rfInstagram' && e.target.value === 'https://instagram.com/')) {
 			e.target.value = ''
 		}
+		if (! this.state.formFieldValid[e.target.name]) {
+			e.target.classList.add('error-field')
+		} else {
+			e.target.classList.remove('error-field')
+		}
 	}
 
 	handleChange = (e) => {
@@ -166,29 +171,33 @@ class RegistrationForm extends Component {
 					<form noValidate className="form">
 						{ this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
 						<label htmlFor="rfFirstName">First name</label>
-						<input type="text" name="rfFirstName" id="rfFirstName" placeholder="First name" onChange={this.handleChange} />
+						<input type="text" name="rfFirstName" id="rfFirstName" placeholder="First name *" onChange={this.handleChange} onBlur={this.handleBlur} />
+						<span className="form__field-description">No special characters allowed</span>
 						<label htmlFor="rfLastName">Last name</label>
-						<input type="text" name="rfLastName" id="rfLastName" placeholder="Last name" onChange={this.handleChange} />
-						<label htmlFor="rfDOB">Date of Birth</label>
-						<input type="text" name="rfDOB" id="rfDOB" placeholder="Date of Birth" onChange={this.handleChange} />
+						<input type="text" name="rfLastName" id="rfLastName" placeholder="Last name *" onChange={this.handleChange} onBlur={this.handleBlur} />
+						<span className="form__field-description">No special characters allowed</span>
+						<label htmlFor="rfDOB">Date of birth</label>
+						<input type="text" name="rfDOB" id="rfDOB" placeholder="Date of birth *" maxLength="10" onChange={this.handleChange} onBlur={this.handleBlur} />
+						<span className="form__field-description">Date format DD/MM/YYYY</span>
 						<label htmlFor="rfNationality">Nationality</label>
-						<select	name="rfNationality" id="rfNationality" onChange={this.handleChange}>
-							<option>Nationality</option>
+						<select	name="rfNationality" id="rfNationality" onChange={this.handleChange} onBlur={this.handleBlur}>
+							<option>Nationality *</option>
 							{ this.state.countriesList.length > 0 && createDropdownOptions(this.state.countriesList) }
 						</select>
-						<label htmlFor="rfCountryRes">Country of Residence</label>
-						<select	name="rfCountryRes" id="rfCountryRes" onChange={this.handleChange}>
-							<option>Country of Residence</option>
+						<label htmlFor="rfCountryRes">Country of residence</label>
+						<select	name="rfCountryRes" id="rfCountryRes" onChange={this.handleChange} onBlur={this.handleBlur}>
+							<option>Country of residence *</option>
 							{ this.state.countriesList.length > 0 && createDropdownOptions(this.state.countriesList) }
 						</select>
 						<label htmlFor="rfEmail">Email</label>
-						<input type="email" name="rfEmail" id="rfEmail" placeholder="Email" onChange={this.handleChange} />
-						<label htmlFor="rfEmailConfirmation">Email Confirmation</label>
-						<input type="email" name="rfEmailConfirmation" id="rfEmailConfirmation" placeholder="Email Confirmation" onChange={this.handleChange} />
+						<input type="email" name="rfEmail" id="rfEmail" placeholder="Email *" onChange={this.handleChange} onBlur={this.handleBlur} />
+						<label htmlFor="rfEmailConfirmation">Email confirmation</label>
+						<input type="email" name="rfEmailConfirmation" id="rfEmailConfirmation" placeholder="Email Confirmation *" onChange={this.handleChange} onBlur={this.handleBlur} />
 						<label htmlFor="rfPassword">Password</label>
-						<input type="password" name="rfPassword" id="rfPassword" placeholder="Password" onChange={this.handleChange} />
+						<input type="password" name="rfPassword" id="rfPassword" placeholder="Password *" onChange={this.handleChange} onBlur={this.handleBlur} />
+						<span className="form__field-description">Minimum 6 characters</span>
 						<label htmlFor="rfPasswordConfirmation">Password Confirmation</label>
-						<input type="password" name="rfPasswordConfirmation" id="rfPasswordConfirmation" placeholder="Password Confirmation" onChange={this.handleChange} />
+						<input type="password" name="rfPasswordConfirmation" id="rfPasswordConfirmation" placeholder="Password Confirmation *" onChange={this.handleChange} onBlur={this.handleBlur} />
 						<input type="checkbox" id="rfVolunteer" name="rfVolunteer" onChange={this.handleChange} /><label className="inline-label" htmlFor="rfVolunteer">I'd like to be a volunteer</label>
 						{this.state.formFieldValues.rfVolunteer && 
 						<>
@@ -197,12 +206,12 @@ class RegistrationForm extends Component {
 							<label htmlFor="rfInstagram">Instagram URL</label>
 							<input type="text" name="rfInstagram" id="rfInstagram" placeholder="Instagram URL" onChange={this.handleChange} onFocus={this.handleFocus} onBlur={this.handleBlur} />
 							<label htmlFor="rfTherapies">Therapies</label>
-							<select	name="rfTherapies" id="rfTherapies" onChange={this.handleChange} multiple>
-								<option disabled>Therapies</option>
+							<select	name="rfTherapies" id="rfTherapies" onChange={this.handleChange} onBlur={this.handleBlur} multiple>
+								<option disabled>Therapies *</option>
 								{ this.state.therapiesList.length > 0 && createDropdownOptions(this.state.therapiesList) }
 							</select>
 						</>}
-						<input type="checkbox" id="rfTerms" name="rfTerms" onChange={this.handleChange} /><label className="inline-label" htmlFor="rfTerms">I agree with the <Link to="/terms-conditions">Terms & Conditions</Link></label>
+						<input type="checkbox" id="rfTerms" name="rfTerms" onChange={this.handleChange} onBlur={this.handleBlur} /><label className="inline-label" htmlFor="rfTerms">I agree with the <Link to="/terms-conditions">Terms & Conditions</Link> *</label>
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Create account</button>
 					</form>
 					</>}

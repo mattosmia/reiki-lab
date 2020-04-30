@@ -108,6 +108,7 @@ class ResetPasswordForm extends Component {
 						{! this.state.loading && this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p>}
 						<label htmlFor="rpfPassword">Password</label>
 						<input type="password" name="rpfPassword" id="rpfPassword" placeholder="Password" onChange={this.handleChange} />
+						<span className="form__field-description">Minimum 6 characters</span>
 						<label htmlFor="rpfPasswordConfirmation">Password Confirmation</label>
 						<input type="password" name="rpfPasswordConfirmation" id="rpfPasswordConfirmation" placeholder="Password Confirmation" onChange={this.handleChange} />
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Change password</button>

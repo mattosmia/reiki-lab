@@ -5,6 +5,7 @@ import axios from "axios";
 import FormValidation from './__FormValidation';
 import { returnCountriesObject, createDropdownOptions, fetchList, authHeaders, isAuthenticated } from './__Utils';
 import Loading from './__Loading';
+import UploadAvatar from './_UploadAvatar';
 
 class MyAccountForm extends Component {
 	constructor(props) {
@@ -89,17 +90,22 @@ class MyAccountForm extends Component {
 
 	handleFocus = (e) => {
 		if (e.target.value === '') {
-			if (e.target.name === 'rfFacebook'){
+			if (e.target.name === 'mafFacebook'){
 				e.target.value = 'https://facebook.com/';
-			} else if (e.target.name === 'rfInstagram'){
+			} else if (e.target.name === 'mafInstagram'){
 				e.target.value = 'https://instagram.com/';
 			}
 		}
 	}
 
 	handleBlur = (e) => {
-		if ((e.target.name === 'rfFacebook' && e.target.value === 'https://facebook.com/') || (e.target.name === 'rfInstagram' && e.target.value === 'https://instagram.com/')) {
+		if ((e.target.name === 'mafFacebook' && e.target.value === 'https://facebook.com/') || (e.target.name === 'mafInstagram' && e.target.value === 'https://instagram.com/')) {
 			e.target.value = ''
+		}
+		if (! this.state.formFieldValid[e.target.name]) {
+			e.target.classList.add('error-field')
+		} else {
+			e.target.classList.remove('error-field')
 		}
 	}
 
@@ -205,25 +211,29 @@ class MyAccountForm extends Component {
 					<form noValidate className="form">
 						{ this.state.requestSuccess && <p className="success-message">Your account has been updated.</p> }
 						{ this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }
+						<UploadAvatar />
 						<label htmlFor="mafFirstName">First name</label>
-						<input type="text" name="mafFirstName" id="mafFirstName" placeholder="First name" onChange={this.handleChange} defaultValue={this.state.formFieldValues.mafFirstName} />
+						<input type="text" name="mafFirstName" id="mafFirstName" placeholder="First name *" onChange={this.handleChange} onBlur={this.handleBlur} defaultValue={this.state.formFieldValues.mafFirstName} />
+						<span className="form__field-description">No special characters allowed</span>
 						<label htmlFor="mafLastName">Last name</label>
-						<input type="text" name="mafLastName" id="mafLastName" placeholder="Last name" onChange={this.handleChange} defaultValue={this.state.formFieldValues.mafLastName} />
-						<label htmlFor="mafDOB">Date of Birth</label>
-						<input type="text" name="mafDOB" id="mafDOB" placeholder="Date of Birth" onChange={this.handleChange} defaultValue={this.state.formFieldValues.mafDOB} />
+						<input type="text" name="mafLastName" id="mafLastName" placeholder="Last name *" onChange={this.handleChange} onBlur={this.handleBlur} defaultValue={this.state.formFieldValues.mafLastName} />
+						<span className="form__field-description">No special characters allowed</span>
+						<label htmlFor="mafDOB">Date of bßirth</label>
+						<input type="text" name="mafDOB" id="mafDOB" placeholder="Date of birth *" onChange={this.handleChange} onBlur={this.handleBlur} defaultValue={this.state.formFieldValues.mafDOB} />
+						<span className="form__field-description">Date format DD/MM/YYYY</span>
 						<label htmlFor="mafNationality">Nationality</label>
-						<select	name="mafNationality" id="mafNationality" defaultValue={this.state.formFieldValues.mafNationality} onChange={this.handleChange}>
-							<option>Nationality</option>
+						<select	name="mafNationality" id="mafNationality" defaultValue={this.state.formFieldValues.mafNationality} onBlur={this.handleBlur} onChange={this.handleChange}>
+							<option>Nationality *</option>
 							{ createDropdownOptions(this.state.countriesList) }
 						</select>
-						<label htmlFor="mafCountryRes">Country of Residence</label>
-						<select	name="mafCountryRes" id="mafCountryRes" defaultValue={this.state.formFieldValues.mafCountryRes} onChange={this.handleChange}>
-							<option>Country of Residence</option>
+						<label htmlFor="mafCountryRes">Country of r</label>
+						<select	name="mafCountryRes" id="mafCountryRes" defaultValue={this.state.formFieldValues.mafCountryRes} onBlur={this.handleBlur} onChange={this.handleChange}>
+							<option>Country of residence *</option>
 							{ createDropdownOptions(this.state.countriesList) }
 						</select>
 						<label htmlFor="mafEmail">Email</label>
-						<input type="email" name="mafEmail" id="mafEmail" placeholder="Email" defaultValue={this.state.formFieldValues.mafEmail} />
-						<input type="checkbox" id="mafVolunteer" name="mafVolunteer" onChange={this.handleChange} checked={this.state.formFieldValues.mafVolunteer} /><label className="inline-label" htmlFor="mafVolunteer">I'd like to be a volunteer</label>
+						<input type="email" name="mafEmail" id="mafEmail" placeholder="Email *" onBlur={this.handleBlur} onChange={this.handleChange} defaultValue={this.state.formFieldValues.mafEmail} />
+						<input type="checkbox" id="mafVolunteer" name="mafVolunteer" onChange={this.handleChange} onBlur={this.handleBlur} checked={this.state.formFieldValues.mafVolunteer} /><label className="inline-label" htmlFor="mafVolunteer">I'd like to be a volunteer</label>
 						{this.state.formFieldValues.mafVolunteer && 
 						<>
 							<label htmlFor="mafFacebook">Facebook URL</label>
@@ -231,15 +241,16 @@ class MyAccountForm extends Component {
 							<label htmlFor="mafInstagram">Instagram URL</label>
 							<input type="text" name="mafInstagram" id="mafInstagram" placeholder="Instagram URL" onChange={this.handleChange} defaultValue={this.state.formFieldValues.mafInstagram} onFocus={this.handleFocus} onBlur={this.handleBlur} />
 							<label htmlFor="mafTherapies">Therapies</label>
-							<select	name="mafTherapies" id="mafTherapies" defaultValue={this.state.formFieldValues.mafTherapies} onChange={this.handleChange} multiple>
-								<option disabled>Therapies</option>
+							<select	name="mafTherapies" id="mafTherapies" defaultValue={this.state.formFieldValues.mafTherapies} onChange={this.handleChange} onBlur={this.handleBlur} multiple>
+								<option disabled>Therapies *</option>
 								{ createDropdownOptions(this.state.therapiesList) }
 							</select>
 						</>}
 						<label htmlFor="mafPassword">Password</label>
-						<input type="password" name="mafPassword" id="mafPassword" placeholder="Password" onChange={this.handleChange} />
-						<label htmlFor="mafPasswordConfirmation">Password Confirmation</label>
-						<input type="password" name="mafPasswordConfirmation" id="mafPasswordConfirmation" placeholder="Password Confirmation" onChange={this.handleChange} />
+						<input type="password" name="mafPassword" id="mafPassword" placeholder="Password *" onBlur={this.handleBlur} onChange={this.handleChange} />
+						<span className="form__field-description">Minimum 6 characters</span>
+						<label htmlFor="mafPasswordConfirmation">Password confirmation</label>
+						<input type="password" name="mafPasswordConfirmation" id="mafPasswordConfirmation" placeholder="Password confirmation *" onBlur={this.handleBlur} onChange={this.handleChange} />
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Save changes</button>
 						<p className="small"><span className="a-link" onClick={() => this.setState({ showDeleteAccountOptions: true })}>Delete my account</span></p>
 						{ this.state.showDeleteAccountOptions && 

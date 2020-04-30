@@ -98,18 +98,21 @@ class DistanceHealingForm extends Component {
 					<form noValidate className="form">
 						{ this.state.requestError && <p className="error-message">Sorry, an error occurred. Please try again.</p> }>
 						<label htmlFor="dhfFirstName">First name</label>
-						<input type="text" name="dhfFirstName" id="dhfFirstName" placeholder="First name" onChange={this.handleChange} />
+						<input type="text" name="dhfFirstName" id="dhfFirstName" placeholder="First name *" onChange={this.handleChange} />
+						<span className="form__field-description">No special characters allowed</span>
 						<label htmlFor="dhfLastName">Last name</label>
-						<input type="text" name="dhfLastName" id="dhfLastName" placeholder="Last name" onChange={this.handleChange} />
-						<label htmlFor="dhfDOB">Date of Birth</label>
-						<input type="text" name="dhfDOB" id="dhfDOB" placeholder="Date of Birth" onChange={this.handleChange} />
-						<label htmlFor="dhfCountryRes">Country of Residence</label>
+						<input type="text" name="dhfLastName" id="dhfLastName" placeholder="Last name *" onChange={this.handleChange} />
+						<span className="form__field-description">No special characters allowed</span>
+						<label htmlFor="dhfDOB">Date of birth</label>
+						<input type="text" name="dhfDOB" id="dhfDOB" placeholder="Date of birth *" onChange={this.handleChange} />
+						<span className="form__field-description">Date format DD/MM/YYYY</span>
+						<label htmlFor="dhfCountryRes">Country of residence</label>
 						<select	name="dhfCountryRes" id="dhfCountryRes" onChange={this.handleChange}>
-							<option>Country of Residence</option>
+							<option>Country of residence *</option>
 							{ this.state.countriesList.length > 0 && createDropdownOptions(this.state.countriesList) }
 						</select>
-						<input type="checkbox" id="dhfConfirmList" name="dhfConfirmList" onChange={this.handleChange} /><label className="inline-label" htmlFor="dhfConfirmList">Please, place me on this month's distance healing list</label>
-						<input type="checkbox" id="dhfTerms" name="dhfTerms" onChange={this.handleChange} /><label className="inline-label" htmlFor="dhfTerms">I agree with the <Link to="/terms-conditions">Terms & Conditions</Link></label>
+						<input type="checkbox" id="dhfConfirmList" name="dhfConfirmList" onChange={this.handleChange} /><label className="inline-label" htmlFor="dhfConfirmList">Please, place me on this month's distance healing list *</label>
+						<input type="checkbox" id="dhfTerms" name="dhfTerms" onChange={this.handleChange} /><label className="inline-label" htmlFor="dhfTerms">I agree with the <Link to="/terms-conditions">Terms & Conditions</Link> *</label>
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Add me to the list</button>
 					</form>
 					</>}

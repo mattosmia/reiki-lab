@@ -199,6 +199,7 @@ p {
 }
 
 .form {
+	position: relative;
 	color: $grey;
 	margin: 0 auto;
 	padding: 5rem 1.5rem 7.2rem;
@@ -212,12 +213,39 @@ p {
 			line-height: 3.2rem;
 			margin-bottom: 2.6rem;
 		}
-		&:not(.inline-label) {
+		&:not(.inline-label):not([for*='avatar_loader']) {
 			@extend .vh;
 		}
 		a {
 			color: $blue;
 			text-decoration: underline;	
+		}
+	}
+
+	&__field-description {
+		font-size: 1.6rem;
+		position: absolute;
+		width: 100%;
+		max-width: 392px;
+		display: block;
+		color: $white;
+		background: $purple;
+		left: 0;
+		right: 0;
+		margin: -2.5rem auto 0;
+		height: 0px;
+		opacity: 0;
+		padding: 1rem;
+		transition: 0.2s ease-in-out all;
+
+		&:after {
+			content: '';
+			display: none;
+			position: absolute;
+			width: 0; 
+			height: 0; 
+			border: 2rem solid transparent;
+			border-top-color: $purple;
 		}
 	}
 
@@ -241,6 +269,20 @@ p {
 		padding: .8rem 0;
 		margin-bottom: 2.6rem;
 		resize: vertical;
+
+		&:focus + .form__field-description {
+			opacity: 100%;
+			height: auto;
+			margin-top: -11.5rem;
+			&:after {
+				display: block;
+			}
+		}
+
+		&.error-field {
+			outline: 1px solid $pink;
+			outline-offset: 2px;
+		}
 	}
 
 	select[multiple] {
