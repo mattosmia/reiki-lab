@@ -114,9 +114,9 @@ class ResetPasswordForm extends Component {
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Change password</button>
 					</form></>}
 					{! this.state.loading && this.state.requestSuccess &&
-					<p>Your password has been updated. Please <Link to={'/login'}>log in</Link> with your new credentials.</p>}
+					<p className="success-message">Your password has been updated. Please <Link to={'/login'}>log in</Link> with your new credentials.</p>}
 					{! this.state.loading && this.state.formFatalError &&
-					<p>Your link seems to have expired. Please request another password reset link <Link to={'/forgot-password'}>here</Link>.</p>}
+					<p className="success-message">Your link seems to have expired. Please request another password reset link <Link to={'/forgot-password'}>here</Link>.</p>}
 				</div>
 			</section>
 		);

@@ -96,7 +96,7 @@ class ForgotPasswordForm extends Component {
 						<button type="button" className={`btn btn--secondary${this.state.formSubmitted? ' btn--waiting': ''}`} disabled={!this.state.formValid || this.state.formSubmitted} onClick={this.submitForm}>Email me</button>
 					</form></>}
 					{! this.state.loading && this.state.requestSuccess &&
-					<p>If the email address provided is registered with us, you will receive instructions shortly.</p>}
+					<p className="success-message">If the email address provided is registered with us, you will receive instructions shortly.</p>}
 				</div>
 			</section>
 		);
